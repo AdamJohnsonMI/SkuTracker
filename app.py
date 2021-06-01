@@ -1,28 +1,35 @@
-import sqlite3
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
+import psycopg2
+import psycopg2.extras
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = '\xf8\xcc:5<\xf5\x9em\xda<F\xf1\x02\xa41&\xca\xa2\xbeG\tzc\xc6'
 
 def get_db_connection():
-    conn = sqlite3.connect('database.db')
-    conn.row_factory = sqlite3.Row
+    conn = psycopg2.connect(database="postings", user="adam", password="adamm1", host="localhost", port="5432")
     return conn
 
 def get_post(post_id):
     conn = get_db_connection()
-    post = conn.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM posts WHERE id = %s', (post_id,))
+    post = cursor.fetchone()                    
     conn.close()
     if post is None:
         abort(404)
     return post
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your secret key'
+
 
 @app.route('/')
 def index():
     conn = get_db_connection()
-    posts = conn.execute('SELECT * FROM posts').fetchall()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM posts');
+    posts = cursor.fetchall()
+
+
     conn.close()
     return render_template('index.html', posts=posts)
 
@@ -41,8 +48,9 @@ def create():
             flash('Title is required!')
         else:
             conn = get_db_connection()
-            conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
-                         (title, content))
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor.execute('INSERT INTO posts (title, content) VALUES (%s, %s)', 
+                         (title, content));
             conn.commit()
             conn.close()
             return redirect(url_for('index'))
@@ -60,8 +68,10 @@ def edit(id):
             flash('Title is required!')
         else:
             conn = get_db_connection()
-            conn.execute('UPDATE posts SET title = ?, content = ?'
-                         ' WHERE id = ?',
+            conn = get_db_connection()
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor.execute('UPDATE posts SET title = %s, content = %s'
+                         ' WHERE id = %s',
                          (title, content, id))
             conn.commit()
             conn.close()
@@ -73,9 +83,13 @@ def edit(id):
 def delete(id):
     post = get_post(id)
     conn = get_db_connection()
-    conn.execute('DELETE FROM posts WHERE id = ?', (id,))
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('DELETE FROM posts WHERE id = %s', (id,))
     conn.commit()
     conn.close()
     flash('"{}" was successfully deleted!'.format(post['title']))
     return redirect(url_for('index'))
 
+@app.route('/about')
+def about():
+    return render_template('about.html')

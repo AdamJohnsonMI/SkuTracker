@@ -1,12 +1,19 @@
-import sqlite3
+import psycopg2
 
-connection = sqlite3.connect('database.db')
+
+conn = psycopg2.connect('dbname=test')
+cur = conn.cursor()
+
+
+#import sqlite3
+
+#connection = sqlite3.connect('database.db')
 
 
 with open('schema.sql') as f:
-    connection.executescript(f.read())
+    conn.executescript(f.read())
 
-cur = connection.cursor()
+cur = conn.cursor()
 
 cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
             ('First Post', 'Content for the first post')
@@ -18,3 +25,4 @@ cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
 
 connection.commit()
 connection.close()
+
