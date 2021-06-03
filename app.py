@@ -11,8 +11,8 @@ app.config['SECRET_KEY'] = '\xf8\xcc:5<\xf5\x9em\xda<F\xf1\x02\xa41&\xca\xa2\xbe
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 def get_db_connection():
-    conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
-    #conn = psycopg2.connect(database="d2gpdhn3kfilrs", user="eiqkjbvxzucpul", password="2abec574d9dc375691022f9157f96d140b8c87e9d0661d26a65290c7998a1620", host="ec2-34-225-167-77.compute-1.amazonaws.com", port="5432")
+    #conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
+    conn = psycopg2.connect(database="d2gpdhn3kfilrs", user="eiqkjbvxzucpul", password="2abec574d9dc375691022f9157f96d140b8c87e9d0661d26a65290c7998a1620", host="ec2-34-225-167-77.compute-1.amazonaws.com", port="5432")
     return conn
 
 def get_post(post_id):
