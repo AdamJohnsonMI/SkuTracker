@@ -4,21 +4,19 @@ import psycopg2
 import psycopg2.extras
 #from os import path, walk
 import os
-from dotenv import load_dotenv
 
-#
+
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
-load_dotenv()
-MY_ENV_VAR = os.getenv('DATABASE_URL')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 
 def get_db_connection():
     #conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
-    conn = psycopg2.connect(MY_ENV_VAR)
+    #conn = psycopg2.connect(MY_ENV_VAR)
+    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     return conn
 
 def get_post(post_id):
