@@ -2,17 +2,23 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 import psycopg2
 import psycopg2.extras
-from os import path, walk
+#from os import path, walk
+import os
+from dotenv import load_dotenv
 
-
-
+#
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '\xf8\xcc:5<\xf5\x9em\xda<F\xf1\x02\xa41&\xca\xa2\xbeG\tzc\xc6'
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+load_dotenv()
+MY_ENV_VAR = os.getenv('DATABASE_URL')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+
 
 def get_db_connection():
     #conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
-    conn = psycopg2.connect(database="d2gpdhn3kfilrs", user="eiqkjbvxzucpul", password="2abec574d9dc375691022f9157f96d140b8c87e9d0661d26a65290c7998a1620", host="ec2-34-225-167-77.compute-1.amazonaws.com", port="5432")
+    #conn = psycopg2.connect(MY_ENV_VAR)
     return conn
 
 def get_post(post_id):
