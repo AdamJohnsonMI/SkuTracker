@@ -18,7 +18,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 def get_db_connection():
     #conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
-    #conn = psycopg2.connect(MY_ENV_VAR)
+    conn = psycopg2.connect(MY_ENV_VAR)
     return conn
 
 def get_post(post_id):
