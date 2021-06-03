@@ -11,22 +11,117 @@
     <title>{% block title %} {% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('index')}}">Home</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{url_for('about')}}">About</a>
-            </li>
-		<li class="nav-item">
-            <a class="nav-link" href="{{url_for('create')}}">New Post</a>
-        </li>
-            </ul>
+
+      
+
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class= "btn-group">
+            <a href="{{url_for('index')}}"class="navbar-brand" href="#">
+                <img src="/static/sku.jpg" alt="sku" width="30" height="30" class="d-inline-block align-text-top">
+                SkuTracker
+            </a>
+
+            <form class="d-flex" id="for">
+                <input class="form-control me-2" type="search"  placeholder="SKU/ASIN" aria-label="Search">
+                <button class="btn btn-outline-light text-light" type="submit">Search</button>
+                </form>
+            </div>
+            <div>
+            <a class="btn btn-outline-light text-light" href="{{url_for('about')}}">About SkuTracker</a>
+            <a class="btn btn-outline-light text-light" href="{{url_for('create')}}">New Post</a>
+            <a class="btn btn-outline-light text-light">Login</a>        
+        </div>   
         </div>
+        
     </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+        <a class="navbar-brand" href="{{url_for('index')}}">Dashboard</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Inventory
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Add to Warehouse</a>
+                  <a class="dropdown-item" href="{{url_for('view_items')}}">View/Manage Items in Warehouse</a>
+                  <a class="dropdown-item" href="{{url_for('create_bin')}}">Create bins</a>
+                  <a class="dropdown-item" href="{{url_for('view_bin')}}">View/Delete bins</a>
+                </div>
+              </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Orders
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="#">Add New Order</a>
+                  <a class="dropdown-item" href="#">Delete an Order</a>
+                  <a class="dropdown-item" href="#">Edit an Order</a>
+                  <a class="dropdown-item" href="#">View All Orders</a>
+                </div>
+              </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Products
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="{{url_for('product_create')}}">Add New ASIN</a>
+                  <a class="dropdown-item" href="{{url_for('view_product')}}">View/Manage ASINs</a>
+                </div>
+              </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Reports
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                  <a class="dropdown-item" href="#">Missing Inventory</a>
+                  <a class="dropdown-item" href="#">Missing Orders</a>
+                  <a class="dropdown-item" href="#">Inventory FLow</a>
+                  <a class="dropdown-item" href="#">Expired Food</a>
+                </div>
+              </li>
+
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Printing
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" href="#">Print Warehouse Label</a>
+                <a class="dropdown-item" href="#">Delete Warehosue Label</a>
+                <a class="dropdown-item" href="#">Print Expired food locations</a>
+              </div>
+            </li>
+
+
+          </ul>
+        </div>
+      </nav>
+
+
+
+
+
+
+
+
+
+            
+          
+        
+        
+
+
+        
+        
+    
     <div class="container">
 	{% for message in get_flashed_messages() %}
         <div class="alert alert-danger">{{ message }}</div>

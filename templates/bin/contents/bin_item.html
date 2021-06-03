@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Bin an Item {% endblock %}</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="locationid">locationid</label>
+        <input type="text" name="locationid"
+               placeholder="Post locationid" class="form-control"
+               value="{{ request.form['locationid'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="asinid">asinid</label>
+        <textarea name="asinid" placeholder="Post asinid"
+                  class="form-control">{{ request.form['asinid'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="quantity">quantity</label>
+        <textarea name="quantity" placeholder="Post quantity"
+                  class="form-control">{{ request.form['quantity'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="datereceived">datereceived</label>
+        <textarea name="datereceived" placeholder="Post datereceived xx/xx/xx"
+                  class="form-control">{{ request.form['datereceived'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="expirationdate">expirationdate</label>
+        <textarea name="expirationdate" placeholder="Post expirationdate xx/xx/xx"
+                  class="form-control">{{ request.form['expirationdate'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{% block title %} {{ product['asinid'] }} {% endblock %}</h2>
+    <span class="badge badge-primary">{{ product['description'] }}</span>
+    <a href="{{url_for('product_edit', product_id=product['asinid'])}}">
+        <span class="badge badge-warning">Edit</span>
+        
+    <p>{{ product['description'] }}</p>
+
+    
+
+{% endblock %}
+
+
+
+

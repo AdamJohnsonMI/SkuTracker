@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Create a New Bin {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="rackid">rackid</label>
+        <input type="text" name="rackid"
+               placeholder="Enter rackid" class="form-control"
+               value="{{ request.form['rackid'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="shelfid">shelfid</label>
+        <textarea name="shelfid" placeholder="Enter shelfid"
+                  class="form-control">{{ request.form['shelfid'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+{% endblock %}

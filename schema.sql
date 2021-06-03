@@ -22,7 +22,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO adam;
 
 -- repeat code below for each database:
 
-GRANT CONNECT ON DATABASE postings to adam;
+GRANT CONNECT ON DATABASE inventory to adam;
 \c foo
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO adam; --- this grants privileges on new tables generated in new database "foo"
 GRANT USAGE ON SCHEMA public to adam; 
@@ -30,6 +30,11 @@ GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO adam;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO adam;
 
 
+GRANT ALL PRIVILEGES ON DATABASE inventory TO adam;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO adam;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO adam;
+
 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute('SELECT * FROM posts');
     posts = cursor.fetchall()
+
