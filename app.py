@@ -7,15 +7,15 @@ import os
 
 
 app = Flask(__name__)
+#Load config information. Will move to .env when needed.
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 
 def get_db_connection():
+    #First line is for local database. Second is for aws database.
     #conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
-    #conn = psycopg2.connect(MY_ENV_VAR)
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     return conn
 
