@@ -143,23 +143,25 @@ def product(product_id):
 @app.route('/product/create', methods=('GET', 'POST'))
 def product_create():
     if request.method == 'POST':
-        ASINid = request.form['ASINid']
+        asinid = request.form['asinid']
         picture = request.form['picture']
         hazardous = request.form['hazardous']
         oversized = request.form['oversized']
         description = request.form['description']
         
-        if not ASINid:
+        if not asinid:
             flash('ASIN is required!')
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO product (ASINid, picture, hazardous, oversized, description) VALUES (%s, %s, %s, %s, %s)', 
-                         (ASINid, picture, hazardous, oversized, description));
+            cursor.execute('INSERT INTO product (asinid, picture, hazardous, oversized, description) VALUES (%s, %s, %s, %s, %s)', 
+                         (asinid, picture, hazardous, oversized, description));
             conn.commit()
             conn.close()
             return redirect(url_for('view_product'))
     return render_template('product/create.html')  
+       
+
        
 
 @app.route('/product/<string:product_id>/edit', methods=('GET', 'POST'))
