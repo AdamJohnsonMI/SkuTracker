@@ -15,7 +15,7 @@ CREATE TABLE physicalLocation (
 CREATE TABLE bin (
     ContentID SERIAL PRIMARY KEY, 
     Locationid INTEGER REFERENCES physicalLocation(Locationid),
-    ASINid varchar(60)REFERENCES product
+    ASINid varchar(60)REFERENCES product,
     quantity INTEGER,
     dateReceived varchar(60),
     expirationDate varchar(60)
