@@ -20,3 +20,5 @@ Next steps for the project:
 5. Search by ASIN to find bin locations. 
 6. Pick option/ship option. Maybe add a temp tab if not all items are pulled.
 7. Add sort feature to pages. 
+
+Remove ASIN page and condense to Orders tab?. 
