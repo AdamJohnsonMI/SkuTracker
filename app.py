@@ -153,7 +153,8 @@ def about():
 def view_product():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT product.asinid, product.picture, product.hazardous, product.description, product.oversized, bin.locationid FROM product LEFT OUTER JOIN bin ON product.asinid=bin.asinid');
+    cursor.execute('SELECT DISTINCT ON (1) product.asinid, product.picture, product.hazardous, product.description, product.oversized, bin.locationid \
+    FROM product LEFT OUTER JOIN bin ON product.asinid=bin.asinid');
     products = cursor.fetchall()
     conn.close()
     return render_template('product.html', products=products)
@@ -487,10 +488,13 @@ def tracking(tracking_id):
 ####Come back to add query for each invid in the tracking number
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT DISTINCT ON (1) bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate,physicallocation.shelfid, physicallocation.rackid FROM bin LEFT OUTER JOIN physicallocation ON bin.locationid=physicallocation.locationid WHERE trackingid = %s", (tracking_id,))
+    cursor.execute("SELECT tracking.trackingid, tracking.invid, tracking.received FROM tracking LEFT OUTER JOIN orders ON tracking.invid=orders.invid WHERE tracking.invid = %s ", (tracking_id,))
     locations = cursor.fetchall()                    
     conn.close()
     return render_template('tracking/view_tracking.html', trackingNums=trackingNums,locations=locations)   
+
+
+
 
 @app.route('/tracking/create', methods=('GET', 'POST'))
 def tracking_create():
