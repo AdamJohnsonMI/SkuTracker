@@ -412,7 +412,7 @@ def view_orders():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #Fix missing bins caused by JOIN
-    cursor.execute('SELECT orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid ORDER BY invid ASC;');
+    cursor.execute('SELECT DISTINCT orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid');
     orders = cursor.fetchall()
     conn.close()
     return render_template('orders/view_orders.html', orders=orders) 
