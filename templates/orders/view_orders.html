@@ -35,7 +35,7 @@
         <td>{{ order['fullfillment'] }}</td>
         <td>{{ order['buyer'] }}</td>
         <td>{{ order['supplier'] }}</td>
-        {% if order['locationid'] == null %}
+        {% if order['locationid'] == none %}
         <td>No bin locations</td>
         {% else  %}
         <td><a href="{{ url_for('product', product_id=order['asinid']) }}">Click for locations</a></td>
