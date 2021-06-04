@@ -10,6 +10,8 @@
             <th scope="col">Hazardous</th>
             <th scope="col">Oversized</th>
             <th scope="col">Description</th>
+            <th scope="col">Bin Locations</th>
+
           </tr>
         </thead>
         <tbody>
@@ -21,6 +23,11 @@
             <td>{{product['hazardous']}}</td>
             <td>{{product['oversized']}}</td>
             <td>{{product['description']}}</td>
+            {% if product['locationid'] == None %}
+              <td>No bin locations</td>
+            {% else  %}
+              <td><a href="{{ url_for('product', product_id=product['asinid']) }}">Click for locations</a></td>
+            {% endif %}
             </tr>
           {% endfor %}
         </tbody>

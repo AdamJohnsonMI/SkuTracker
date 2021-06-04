@@ -5,6 +5,7 @@
 <table class="table table-dark">
     <thead>
       <tr>
+        <th scope="col">invid</th>
         <th scope="col">asinid</th>
         <th scope="col">buyPrice</th>
         <th scope="col">sellPrice</th>
@@ -14,6 +15,9 @@
         <th scope="col">fullfillment</th>
         <th scope="col">buyer</th>
         <th scope="col">supplier</th>
+        <th scope="col">Bin locations</th>
+        <th scope="col"># of tracking numbers</th>
+        
         
       </tr>
     </thead>
@@ -31,7 +35,11 @@
         <td>{{ order['fullfillment'] }}</td>
         <td>{{ order['buyer'] }}</td>
         <td>{{ order['supplier'] }}</td>
-        
+        {% if order['locationid'] == null %}
+        <td>No bin locations</td>
+        {% else  %}
+        <td><a href="{{ url_for('product', product_id=order['asinid']) }}">Click for locations</a></td>
+        {% endif %}
         </tr>
       {% endfor %}
     </tbody>
