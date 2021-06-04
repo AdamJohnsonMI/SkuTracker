@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">asinid</th>
+        <th scope="col">buyPrice</th>
+        <th scope="col">sellPrice</th>
+        <th scope="col">store</th>
+        <th scope="col">quantity</th>
+        <th scope="col">orderNumber</th>
+        <th scope="col">fullfillment</th>
+        <th scope="col">buyer</th>
+        <th scope="col">supplier</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+      <tr>
+        <td>{{ order['invid'] }}</a> <a href="{{ url_for('order_edit', order_id=order['invid']) }}">
+            <span class="badge badge-warning">Edit/Delete</span></td>
+        <td>{{ order['asinid'] }}</td>
+        <td>{{ order['buyPrice'] }}</td>
+        <td>{{ order['sellPrice'] }}</td>
+        <td>{{ order['store'] }}</td>
+        <td>{{ order['quantity'] }}</td>
+        <td>{{ order['orderNumber'] }}</td>    
+        <td>{{ order['fullfillment'] }}</td>
+        <td>{{ order['buyer'] }}</td>
+        <td>{{ order['supplier'] }}</td>
+        
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+{% endblock %}
+
+
+
+

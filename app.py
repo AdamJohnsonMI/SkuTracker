@@ -10,7 +10,7 @@ app = Flask(__name__)
 #Load config information. Will move to .env when needed.
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 SECRET_KEY = os.getenv('SECRET_KEY')
-
+app.secret_key = SECRET_KEY
 
 
 def get_db_connection():
@@ -58,6 +58,16 @@ def get_bin(bin_id):
         abort(404)
     return bin
 
+def get_order(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute("SELECT * FROM orders WHERE invid = %s", (order_id,))
+    order = cursor.fetchone()                    
+    conn.close()
+    if order is None:
+        abort(404)
+    return order
+        
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -352,3 +362,85 @@ def bin_delete(bin_id):
     conn.close()
     flash('"{}" was successfully deleted!'.format(bin['locationid']))
     return redirect(url_for('view_bin'))   
+
+@app.route('/orders/create', methods=('GET', 'POST'))
+def create_order():
+    if request.method == 'POST':
+       
+        asinid = request.form['asinid']
+        buyPrice = request.form['buyPrice']
+        sellPrice = request.form['sellPrice']
+        store = request.form['store']
+        supplier = request.form['supplier']
+        quantity = request.form['quantity']
+        orderNumber = request.form['orderNumber']
+        fullfillment= request.form['fullfillment']
+        buyer = request.form['buyer']
+        
+        if not asinid:
+            flash('asinid is required!')
+           
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor.execute('INSERT INTO orders (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
+                         (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer));
+            conn.commit()
+            conn.close()
+            return redirect(url_for('view_items'))
+    return render_template('orders/create.html') 
+
+@app.route('/orders/<int:order_id>')
+def order_id(order_id):
+    order = get_order(order_id)
+    return render_template('orders/order.html', order=order)
+
+@app.route('/orders/view_orders')
+def view_orders():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM orders');
+    orders = cursor.fetchall()
+    conn.close()
+    return render_template('orders/view_orders.html', orders=orders) 
+
+@app.route('/orders/<int:order_id>/delete', methods=('POST',))
+def order_delete(order_id):
+    order = get_order(order_id)
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('DELETE FROM orders WHERE invid = %s', (order_id,))
+    conn.commit()
+    conn.close()
+    flash('"{}" was successfully deleted!'.format(order['invid']))
+    return redirect(url_for('view_orders'))       
+
+@app.route('/orders/<int:order_id>/edit', methods=('GET', 'POST'))
+def order_edit(order_id):
+    order = get_order(order_id)
+
+    if request.method == 'POST':
+        asinid = request.form['asinid']
+        buyPrice = request.form['buyPrice']
+        sellPrice = request.form['sellPrice']
+        store = request.form['store']
+        supplier = request.form['supplier']
+        quantity = request.form['quantity']
+        orderNumber = request.form['orderNumber']
+        fullfillment= request.form['fullfillment']
+        buyer = request.form['buyer']
+        
+
+        if not asinid:
+            flash('asinid is required!')
+        else:
+            conn = get_db_connection()
+            
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor.execute('UPDATE orders SET asinid = %s, buyPrice = %s, sellPrice = %s, store = %s, supplier = %s, quantity = %s, orderNumber = %s, fullfillment = %s, buyer = %s,' ' WHERE invid = %s', 
+                         (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer, order[0]));
+            conn.commit()
+            conn.close()
+            return redirect(url_for('view_orders')) 
+
+    return render_template('orders/edit.html', order=order) 

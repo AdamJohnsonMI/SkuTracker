@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Edit "{{ order['asinid'] }}" {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <h3>{{order[invid]}}</h3>
+    </div>
+    <div class="form-group">
+        <label for="asinid">asinid</label>
+        <textarea name="asinid" placeholder="Edit asinid"
+                  class="form-control">{{ request.form['asinid'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="buyPrice">buyPrice</label>
+        <textarea name="buyPrice" placeholder="Edit buyPrice"
+                  class="form-control">{{ request.form['buyPrice'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="sellPrice">sellPrice</label>
+        <textarea name="sellPrice" placeholder="sellPrice"
+                  class="form-control">{{ request.form['sellPrice'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="store">store</label>
+        <textarea name="store" placeholder="store"
+                  class="form-control">{{ request.form['store'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="supplier">supplier</label>
+        <textarea name="supplier" placeholder="supplier"
+                  class="form-control">{{ request.form['supplier'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="quantity">quantity</label>
+        <textarea name="quantity" placeholder="quantity"
+                  class="form-control">{{ request.form['quantity'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="orderNumber">orderNumber</label>
+        <textarea name="orderNumber" placeholder="orderNumber"
+                  class="form-control">{{ request.form['orderNumber'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="fullfillment">fullfillment</label>
+        <textarea name="fullfillment" placeholder="fullfillment"
+                  class="form-control">{{ request.form['fullfillment'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="buyer">buyer</label>
+        <textarea name="buyer" placeholder="buyer"
+                  class="form-control">{{ request.form['buyer'] }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<hr>
+<form action="{{ url_for('order_delete', order_id=order['invid']) }}" method="POST">
+    <input type="submit" value="Delete Order"
+            class="btn btn-danger btn-sm"
+            onclick="return confirm('Are you sure you want to delete this order?')">
+</form>
+{% endblock %}
