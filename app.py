@@ -153,7 +153,7 @@ def about():
 def view_product():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT DISTINCT ON (1) product.asinid, product.picture, product.hazardous, product.description, product.oversized, bin.locationid FROM product LEFT OUTER JOIN bin ON product.asinid=bin.asinid');
+    cursor.execute('SELECT product.asinid, product.picture, product.hazardous, product.description, product.oversized, bin.locationid FROM product LEFT OUTER JOIN bin ON product.asinid=bin.asinid');
     products = cursor.fetchall()
     conn.close()
     return render_template('product.html', products=products)
@@ -412,7 +412,10 @@ def view_orders():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #Fix missing bins caused by JOIN
-    cursor.execute('SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid, tracking.invid FROM ((orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid) LEFT OUTER JOIN tracking ON orders.invid = tracking.invid)');
+    #cursor.execute('SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid');
+    cursor.execute("SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid LEFT OUTER JOIN tracking ON orders.invid = tracking.invid");
+    
+    
     orders = cursor.fetchall()
     conn.close()
     return render_template('orders/view_orders.html', orders=orders) 
@@ -484,7 +487,7 @@ def tracking(tracking_id):
 ####Come back to add query for each invid in the tracking number
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT  bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate,physicallocation.shelfid, physicallocation.rackid FROM bin LEFT OUTER JOIN physicallocation ON bin.locationid=physicallocation.locationid WHERE trackingid = %s", (tracking_id,))
+    cursor.execute("SELECT DISTINCT ON (1) bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate,physicallocation.shelfid, physicallocation.rackid FROM bin LEFT OUTER JOIN physicallocation ON bin.locationid=physicallocation.locationid WHERE trackingid = %s", (tracking_id,))
     locations = cursor.fetchall()                    
     conn.close()
     return render_template('tracking/view_tracking.html', trackingNums=trackingNums,locations=locations)   
