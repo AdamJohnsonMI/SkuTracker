@@ -21,4 +21,7 @@ Next steps for the project:
 6. Pick option/ship option. Maybe add a temp tab if not all items are pulled.
 7. Add sort feature to pages. 
 
-Remove ASIN page and condense to Orders tab?. 
+Remove ASIN page and condense to Orders tab? 1 click add.
+Actual error messages. 
+Forms autofilled with database info to not reset info on submit.
+
