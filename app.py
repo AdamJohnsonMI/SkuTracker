@@ -14,8 +14,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 def get_db_connection():
-    #First line is for local database. Second is for aws database.
-    #conn = psycopg2.connect(database="inventory", user="adam", password="adamm1", host="localhost", port="5432")
+    #AWS database
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
     return conn
 
