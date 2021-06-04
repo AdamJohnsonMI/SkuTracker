@@ -1,3 +1,4 @@
+
 # InventoryManagement
 Testing backend server deployment
 
@@ -8,7 +9,7 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. THe back-en
 
 ![ExamplePage](https://user-images.githubusercontent.com/66417986/120581300-93912200-c3f8-11eb-9074-d19aa8c2c03f.png)
 
-
+![InventoryV3](https://user-images.githubusercontent.com/66417986/120850024-e4159600-c544-11eb-8491-0f4959470d9a.jpg)
 
 Next steps for the project:
 
