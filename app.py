@@ -488,12 +488,21 @@ def tracking(tracking_id):
 ####Come back to add query for each invid in the tracking number
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT tracking.trackingid, tracking.invid, tracking.received FROM tracking LEFT OUTER JOIN orders ON tracking.invid=orders.invid WHERE tracking.invid = %s ", (tracking_id,))
+    cursor.execute("SELECT  tracking.invid, tracking.trackingid, tracking.received FROM tracking LEFT OUTER JOIN orders ON tracking.invid=orders.invid WHERE trackingid = %s ", (tracking_id,))
     locations = cursor.fetchall()                    
     conn.close()
     return render_template('tracking/view_tracking.html', trackingNums=trackingNums,locations=locations)   
 
-
+@app.route('/tracking/invid/<string:order_id>')
+def tracking_order_id(order_id):
+    order_i = get_order(order_id)
+####Come back to add query for each invid in the tracking number
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute("SELECT  tracking.invid, tracking.trackingid, tracking.received FROM tracking LEFT OUTER JOIN orders ON tracking.invid=orders.invid WHERE tracking.invid = %s ", (order_id,))
+    locations = cursor.fetchall()                    
+    conn.close()
+    return render_template('tracking/view_tracking.html', locations=locations)   
 
 
 @app.route('/tracking/create', methods=('GET', 'POST'))

@@ -45,7 +45,7 @@
         {% if order['trackingid'] == none %}
         <td>No tracking number</td>
         {% else  %}
-        <td><a href="{{ url_for('tracking', tracking_id=order['trackingid']) }}">Click for locations</a></td>
+        <td><a href="{{ url_for('tracking_order_id', order_id=order['invid']) }}">Click for locations</a></td>
         {% endif %}
 
 
