@@ -13,7 +13,7 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. THe back-en
 
 Next steps for the project:
 
-1. Add orders functionality as show in database diagram above. Hide the ASIN management under an admin panel. Orders page should have tracking number column when viewed as well as location of ASINs in bins.
+1. Remove product table and move to orders.
 2. Add login/authentication
 3. Adding to warehouse down with tracking number instead of ASIN. App should identify ASINs in tracking number and prompt for info.
 4. When receiving, date received should be added automatically.
@@ -21,7 +21,7 @@ Next steps for the project:
 6. Pick option/ship option. Maybe add a temp tab if not all items are pulled.
 7. Add sort feature to pages. 
 
-Remove ASIN page and condense to Orders tab? 1 click add.
+
 Actual error messages. 
 Forms autofilled with database info to not reset info on submit.
 Change tracking number to varchar
