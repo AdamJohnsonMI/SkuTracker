@@ -52,11 +52,9 @@ CREATE TABLE posts (
 --The sections below are onyl for remembering privilege access
 
 
-CREATE USER readonly  WITH ENCRYPTED PASSWORD 'readonly';
+CREATE USER readonly  WITH ENCRYPTED PASSWORD '(password here)';
 GRANT USAGE ON SCHEMA public to adam;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO adam;
-
--- repeat code below for each database:
 
 GRANT CONNECT ON DATABASE inventory to adam;
 \c foo
