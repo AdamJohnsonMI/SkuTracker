@@ -5,7 +5,7 @@ Testing backend server deployment
 
 SkuTracker, AKA InventoryManagement, is an inventory management app that allows users to track their inventory. 
 
-The front-end was created with HTML, CSS, JavaScript, and Bootstrap. THe back-end was created with Python, Flask, and postgresql as the database. 
+The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-end was created with Python, Flask, and postgresql as the database. 
 
 ![ExamplePage](https://user-images.githubusercontent.com/66417986/120581300-93912200-c3f8-11eb-9074-d19aa8c2c03f.png)
 
@@ -13,7 +13,7 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. THe back-en
 
 Next steps for the project:
 
-1. Remove product table and move to orders.
+1. Add product picture, hazardous,oversized, and description to order page. 
 2. Add login/authentication
 3. Adding to warehouse down with tracking number instead of ASIN. App should identify ASINs in tracking number and prompt for info.
 4. When receiving, date received should be added automatically.
