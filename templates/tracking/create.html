@@ -1,25 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} Create a New Tracking Number {% endblock %}</h1>
+<h1>{% block title %} Enter a Tracking Number {% endblock %}</h1>
 
 <form method="post">
     <div class="form-group">
-        <label for="trackingid">trackingid</label>
+        <label for="trackingid">Tracking Number</label>
         <input type="text" name="trackingid"
-               placeholder="Post trackingid" class="form-control"
+               placeholder="Enter Tracking Number" class="form-control"
                value="{{ request.form['trackingid'] }}"></input>
     </div>
     
 
     <div class="form-group">
-        <label for="invid">invid</label>
-        <textarea name="invid" placeholder="Post invid"
+        <label for="invid">Order ID</label>
+        <textarea name="invid" placeholder="Enter Order ID(Not the Order Number)"
                   class="form-control">{{ request.form['invid'] }}</textarea>
     </div>
     <div class="form-group">
-        <label for="received">received</label>
-        <textarea name="received" placeholder="Post received"
+        <label for="received">Received?</label>
+        <textarea name="received" placeholder="Received yet? Yes/No"
                   class="form-control">{{ request.form['received'] }}</textarea>
     </div>
     

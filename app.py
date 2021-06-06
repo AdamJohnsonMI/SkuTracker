@@ -548,14 +548,14 @@ def tracking_edit(tracking_id):
     tracking = get_tracking(tracking_id)
 
     if request.method == 'POST':
-        trackingid = request.form['trackingid']
+        
         received = request.form['received']
 
         conn = get_db_connection()
             
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute('UPDATE tracking SET trackingid = %s, received = %s  ' ' WHERE invid = %s', 
-                         (trackingid, received, tracking[0]));
+        cursor.execute('UPDATE tracking SET received = %s WHERE trackingid = %s', 
+                         (received, tracking_id,));
         conn.commit()
         conn.close()
         return redirect(url_for('view_tracking')) 
