@@ -263,7 +263,6 @@ def bin_item():
         locationid= request.form['locationid']
         asinid = request.form['asinid']
         quantity = request.form['quantity']
-        datereceived = request.form['datereceived']
         expirationdate = request.form['expirationdate']
 
                 
@@ -272,16 +271,14 @@ def bin_item():
         elif not asinid:
             flash('asinid is required!')   
         elif not quantity:
-            flash('quantity is required!')  
-        elif not datereceived:
-            flash('datereceived is required!')   
+            flash('quantity is required!')     
         elif not expirationdate:
             flash('expirationdate is required!')              
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO bin (locationid, asinid, quantity, datereceived, expirationdate) VALUES (%s, %s, %s, %s, %s)', 
-                         (locationid, asinid, quantity, datereceived, expirationdate));
+            cursor.execute('INSERT INTO bin (locationid, asinid, quantity,  expirationdate) VALUES (%s, %s, %s, %s)', 
+                         (locationid, asinid, quantity, expirationdate));
             conn.commit()
             conn.close()
             return redirect(url_for('view_items'))
