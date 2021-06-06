@@ -396,6 +396,8 @@ def create_order():
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor.execute("""INSERT INTO product (asinid) VALUES (%s) """ % (asinid,));
+            conn.commit()
             cursor.execute('INSERT INTO orders (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
                          (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer));
             conn.commit()

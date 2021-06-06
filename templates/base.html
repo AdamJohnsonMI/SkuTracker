@@ -47,8 +47,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="{{url_for('bin_item')}}">Add to Warehouse</a>
                   <a class="dropdown-item" href="{{url_for('view_items')}}">View/Manage Items in Warehouse</a>
-                  <a class="dropdown-item" href="{{url_for('create_bin')}}">Create bins</a>
-                  <a class="dropdown-item" href="{{url_for('view_bin')}}">View/Delete bins</a>
+                  
                 </div>
               </li>
             <li class="nav-item dropdown">
@@ -62,40 +61,28 @@
                   <a class="dropdown-item" href="{{url_for('view_tracking')}}">Manage tracking numbers</a>
                 </div>
               </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Products
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{url_for('product_create')}}">Add New ASIN</a>
-                  <a class="dropdown-item" href="{{url_for('view_product')}}">View/Manage ASINs</a>
-                </div>
-              </li>
+            
 
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Reports
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="#">Missing Inventory</a>
-                  <a class="dropdown-item" href="#">Missing Orders</a>
-                  <a class="dropdown-item" href="#">Inventory FLow</a>
-                  <a class="dropdown-item" href="#">Expired Food</a>
-                </div>
-              </li>
-
-
+                                  
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Printing
+                Admin Panel
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Print Warehouse Label</a>
-                <a class="dropdown-item" href="#">Delete Warehosue Label</a>
-                <a class="dropdown-item" href="#">Print Expired food locations</a>
+                <a class="dropdown-item" href="{{url_for('create')}}">New Post</a>
+                <a class="dropdown-item" href="{{url_for('create_bin')}}">Create bins</a>
+                <a class="dropdown-item" href="{{url_for('view_bin')}}">View/Delete bins</a>
+                <a class="dropdown-item" href="{{url_for('product_create')}}">Add New ASIN</a>
+                <a class="dropdown-item" href="{{url_for('view_product')}}">View/Manage ASINs</a>
+                <a class="dropdown-item" href="#">Print Warehouse Label(Does not work yet)</a>
+                <a class="dropdown-item" href="#">Delete Warehosue Label(Does not work yet)</a>
+                <a class="dropdown-item" href="#">Print Expired food locations(Does not work yet)</a>
+                <a class="dropdown-item" href="#">Missing Inventory(Does not work yet)</a>
+                <a class="dropdown-item" href="#">Missing Orders(Does not work yet)</a>
+                <a class="dropdown-item" href="#">Inventory FLow(Does not work yet)</a>
+                <a class="dropdown-item" href="#">Expired Food(Does not work yet)</a>
               </div>
             </li>
-
 
           </ul>
         </div>
