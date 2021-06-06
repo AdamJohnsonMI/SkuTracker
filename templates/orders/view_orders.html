@@ -27,11 +27,11 @@
         <td>{{ order['invid'] }}</a> <a href="{{ url_for('order_edit', order_id=order['invid']) }}">
             <span class="badge badge-warning">Edit/Delete</span></td>
         <td>{{ order['asinid'] }}</td>
-        <td>{{ order['buyPrice'] }}</td>
-        <td>{{ order['sellPrice'] }}</td>
+        <td>{{ order['buyprice'] }}</td>
+        <td>{{ order['sellprice'] }}</td>
         <td>{{ order['store'] }}</td>
         <td>{{ order['quantity'] }}</td>
-        <td>{{ order['orderNumber'] }}</td>    
+        <td>{{ order['ordernumber'] }}</td>    
         <td>{{ order['fullfillment'] }}</td>
         <td>{{ order['buyer'] }}</td>
         <td>{{ order['supplier'] }}</td>

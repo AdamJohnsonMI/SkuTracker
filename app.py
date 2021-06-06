@@ -389,14 +389,26 @@ def create_order():
         orderNumber = request.form['orderNumber']
         fullfillment= request.form['fullfillment']
         buyer = request.form['buyer']
+
         
         if not asinid:
             flash('asinid is required!')
            
+           
         else:
+            if not buyPrice:    
+                buyPrice = None
+            if not sellPrice:
+                sellPrice = None
+            if not quantity:
+                sellPrice = None
+            if not orderNumber:
+                orderNumber = None
+            if not quantity:
+                quantity = None
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute("""INSERT INTO product (asinid) VALUES (%s) """ % (asinid,));
+            cursor.execute("""INSERT INTO product (asinid) VALUES (%s) ON CONFLICT (asinid) DO NOTHING;""" % (asinid,)); #Change DO NOTHING to update when I add other product columns
             conn.commit()
             cursor.execute('INSERT INTO orders (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
                          (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer));
@@ -416,7 +428,7 @@ def view_orders():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #Fix missing bins caused by JOIN
     #cursor.execute('SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid');
-    cursor.execute("SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid LEFT OUTER JOIN tracking ON orders.invid = tracking.invid");
+    cursor.execute("SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid, tracking.trackingid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid LEFT OUTER JOIN tracking ON orders.invid = tracking.invid");
     
     
     orders = cursor.fetchall()
