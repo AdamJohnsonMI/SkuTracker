@@ -12,6 +12,11 @@
                value="{{ request.form['asinid'] }}"></input>
     </div>
     <div class="form-group">
+        <label for="description">Description</label>
+        <textarea name="description" placeholder="Enter Description"
+                  class="form-control">{{ request.form['description'] }}</textarea>
+    </div>
+    <div class="form-group">
         <label for="buyPrice">Buy Price</label>
         <textarea name="buyPrice" placeholder="Enter Buy Price (Do not add $ sign)"
                   class="form-control">{{ request.form['buyPrice'] }}</textarea>

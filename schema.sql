@@ -17,7 +17,7 @@ CREATE TABLE bin (
     Locationid INTEGER REFERENCES physicalLocation(Locationid),
     ASINid varchar(60)REFERENCES product(ASINid),
     quantity INTEGER,
-    dateReceived varchar(60),
+    dateReceived TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expirationDate varchar(60)
 );
 
@@ -32,7 +32,9 @@ CREATE TABLE orders (
     quantity INTEGER,
     orderNumber varchar(60),
     fullfillment varchar(60),
-    buyer varchar(60)
+    buyer varchar(60),
+    description varchar(200) REFERENCES product (description)
+    
 );
 
 CREATE TABLE tracking (

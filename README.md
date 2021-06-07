@@ -15,14 +15,11 @@ Next steps for the project:
 
 1. Add product picture, hazardous,oversized, and description to order page. 
 2. Add login/authentication
-3. Adding to warehouse down with tracking number instead of ASIN. App should identify ASINs in tracking number and prompt for info.
-4. When receiving, date received should be added automatically.
-5. Search by ASIN to find bin locations. 
-6. Pick option/ship option. Maybe add a temp tab if not all items are pulled.
-7. Add sort feature to pages. 
+3. Forms autofilled with database info to not reset info on submit.
+4. Pick option/ship option. Maybe add a temp tab if not all items are pulled.
+5. Add sort feature to pages. 
+6. Actual error messages. 
+7. Search by ASIN to find bin locations. 
 
 
-Actual error messages. 
-Forms autofilled with database info to not reset info on submit.
-Change tracking number to varchar
 

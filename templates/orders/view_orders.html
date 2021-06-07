@@ -7,6 +7,7 @@
       <tr>
         <th scope="col">Order id</th>
         <th scope="col">ASIN</th>
+        <th scope="col">Description</th>
         <th scope="col">Buy Price</th>
         <th scope="col">Sell Price</th>
         <th scope="col">Store</th>
@@ -27,6 +28,7 @@
         <td>{{ order['invid'] }}</a> <a href="{{ url_for('order_edit', order_id=order['invid']) }}">
             <span class="badge badge-warning">Edit/Delete</span></td>
         <td>{{ order['asinid'] }}</td>
+        <td>{{ order['description']}}</td>
         <td>{{ order['buyprice'] }}</td>
         <td>{{ order['sellprice'] }}</td>
         <td>{{ order['store'] }}</td>
