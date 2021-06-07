@@ -13,6 +13,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 app.secret_key = SECRET_KEY
 
 
+
 def get_db_connection():
     #AWS database
     conn = psycopg2.connect(os.getenv('DATABASE_URL'))
@@ -170,6 +171,7 @@ def product(product_id):
     conn.close()
     return render_template('product/view_product.html', product=product, locations=locations)   
 
+
 @app.route('/product/create', methods=('GET', 'POST'))
 def product_create():
     if request.method == 'POST':
@@ -264,29 +266,34 @@ def bin_item():
         asinid = request.form['asinid']
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
-        trackingid = '5'
+        trackingid = request.form['trackingid']
 
-                
+        
         if not locationid:
             flash('Location ID is required!')
         elif not asinid and not trackingid:
             flash('ASIN or tracking number is required!')   
-        elif not asinid and not quantity:
-            flash('Quantity is required!')     
-                     
+        elif not trackingid and not quantity:
+            flash('Quantity is required!')
         else:
-            if not asinid:
-                asinid = 'asd'  # change this to not input any asinid if left empty
-
-
-
-            conn = get_db_connection()
-            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO bin (locationid, asinid, quantity,  expirationdate) VALUES (%s, %s, %s, %s)', 
-                         (locationid, asinid, quantity, expirationdate));
-            conn.commit()
-            conn.close()
-            return redirect(url_for('view_items'))
+            if trackingid:
+                conn = get_db_connection()
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+                cursor.execute('SELECT * FROM trackingcontents WHERE trackingid = %s',  (trackingid,));
+                items = cursor.fetchall()
+                for item in items:
+                    cursor.execute('INSERT INTO bin (locationid,asinid,quantity) VALUES (%s,%s,%s)', (locationid, item[2],item[3]));
+                conn.commit()
+                conn.close()
+                return redirect(url_for('view_items'))
+            else:
+                conn = get_db_connection()
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+                cursor.execute('INSERT INTO bin (locationid, asinid, quantity,  expirationdate) VALUES (%s, %s, %s, %s)', 
+                            (locationid, asinid, quantity, expirationdate));
+                conn.commit()
+                conn.close()
+                return redirect(url_for('view_items'))
     return render_template('bin/contents/bin_item.html') 
 
 @app.route('/contents/view_items')
@@ -396,7 +403,6 @@ def create_order():
         if not asinid:
             flash('asinid is required!')
            
-           
         else:
             if not buyPrice:    
                 buyPrice = None
@@ -408,6 +414,7 @@ def create_order():
                 orderNumber = None
             if not quantity:
                 quantity = None
+
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
             cursor.execute("""INSERT INTO product (asinid) VALUES (%s) ON CONFLICT (asinid) DO NOTHING;""", (asinid,)); #Change DO NOTHING to update when I add other product columns
@@ -493,7 +500,8 @@ def order_edit(order_id):
 def view_tracking():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT * FROM tracking');
+    cursor.execute('SELECT tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOin \
+    trackingcontents ON tracking.trackingid = trackingcontents.trackingid')
     trackingNums = cursor.fetchall()
     conn.close()
     return render_template('tracking/tracking.html', trackingNums=trackingNums)

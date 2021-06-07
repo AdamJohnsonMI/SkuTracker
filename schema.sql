@@ -57,6 +57,16 @@ CREATE TABLE posts (
 );
 
 
+CREATE TABLE login(
+    USER
+    password
+    role
+
+)
+
+
+
+
 --The sections below are onyl for remembering privilege access
 
 

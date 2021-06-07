@@ -10,25 +10,25 @@
                placeholder="Post locationid" class="form-control"
                value="{{ request.form['locationid'] }}"></input>
     </div>
-
-    <div class="form-group">
-        <label for="asinid">ASIN</label>
-        <textarea name="asinid" placeholder="Enter ASIN"
-                  class="form-control">{{ request.form['asinid'] }}</textarea>
-    </div>
     <div class="form-group">
         <label for="trackingid">Tracking Number</label>
         <textarea name="trackingid" placeholder="Enter Tracking Number"
                   class="form-control">{{ request.form['trackingid'] }}</textarea>
     </div>
     <div class="form-group">
-        <label for="quantity">Quantity</label>
+        <label for="asinid">ASIN (Leave blank if using tracking number)</label>
+        <textarea name="asinid" placeholder="Enter ASIN"
+                  class="form-control">{{ request.form['asinid'] }}</textarea>
+    </div>
+    
+    <div class="form-group">
+        <label for="quantity">Quantity(Leave blank if using tracking number)</label>
         <textarea name="quantity" placeholder="Enter Quantity"
                   class="form-control">{{ request.form['quantity'] }}</textarea>
     </div>
     
     <div class="form-group">
-        <label for="expirationdate">Expiration Date</label>
+        <label for="expirationdate">Expiration Date(Leave blank if using tracking number)</label>
         <textarea name="expirationdate" placeholder="Enter expirationdate xx/xx/xx or leave empty if not applicable"
                   class="form-control">{{ request.form['expirationdate'] }}</textarea>
     </div>
