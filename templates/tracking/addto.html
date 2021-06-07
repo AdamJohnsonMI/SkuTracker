@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Enter ASIN and Quantity to insert into tracking number {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="asinid">ASIN</label>
+        <input type="text" name="asinid"
+               placeholder="Enter ASIN" class="form-control"
+               value="{{ request.form['asinid'] }}"></input>
+    </div>
+    
+
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <textarea name="quantity" placeholder="Enter Quantity for the ASIN"
+                  class="form-control">{{ request.form['quantity'] }}</textarea>
+    </div>
+    
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+{% endblock %}

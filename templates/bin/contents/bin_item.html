@@ -5,7 +5,7 @@
 
 <form method="POST">
     <div class="form-group">
-        <label for="locationid">locationid</label>
+        <label for="locationid">Location ID</label>
         <input type="text" name="locationid"
                placeholder="Post locationid" class="form-control"
                value="{{ request.form['locationid'] }}"></input>
@@ -17,14 +17,19 @@
                   class="form-control">{{ request.form['asinid'] }}</textarea>
     </div>
     <div class="form-group">
-        <label for="quantity">quantity</label>
-        <textarea name="quantity" placeholder="Post quantity"
+        <label for="trackingid">Tracking Number</label>
+        <textarea name="trackingid" placeholder="Enter Tracking Number"
+                  class="form-control">{{ request.form['trackingid'] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <textarea name="quantity" placeholder="Enter Quantity"
                   class="form-control">{{ request.form['quantity'] }}</textarea>
     </div>
     
     <div class="form-group">
-        <label for="expirationdate">expirationdate</label>
-        <textarea name="expirationdate" placeholder="Post expirationdate xx/xx/xx"
+        <label for="expirationdate">Expiration Date</label>
+        <textarea name="expirationdate" placeholder="Enter expirationdate xx/xx/xx or leave empty if not applicable"
                   class="form-control">{{ request.form['expirationdate'] }}</textarea>
     </div>
     <div class="form-group">

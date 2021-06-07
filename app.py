@@ -264,17 +264,22 @@ def bin_item():
         asinid = request.form['asinid']
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
+        trackingid = '5'
 
                 
         if not locationid:
-            flash('locationid is required!')
-        elif not asinid:
-            flash('asinid is required!')   
-        elif not quantity:
-            flash('quantity is required!')     
-        elif not expirationdate:
-            flash('expirationdate is required!')              
+            flash('Location ID is required!')
+        elif not asinid and not trackingid:
+            flash('ASIN or tracking number is required!')   
+        elif not asinid and not quantity:
+            flash('Quantity is required!')     
+                     
         else:
+            if not asinid:
+                asinid = 'asd'  # change this to not input any asinid if left empty
+
+
+
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
             cursor.execute('INSERT INTO bin (locationid, asinid, quantity,  expirationdate) VALUES (%s, %s, %s, %s)', 
@@ -405,7 +410,7 @@ def create_order():
                 quantity = None
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute("""INSERT INTO product (asinid) VALUES (%s) ON CONFLICT (asinid) DO NOTHING;""" % (asinid,)); #Change DO NOTHING to update when I add other product columns
+            cursor.execute("""INSERT INTO product (asinid) VALUES (%s) ON CONFLICT (asinid) DO NOTHING;""", (asinid,)); #Change DO NOTHING to update when I add other product columns
             conn.commit()
             cursor.execute('INSERT INTO orders (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
                          (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer));
@@ -460,8 +465,18 @@ def order_edit(order_id):
         
 
         if not asinid:
-            flash("Hi!")
+            flash("Enter an ASIN!")
         else:
+            if not buyPrice:    
+                buyPrice = None
+            if not sellPrice:
+                sellPrice = None
+            if not quantity:
+                sellPrice = None
+            if not orderNumber:
+                orderNumber = None
+            if not quantity:
+                quantity = None
             conn = get_db_connection()
             
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -474,16 +489,6 @@ def order_edit(order_id):
     return render_template('orders/edit.html', order=order) 
 
 
-
-
-
-
-
-
-
-##################################TRACKING IN PROGRESS
-
-
 @app.route('/tracking')
 def view_tracking():
     conn = get_db_connection()
@@ -493,27 +498,17 @@ def view_tracking():
     conn.close()
     return render_template('tracking/tracking.html', trackingNums=trackingNums)
 
-@app.route('/tracking/<string:tracking_id>')
+@app.route('/tracking/<string:tracking_id>')  #Being used by viewing tracking number page but could be removed if tweaked
 def tracking(tracking_id):
-    trackingNums = get_tracking(tracking_id)
-####Come back to add query for each invid in the tracking number
+    trackingNum = get_tracking(tracking_id)
+    
+                        #Need to add the tracking contents of each tracking number
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT  tracking.invid, tracking.trackingid, tracking.received FROM tracking LEFT OUTER JOIN orders ON tracking.invid=orders.invid WHERE trackingid = %s ", (tracking_id,))
+    cursor.execute("SELECT * FROM trackingcontents WHERE trackingid = %s ", (tracking_id,))
     locations = cursor.fetchall()                    
     conn.close()
-    return render_template('tracking/view_tracking.html', trackingNums=trackingNums,locations=locations)   
-
-@app.route('/tracking/invid/<string:order_id>')
-def tracking_order_id(order_id):
-    order_i = get_order(order_id)
-####Come back to add query for each invid in the tracking number
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT  tracking.invid, tracking.trackingid, tracking.received FROM tracking LEFT OUTER JOIN orders ON tracking.invid=orders.invid WHERE tracking.invid = %s ", (order_id,))
-    locations = cursor.fetchall()                    
-    conn.close()
-    return render_template('tracking/view_tracking.html', locations=locations)   
+    return render_template('tracking/view_tracking.html', locations=locations, trackingNum=trackingNum)   
 
 
 @app.route('/tracking/create', methods=('GET', 'POST'))
@@ -521,8 +516,7 @@ def tracking_create():
     if request.method == 'POST':
         trackingid = request.form['trackingid']
         invid = request.form['invid']
-        received = request.form['received']
-        
+                
          ####Come back to the tags and execute
         
         if not trackingid:
@@ -530,15 +524,14 @@ def tracking_create():
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO tracking (trackingid, invid, received) VALUES (%s, %s, %s)', 
-                         (trackingid, invid, received));
+            cursor.execute('INSERT INTO tracking (trackingid, invid) VALUES (%s, %s)', 
+                         (trackingid, invid));
             conn.commit()
             conn.close()
             return redirect(url_for('view_tracking'))
     return render_template('tracking/create.html')  
        
 
-       
 
 @app.route('/tracking/<string:tracking_id>/edit', methods=('GET', 'POST'))
 def tracking_edit(tracking_id):
@@ -570,3 +563,26 @@ def tracking_delete(tracking_id):
     conn.close()
     flash('"{}" was successfully deleted!'.format(tracking['trackingid']))
     return redirect(url_for('view_tracking'))
+
+@app.route('/tracking/<string:tracking_id>/addto', methods=('GET', 'POST'))
+def tracking_addto(tracking_id):
+    if request.method == 'POST':
+        asinid = request.form['asinid']
+        quantity = request.form['quantity']
+                
+         ####Come back to the tags and execute
+        
+        if not asinid:
+            flash('ASIN is required!')
+        elif not quantity:
+            flash('Quantity is required!')    
+
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+            cursor.execute('INSERT INTO trackingcontents (trackingid,asinid, quantity) VALUES (%s, %s, %s) ', 
+                         (tracking_id, asinid, quantity));
+            conn.commit()
+            conn.close()
+            return redirect(url_for('view_tracking'))
+    return render_template('tracking/addto.html')      
