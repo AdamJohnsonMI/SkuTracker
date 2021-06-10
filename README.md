@@ -26,4 +26,4 @@ Next steps for the project:
 11. Create a walk through video. 
 
 Priorities:
-1. Move view posts to admin panel
+1. 

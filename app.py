@@ -532,6 +532,16 @@ def view_tracking():
     conn.close()
     return render_template('tracking/tracking.html', trackingNums=trackingNums)
 
+@app.route('/tracking/<int:order_id>/trackingList')
+def view_tracking_list(order_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT DISTINCT ON (1) tracking.id, tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOin \
+    trackingcontents ON tracking.trackingid = trackingcontents.trackingid WHERE tracking.invid = %s', (order_id,))
+    trackingNums = cursor.fetchall()
+    conn.close()
+    return render_template('tracking/trackingList.html', trackingNums=trackingNums)
+
 @app.route('/tracking/<string:tracking_id>')  #Being used by viewing tracking number page but could be removed if tweaked
 def tracking(tracking_id):
     trackingNum = get_tracking(tracking_id)
@@ -601,13 +611,14 @@ def tracking_delete(tracking_id):
 def tracking_addto(tracking_id,order_id):
     if request.method == 'POST':
         asinid = request.form['asinid']
-        quantity = request.form['quantity']
-                
-        
+        quantity = request.form['quantity'] 
+        quantity
         if not asinid:
             flash('ASIN is required!')
         elif not quantity:
             flash('Quantity is required!')    
+        elif isinstance(quantity,int):
+            flash('Quantity cannot have letters!')      
 
         else:
             conn = get_db_connection()

@@ -50,7 +50,7 @@
             <span class="badge badge-warning">Add Tracking Number</span></td>
 
         {% else  %}
-          <td><a href="{{ url_for('tracking', tracking_id=order['trackingid']) }}">Tracking numbers</a> <a href="{{ url_for('tracking_create', order_id=order['invid']) }}">
+          <td><a href="{{ url_for('view_tracking_list', order_id=order['invid']) }}">Tracking numbers</a> <a href="{{ url_for('tracking_create', order_id=order['invid']) }}">
             <span class="badge badge-warning">Add Tracking Number</span></td>
         {% endif %}
 
