@@ -228,7 +228,7 @@ def post(post_id):
     return render_template('post.html', post=post)
 
 @app.route('/create', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def create():
     if request.method == 'POST':
         title = request.form['title']
@@ -247,7 +247,7 @@ def create():
     return render_template('create.html')
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def edit(id):
     post = get_post(id)
 
@@ -271,7 +271,7 @@ def edit(id):
     return render_template('edit.html', post=post)
     
 @app.route('/<int:id>/delete', methods=('POST',))
-@login_required
+@admin_required
 def delete(id):
     post = get_post(id)
     conn = get_db_connection()
@@ -313,7 +313,7 @@ def product(product_id):
 
 
 @app.route('/product/create', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def product_create():
     if request.method == 'POST':
         asinid = request.form['asinid']
@@ -338,7 +338,7 @@ def product_create():
        
 
 @app.route('/product/<string:product_id>/edit', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def product_edit(product_id):
     product = get_product(product_id)
 
@@ -362,7 +362,7 @@ def product_edit(product_id):
 
  
 @app.route('/product/<string:product_id>/delete', methods=('POST',))
-@login_required
+@admin_required
 def product_delete(product_id):
     product = get_product(product_id)
     conn = get_db_connection()
@@ -375,7 +375,7 @@ def product_delete(product_id):
 
 
 @app.route('/create_bin', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def create_bin():
     if request.method == 'POST':
         rackid = request.form['rackid']
@@ -406,7 +406,7 @@ def view_bin():
     return render_template('bin/view_bins.html', bins=bins)    
 
 @app.route('/contents/bin_item', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def bin_item():
     if request.method == 'POST':
         locationid= request.form['locationid']
@@ -460,7 +460,7 @@ def contents_id(contents_id):
     return render_template('bin/contents/contents.html', contents=contents)
 
 @app.route('/bin/contents/<int:contents_id>/delete', methods=('POST',))
-@login_required
+@admin_required
 def contents_delete(contents_id):
     contents = get_contents(contents_id)
     conn = get_db_connection()
@@ -472,7 +472,7 @@ def contents_delete(contents_id):
     return redirect(url_for('view_items'))   
 
 @app.route('/bin/contents/<int:contents_id>/edit', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def contents_edit(contents_id):
     contents = get_contents(contents_id)
 
@@ -504,7 +504,7 @@ def bin_id(bin_id):
     return render_template('bin/bin.html', bin=bin)
 
 @app.route('/bin/<int:bin_id>/edit', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def bin_edit(bin_id):
     bin = get_bin(bin_id)
 
@@ -528,7 +528,7 @@ def bin_edit(bin_id):
     return render_template('bin/bin_edit.html', bin=bin)   
 
 @app.route('/bin/<int:bin_id>/delete', methods=('POST',))
-@login_required
+@admin_required
 def bin_delete(bin_id):
     bin = get_bin(bin_id)
     conn = get_db_connection()
@@ -540,7 +540,7 @@ def bin_delete(bin_id):
     return redirect(url_for('view_bin'))   
 
 @app.route('/orders/create', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def create_order():
     if request.method == 'POST':
        
@@ -600,7 +600,7 @@ def view_orders():
     return render_template('orders/view_orders.html', orders=orders) 
 
 @app.route('/orders/<int:order_id>/delete', methods=('POST',))
-@login_required
+@admin_required
 def order_delete(order_id):
     order = get_order(order_id)
     conn = get_db_connection()
@@ -612,7 +612,7 @@ def order_delete(order_id):
     return redirect(url_for('view_orders'))       
 
 @app.route('/orders/<int:order_id>/edit', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def order_edit(order_id):
     order = get_order(order_id)
 
@@ -707,7 +707,7 @@ def tracking(tracking_id):
 
 
 @app.route('/tracking/<int:order_id>/create', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def tracking_create(order_id):
 
     if request.method == 'POST':
@@ -729,7 +729,7 @@ def tracking_create(order_id):
 
 
 @app.route('/tracking/<string:tracking_id>/edit', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def tracking_edit(tracking_id):
     tracking = get_tracking(tracking_id)
 
@@ -750,7 +750,7 @@ def tracking_edit(tracking_id):
 
  
 @app.route('/tracking/<string:tracking_id>/delete', methods=('POST',))
-@login_required
+@admin_required
 def tracking_delete(tracking_id):
     tracking = get_tracking(tracking_id)
     conn = get_db_connection()
@@ -762,7 +762,7 @@ def tracking_delete(tracking_id):
     return redirect(url_for('view_tracking'))
 
 @app.route('/tracking/<string:tracking_id>/addto/<int:order_id>', methods=('GET', 'POST'))
-@login_required
+@admin_required
 def tracking_addto(tracking_id,order_id):
     if request.method == 'POST':
         asinid = request.form['asinid']
