@@ -40,15 +40,17 @@
         {% if order['locationid'] == none %}
         <td>No bin locations</td>
         {% else  %}
-        <td><a href="{{ url_for('product', product_id=order['asinid']) }}">Click for locations</a></td>
+        <td><a href="{{ url_for('product', product_id=order['asinid']) }}">Click for locations</a>{{ order['invid'] }}</a> </td>
         {% endif %}
         
         
         {% if order['trackingid'] == none %}
-          <td>No tracking number</td>
+          <td>No tracking number <a href="{{ url_for('order_edit', order_id=order['invid']) }}">
+            <span class="badge badge-warning">Add Tracking Number</span></td>
 
         {% else  %}
-          <td><a href="{{ url_for('tracking', tracking_id=order['trackingid']) }}">Click for locations</a></td>
+          <td><a href="{{ url_for('tracking', tracking_id=order['trackingid']) }}">Click for locations</a>{{ order['invid'] }}</a> <a href="{{ url_for('order_edit', order_id=order['invid']) }}">
+            <span class="badge badge-warning">Add Tracking Number</span></td>
         {% endif %}
 
 

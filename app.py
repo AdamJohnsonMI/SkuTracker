@@ -5,7 +5,6 @@ import psycopg2.extras
 #from os import path, walk
 import os
 
-
 app = Flask(__name__)
 #Load config information. Will move to .env when needed.
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -23,7 +22,7 @@ def get_post(post_id):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute('SELECT * FROM posts WHERE id = %s', (post_id,))
-    post = cursor.fetchone()                    
+    post = cursor.fetchone()                     
     conn.close()
     if post is None:
         abort(404)
@@ -205,6 +204,7 @@ def product_edit(product_id):
         hazardous = request.form['hazardous']
         oversized = request.form['oversized']
         description = request.form['description']
+        
 
         conn = get_db_connection()
             
@@ -461,6 +461,14 @@ def order_edit(order_id):
     order = get_order(order_id)
 
     if request.method == 'POST':
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        #cursor.execute('SELECT * FROM product WHERE invid = %s', (order_id));
+        #rows = cursor.fetchone()
+        
+
+        
+
         asinid = request.form['asinid']
         buyPrice = request.form['buyPrice']
         sellPrice = request.form['sellPrice']
@@ -470,6 +478,9 @@ def order_edit(order_id):
         orderNumber = request.form['orderNumber']
         fullfillment= request.form['fullfillment']
         buyer = request.form['buyer']
+
+        if buyPrice == '':
+            buyPrice= request.form.getlist('buyPrice')[0]
         
 
         if not asinid:
@@ -485,9 +496,7 @@ def order_edit(order_id):
                 orderNumber = None
             if not quantity:
                 quantity = None
-            conn = get_db_connection()
             
-            cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
             cursor.execute('UPDATE orders SET asinid = %s, buyPrice = %s, sellPrice = %s, store = %s, supplier = %s, quantity = %s, orderNumber = %s, fullfillment = %s, buyer = %s' ' WHERE invid = %s', 
                          (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer, order[0]));
             conn.commit()
@@ -595,3 +604,4 @@ def tracking_addto(tracking_id):
             conn.close()
             return redirect(url_for('view_tracking'))
     return render_template('tracking/addto.html')      
+   

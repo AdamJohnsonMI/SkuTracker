@@ -20,6 +20,16 @@ Next steps for the project:
 5. Add sort feature to pages. 
 6. Actual error messages. 
 7. Search by ASIN to find bin locations. 
+8. Expiration date missing from tracking numbers
+9. Bug in viewing tracking numbers, multiple entries
+
+
+From buyer video-
+1. Add tracking number from order page. Should carry over order. Add tracking number option to admin panel. (finish)
+2. Able to reference orders again when adding products to a tracking number
+3. Tracking number must be able to reference multiple order id's. Maybe serialize tracking numbers to allow multiple tracking numbers
+
+Create a walk through video. 
 
 
 
