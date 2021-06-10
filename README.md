@@ -9,7 +9,8 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-en
 
 ![ExamplePage](https://user-images.githubusercontent.com/66417986/120581300-93912200-c3f8-11eb-9074-d19aa8c2c03f.png)
 
-![InventoryV3](https://user-images.githubusercontent.com/66417986/120850024-e4159600-c544-11eb-8491-0f4959470d9a.jpg)
+![InventoryV4](https://user-images.githubusercontent.com/66417986/121511796-0846fc00-c9b7-11eb-90af-26fab959c0f0.jpg)
+
 
 Next steps for the project:
 
