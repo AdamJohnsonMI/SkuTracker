@@ -45,9 +45,8 @@
                 Orders
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="{{url_for('create_order')}}">Add New Order</a>
+                <a class="dropdown-item" href="{{url_for('create_order')}}">Create An Order</a>
                 <a class="dropdown-item" href="{{url_for('view_orders')}}">View Orders</a>
-                <a class="dropdown-item" href="{{url_for('tracking_create')}}">Add Tracking Number</a>
                 <a class="dropdown-item" href="{{url_for('view_tracking')}}">Manage tracking numbers</a>
               </div>
             </li>
@@ -57,8 +56,8 @@
                   Inventory
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Receiving</a>
-                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Bin item</a>
+                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Warehouse Receiving</a>
+                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Bin items</a>
                   <a class="dropdown-item" href="{{url_for('view_items')}}">View/Manage Items in Warehouse</a>
                   
                 </div>
@@ -73,6 +72,7 @@
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="{{url_for('create')}}">New Post</a>
+                <a class="dropdown-item" href="{{url_for('view_posts')}}">View All Posts</a>
                 <a class="dropdown-item" href="{{url_for('create_bin')}}">Create bins</a>
                 <a class="dropdown-item" href="{{url_for('view_bin')}}">View/Delete bins</a>
                 <a class="dropdown-item" href="{{url_for('product_create')}}">Add New ASIN</a>

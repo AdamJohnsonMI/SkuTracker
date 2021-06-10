@@ -5,6 +5,7 @@
     <table class="table table-dark">
         <thead>
           <tr>
+            <th scope="col">Tracking Serial</th>
             <th scope="col">Tracking Number</th>
             <th scope="col">Order ID</th>
             <th scope="col">Received</th>
@@ -14,20 +15,21 @@
         <tbody>
             {% for trackingNum in trackingNums %}
           <tr>
-            
+            <td>{{trackingNum['id']}}</td>
             <td><a href="{{ url_for('tracking', tracking_id=trackingNum['trackingid']) }}">{{trackingNum['trackingid']}}</a> </td>
             <td>{{trackingNum['invid']}}</td>  
-            <td>{{trackingNum['received']}}<a href="{{url_for('tracking_edit', tracking_id=trackingNum['trackingid'])}}">
-              <span class="badge badge-warning">Mark as received</span></td>
-
+            <td>{{trackingNum['received']}}<a href="{{url_for('tracking_edit', tracking_id=trackingNum['trackingid'])}}"> <span class="badge badge-warning">Mark as received</span></td>
+              
+              
               {% if trackingNum['trackeditem'] == None %}
-                <td>No items attached to tracking number<a href="{{url_for('tracking_addto', tracking_id=trackingNum['trackingid'])}}">
-                  <span class="badge badge-warning">Add items to tracking number</span></td>
-              {% else  %}
-                <td><a href="{{ url_for('tracking', tracking_id=trackingNum['trackingid']) }}">Click for items</a><a href="{{url_for('tracking_addto', tracking_id=trackingNum['trackingid'])}}">
-                  <span class="badge badge-warning">Add items to tracking number</span></td>
-              {% endif %}
+              <td>No items attached to tracking number<a href="{{url_for('tracking_addto', tracking_id=trackingNum['trackingid'], order_id = trackingNum['invid'])}}">
+                <span class="badge badge-warning">Add items to tracking number</span></td>
+            {% else  %}
+              <td><a href="{{ url_for('tracking', tracking_id=trackingNum['trackingid']) }}">Click for items</a><a href="{{url_for('tracking_addto', tracking_id=trackingNum['trackingid'], order_id = trackingNum['invid'])}}">
+                <span class="badge badge-warning">Add items to tracking number</span></td>
+            {% endif %}
             
+
             </tr>
           {% endfor %}
         </tbody>

@@ -38,15 +38,16 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE tracking (
-    TrackingID varchar(60) PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
+    TrackingID varchar(60), 
     invid INTEGER REFERENCES orders,
     received varchar(60)
 );
 
---Can add trackingContents to match tracking to
 CREATE TABLE trackingContents(
     trackeditem SERIAL PRIMARY KEY,
-    TrackingID varchar(60) REFERENCES tracking(TrackingID),
+    TrackingID varchar(60),
+    invid INTEGER,
     ASINid varchar(60) REFERENCES product(ASINid),
     quantity INTEGER
 );
@@ -59,31 +60,9 @@ CREATE TABLE posts (
 );
 
 
-CREATE TABLE login(
+CREATE TABLE login( --Need to fix and add this table
     USER
     password
     role
 
 )
-
-
-
-
---The sections below are onyl for remembering privilege access
-
-
-CREATE USER readonly  WITH ENCRYPTED PASSWORD '(password here)';
-GRANT USAGE ON SCHEMA public to adam;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO adam;
-
-GRANT CONNECT ON DATABASE inventory to adam;
-\c foo
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO adam; --- this grants privileges on new tables generated in new database "foo"
-GRANT USAGE ON SCHEMA public to adam; 
-GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO adam;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO adam;
-
-
-GRANT ALL PRIVILEGES ON DATABASE inventory TO adam;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO adam;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO adam;

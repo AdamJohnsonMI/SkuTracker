@@ -1,22 +1,23 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
 import psycopg2
-import psycopg2.extras
-#from os import path, walk
+import psycopg2.extras #Allows dictionary cursor to be used
+#from os import path, walk ###Original import for os until we needed os.getenv. 
 import os
 
 app = Flask(__name__)
-#Load config information. Will move to .env when needed.
-app.config['TEMPLATES_AUTO_RELOAD'] = True
-SECRET_KEY = os.getenv('SECRET_KEY')
-app.secret_key = SECRET_KEY
+
+app.config['TEMPLATES_AUTO_RELOAD'] = True #Allows templates to be edited without reloading flask
+app.secret_key = os.getenv('SECRET_KEY') #Accesses secret key stored in env file
 
 
 
-def get_db_connection():
-    #AWS database
-    conn = psycopg2.connect(os.getenv('DATABASE_URL'))
+
+def get_db_connection(): #AWS database connection
+    conn = psycopg2.connect(os.getenv('DATABASE_URL')) #URL stored in .env
     return conn
+
+#Some of the following functions are no longer used. 
 
 def get_post(post_id):
     conn = get_db_connection()
@@ -78,6 +79,7 @@ def get_tracking(tracking_id):
         abort(404)
     return tracking
         
+#Begin routes section        
 @app.route('/')
 def index():
     conn = get_db_connection()
@@ -86,6 +88,15 @@ def index():
     posts = cursor.fetchall()
     conn.close()
     return render_template('index.html', posts=posts)
+
+@app.route('/posts')
+def view_posts():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM posts');
+    posts = cursor.fetchall()
+    conn.close()
+    return render_template('posts.html', posts=posts)
 
 @app.route('/<int:post_id>')
 def post(post_id):
@@ -436,10 +447,7 @@ def order_id(order_id):
 def view_orders():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    #Fix missing bins caused by JOIN
-    #cursor.execute('SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.buyer, bin.locationid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid');
     cursor.execute("SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.datePurchased, orders.buyPrice, orders.sellPrice, orders.store, orders.supplier, orders.quantity, orders.orderNumber, orders.fullfillment, orders.description,orders.buyer, bin.locationid, tracking.trackingid FROM orders LEFT OUTER JOIN bin ON orders.asinid = bin.asinid LEFT OUTER JOIN tracking ON orders.invid = tracking.invid");
-    
     
     orders = cursor.fetchall()
     conn.close()
@@ -506,11 +514,19 @@ def order_edit(order_id):
     return render_template('orders/edit.html', order=order) 
 
 
+
+
+
+
+
+
+
+
 @app.route('/tracking')
 def view_tracking():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOin \
+    cursor.execute('SELECT DISTINCT ON (1) tracking.id, tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOin \
     trackingcontents ON tracking.trackingid = trackingcontents.trackingid')
     trackingNums = cursor.fetchall()
     conn.close()
@@ -529,13 +545,12 @@ def tracking(tracking_id):
     return render_template('tracking/view_tracking.html', locations=locations, trackingNum=trackingNum)   
 
 
-@app.route('/tracking/create', methods=('GET', 'POST'))
-def tracking_create():
+@app.route('/tracking/<int:order_id>/create', methods=('GET', 'POST'))
+def tracking_create(order_id):
+
     if request.method == 'POST':
         trackingid = request.form['trackingid']
-        invid = request.form['invid']
-                
-         ####Come back to the tags and execute
+        invid = order_id
         
         if not trackingid:
             flash('Tracking Number is required!')
@@ -582,13 +597,12 @@ def tracking_delete(tracking_id):
     flash('"{}" was successfully deleted!'.format(tracking['trackingid']))
     return redirect(url_for('view_tracking'))
 
-@app.route('/tracking/<string:tracking_id>/addto', methods=('GET', 'POST'))
-def tracking_addto(tracking_id):
+@app.route('/tracking/<string:tracking_id>/addto/<int:order_id>', methods=('GET', 'POST'))
+def tracking_addto(tracking_id,order_id):
     if request.method == 'POST':
         asinid = request.form['asinid']
         quantity = request.form['quantity']
                 
-         ####Come back to the tags and execute
         
         if not asinid:
             flash('ASIN is required!')
@@ -598,8 +612,8 @@ def tracking_addto(tracking_id):
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO trackingcontents (trackingid,asinid, quantity) VALUES (%s, %s, %s) ', 
-                         (tracking_id, asinid, quantity));
+            cursor.execute('INSERT INTO trackingcontents (trackingid,asinid, quantity,invid) VALUES (%s, %s, %s,%s) ', 
+                         (tracking_id, asinid, quantity,order_id));
             conn.commit()
             conn.close()
             return redirect(url_for('view_tracking'))
