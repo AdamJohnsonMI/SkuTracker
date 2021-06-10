@@ -27,7 +27,12 @@
             </div>
             <div>
             
-            <a class="btn btn-outline-light text-light">Login</a>        
+             {% if session.logged_in%}   
+            <a class="btn btn-outline-light text-light" href="{{url_for('logout')}}">Logout</a>
+            {% else %}
+            <a class="btn btn-outline-light text-light" href="{{url_for('register')}}">Register</a>   
+            <a class="btn btn-outline-light text-light" href="{{url_for('login')}}">Login</a>      
+            {% endif %}  
         </div>   
         </div>
         

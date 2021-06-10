@@ -1,15 +1,20 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, session, logging
+import logging
+from functools import wraps
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from passlib.hash import sha256_crypt
 from werkzeug.exceptions import abort
 import psycopg2
 import psycopg2.extras #Allows dictionary cursor to be used
 #from os import path, walk ###Original import for os until we needed os.getenv. 
 import os
 
+
 app = Flask(__name__)
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True #Allows templates to be edited without reloading flask
 app.secret_key = os.getenv('SECRET_KEY') #Accesses secret key stored in env file
-
+logging.basicConfig(level=logging.DEBUG) #Debugger
 
 
 
@@ -79,17 +84,135 @@ def get_tracking(tracking_id):
         abort(404)
     return tracking
         
-#Begin routes section        
+#Begin routes section      
+class RegisterForm(Form):
+    name = StringField('Name',[validators.Length(min=1,max=50)])
+    username = StringField('Username',[validators.Length(min=4, max=25)])
+    email = StringField('Email',[validators.Length(min=6, max=50)])
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message="Passwords do not match")
+    ])
+    confirm = PasswordField('Confirm Passowrd')
+#Check if user is logged in
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash('Unauthorized, Please login', 'danger')
+            return redirect(url_for('login'))
+    return wrap   
+
+def admin_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            if 'admin_role' in session:
+                return f(*args, **kwargs)
+            else:
+                flash('Unauthorized, Please login as an admin p2', 'danger')
+                return redirect(url_for('login'))        
+        else:
+            flash('Unauthorized, Please login as an admin', 'danger')
+            return redirect(url_for('login'))
+    return wrap  
+
+
+
+
+@app.route('/register', methods= ['GET', 'POST'])
+def register():
+    form = RegisterForm(request.form)
+    if request.method == 'POST' and form.validate():
+        name = form.name.data
+        email = form.email.data
+        username = form.username.data
+        password = sha256_crypt.encrypt(str(form.password.data))
+        userRole = 'user'
+        
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+        user = cursor.fetchone()
+        if user == None:
+            cursor.execute("INSERT INTO users(name,email,username,password,userRole) VALUES (%s,%s,%s,%s,%s)", (name,email,username,password,userRole))
+            conn.commit()
+            conn.close()
+
+            flash('You are now registered and can log in', 'success')
+            return redirect(url_for('login'))
+            
+        else:    
+            conn.close()
+            flash("Username already taken")
+            return redirect(url_for('login'))
+
+    return render_template('register.html', form=form)    
+
+#User login
+@app.route('/login', methods= ['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        #Get Form Fields
+        username = request.form['username']
+        password_candidate = request.form['password']
+        
+
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        #Get user by username
+        cursor.execute("SELECT * FROM users WHERE username= %s", [username])
+        result = cursor.fetchone()
+        
+        if result:
+            #Get stored hash
+            #data = cursor.fetchone()
+            password = result['password']
+            userrole = result['userrole']
+            #Compare passwords
+            if sha256_crypt.verify(password_candidate, password):
+                session['logged_in'] = True
+                session['username'] = username
+                if userrole == 'admin':
+                    session['admin_role'] = True
+                 
+
+                flash('You are now logged in', 'success')
+                return redirect(url_for('dashboard'))    ##Change to index?
+            else:
+                flash("Invalid login")
+                return render_template('login.html')        
+            conn.close()
+        else:
+            
+            flash("Username not found")
+            return render_template('login.html')       
+
+    return render_template('login.html')    
+         
+
+@app.route('/logout')
+def logout():
+    flash("You are now logged out", 'success')
+    session.clear()
+    return redirect(url_for('login'))
+
+
+@app.route('/dashboard')
+@login_required
+
+def dashboard():
+    return render_template('dashboard.html')
+
 @app.route('/')
 def index():
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT * FROM posts');
-    posts = cursor.fetchall()
-    conn.close()
-    return render_template('index.html', posts=posts)
+    return redirect(url_for('login'))
 
 @app.route('/posts')
+@login_required
 def view_posts():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -99,11 +222,13 @@ def view_posts():
     return render_template('posts.html', posts=posts)
 
 @app.route('/<int:post_id>')
+@login_required
 def post(post_id):
     post = get_post(post_id)
     return render_template('post.html', post=post)
 
 @app.route('/create', methods=('GET', 'POST'))
+@login_required
 def create():
     if request.method == 'POST':
         title = request.form['title']
@@ -122,6 +247,7 @@ def create():
     return render_template('create.html')
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
+@login_required
 def edit(id):
     post = get_post(id)
 
@@ -145,6 +271,7 @@ def edit(id):
     return render_template('edit.html', post=post)
     
 @app.route('/<int:id>/delete', methods=('POST',))
+@login_required
 def delete(id):
     post = get_post(id)
     conn = get_db_connection()
@@ -156,11 +283,13 @@ def delete(id):
     return redirect(url_for('index'))
 
 @app.route('/about')
+@admin_required
 def about():
     return render_template('about.html')
 
 
 @app.route('/product')
+@login_required
 def view_product():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -171,6 +300,7 @@ def view_product():
     return render_template('product.html', products=products)
 
 @app.route('/product/<string:product_id>')
+@login_required
 def product(product_id):
     product = get_product(product_id)
 
@@ -183,6 +313,7 @@ def product(product_id):
 
 
 @app.route('/product/create', methods=('GET', 'POST'))
+@login_required
 def product_create():
     if request.method == 'POST':
         asinid = request.form['asinid']
@@ -207,6 +338,7 @@ def product_create():
        
 
 @app.route('/product/<string:product_id>/edit', methods=('GET', 'POST'))
+@login_required
 def product_edit(product_id):
     product = get_product(product_id)
 
@@ -230,6 +362,7 @@ def product_edit(product_id):
 
  
 @app.route('/product/<string:product_id>/delete', methods=('POST',))
+@login_required
 def product_delete(product_id):
     product = get_product(product_id)
     conn = get_db_connection()
@@ -242,6 +375,7 @@ def product_delete(product_id):
 
 
 @app.route('/create_bin', methods=('GET', 'POST'))
+@login_required
 def create_bin():
     if request.method == 'POST':
         rackid = request.form['rackid']
@@ -262,6 +396,7 @@ def create_bin():
     return render_template('bin/create_bin.html') 
 
 @app.route('/view_bin')
+@login_required
 def view_bin():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -271,6 +406,7 @@ def view_bin():
     return render_template('bin/view_bins.html', bins=bins)    
 
 @app.route('/contents/bin_item', methods=('GET', 'POST'))
+@login_required
 def bin_item():
     if request.method == 'POST':
         locationid= request.form['locationid']
@@ -308,6 +444,7 @@ def bin_item():
     return render_template('bin/contents/bin_item.html') 
 
 @app.route('/contents/view_items')
+@login_required
 def view_items():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -317,11 +454,13 @@ def view_items():
     return render_template('bin/contents/view_items.html', items=items) 
 
 @app.route('/bin/contents/<int:contents_id>')
+@login_required
 def contents_id(contents_id):
     contents = get_contents(contents_id)
     return render_template('bin/contents/contents.html', contents=contents)
 
 @app.route('/bin/contents/<int:contents_id>/delete', methods=('POST',))
+@login_required
 def contents_delete(contents_id):
     contents = get_contents(contents_id)
     conn = get_db_connection()
@@ -333,6 +472,7 @@ def contents_delete(contents_id):
     return redirect(url_for('view_items'))   
 
 @app.route('/bin/contents/<int:contents_id>/edit', methods=('GET', 'POST'))
+@login_required
 def contents_edit(contents_id):
     contents = get_contents(contents_id)
 
@@ -358,11 +498,13 @@ def contents_edit(contents_id):
     return render_template('bin/contents/contents_edit.html', contents=contents)     
 
 @app.route('/bin/<int:bin_id>')
+@login_required
 def bin_id(bin_id):
     bin = get_bin(bin_id)
     return render_template('bin/bin.html', bin=bin)
 
 @app.route('/bin/<int:bin_id>/edit', methods=('GET', 'POST'))
+@login_required
 def bin_edit(bin_id):
     bin = get_bin(bin_id)
 
@@ -386,6 +528,7 @@ def bin_edit(bin_id):
     return render_template('bin/bin_edit.html', bin=bin)   
 
 @app.route('/bin/<int:bin_id>/delete', methods=('POST',))
+@login_required
 def bin_delete(bin_id):
     bin = get_bin(bin_id)
     conn = get_db_connection()
@@ -397,6 +540,7 @@ def bin_delete(bin_id):
     return redirect(url_for('view_bin'))   
 
 @app.route('/orders/create', methods=('GET', 'POST'))
+@login_required
 def create_order():
     if request.method == 'POST':
        
@@ -439,11 +583,13 @@ def create_order():
     return render_template('orders/create.html') 
 
 @app.route('/orders/<int:order_id>')
+@login_required
 def order_id(order_id):
     order = get_order(order_id)
     return render_template('orders/order.html', order=order)
 
 @app.route('/orders/view_orders')
+@login_required
 def view_orders():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -454,6 +600,7 @@ def view_orders():
     return render_template('orders/view_orders.html', orders=orders) 
 
 @app.route('/orders/<int:order_id>/delete', methods=('POST',))
+@login_required
 def order_delete(order_id):
     order = get_order(order_id)
     conn = get_db_connection()
@@ -465,6 +612,7 @@ def order_delete(order_id):
     return redirect(url_for('view_orders'))       
 
 @app.route('/orders/<int:order_id>/edit', methods=('GET', 'POST'))
+@login_required
 def order_edit(order_id):
     order = get_order(order_id)
 
@@ -523,6 +671,7 @@ def order_edit(order_id):
 
 
 @app.route('/tracking')
+@login_required
 def view_tracking():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -533,6 +682,7 @@ def view_tracking():
     return render_template('tracking/tracking.html', trackingNums=trackingNums)
 
 @app.route('/tracking/<int:order_id>/trackingList')
+@login_required
 def view_tracking_list(order_id):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -543,6 +693,7 @@ def view_tracking_list(order_id):
     return render_template('tracking/trackingList.html', trackingNums=trackingNums)
 
 @app.route('/tracking/<string:tracking_id>')  #Being used by viewing tracking number page but could be removed if tweaked
+@login_required
 def tracking(tracking_id):
     trackingNum = get_tracking(tracking_id)
     
@@ -556,6 +707,7 @@ def tracking(tracking_id):
 
 
 @app.route('/tracking/<int:order_id>/create', methods=('GET', 'POST'))
+@login_required
 def tracking_create(order_id):
 
     if request.method == 'POST':
@@ -577,6 +729,7 @@ def tracking_create(order_id):
 
 
 @app.route('/tracking/<string:tracking_id>/edit', methods=('GET', 'POST'))
+@login_required
 def tracking_edit(tracking_id):
     tracking = get_tracking(tracking_id)
 
@@ -597,6 +750,7 @@ def tracking_edit(tracking_id):
 
  
 @app.route('/tracking/<string:tracking_id>/delete', methods=('POST',))
+@login_required
 def tracking_delete(tracking_id):
     tracking = get_tracking(tracking_id)
     conn = get_db_connection()
@@ -608,6 +762,7 @@ def tracking_delete(tracking_id):
     return redirect(url_for('view_tracking'))
 
 @app.route('/tracking/<string:tracking_id>/addto/<int:order_id>', methods=('GET', 'POST'))
+@login_required
 def tracking_addto(tracking_id,order_id):
     if request.method == 'POST':
         asinid = request.form['asinid']

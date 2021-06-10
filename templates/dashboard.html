@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center" >{% block title %} Welcome to {{session.username}} to SkuTracker {% endblock %}</h1>
+    <h3 class="text-center" style ="padding:20px 0px;"> Select which process you are doing:</h3>
+    
+    <div class="container">
+        <div class="row align-items-start">
+            
+            <div class="col" style="font-size:28px; padding: 0px 30px;">
+              Order Process
+            </div>
+            <div class="col" style="font-size:28px;  ">
+              Warehouse Binning
+            </div>
+            <div class="col" style="font-size:28px; ">
+              Picking
+            </div>
+          </div>
+          <hr style="border-top: 3px double #8c8b8b;">
+        <div class="row align-items-start">
+            
+          <div class="col">
+            <a href="{{url_for('create_order')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create An Order</a>
+          </div>
+          <div class="col">
+            <a href="{{url_for('bin_item')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
+          </div>
+          <div class="col">
+            <a style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create Pick List(DNF)</a>
+          </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col">
+                <a href="{{url_for('view_orders')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Add Tracking Number to Order</a>
+              </div>
+              <div class="col">
+                <a href="{{url_for('bin_item')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Bin Items</a>
+              </div>
+              <div class="col">
+                <a style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Pick Items(DNF)</a>
+              </div>
+        </div>
+        <div class="row align-items-end">
+            <div class="col">
+                <a href="{{url_for('view_tracking')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Add Items to a Tracking Number</a>
+              </div>
+              <div class="col">
+                <a href="{{url_for('view_items')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">View Items in Warehouse</a>
+              </div>
+              <div class="col">
+                <a style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Modify Pick List(DNF)</a>
+              </div>
+        </div>
+      </div>
+    
+{% endblock %}
+

@@ -16,15 +16,15 @@ Next steps for the project:
 
 Back-end
 
-1. Add product picture, hazardous, and oversized to order page. 
-2. Add login/authentication
-3. Forms autofilled with database info to not reset info on submit. Editing currently overwrites fields with an empty string.
-4. Pick option/ship option. Maybe add a temp tab if not all items are shipped or easy re-add option.
-5. Actual error messages instead of a browser unknown error. 
+1. Update functionality for product picture, hazardous, and oversized for searching. (Low Priority)
+2. Add login/authentication (High)
+3. Forms autofilled with database info to not reset info on submit. Editing currently overwrites fields with an empty string. (High)
+4. Pick option/ship option. Maybe add a temp tab if not all items are shipped or easy re-add option. (High)
+5. Actual error messages instead of a browser unknown error. (Med)
 
 Front-end
 1. Adding items to a tracking number should allow multiple items to be added at a time. 
-2. Expiration date is missing from tracking numbers. There is no option to add it. How do I implement. Need the above to implement?
+2. Expiration date is missing when using tracking numbers import. Binning item by tracking number should prompt on each product.
 3. Add a search bar to binned items screen to search by ASIN to find bin locations. 
 4. Add a sort feature to pages. 
 

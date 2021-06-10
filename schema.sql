@@ -60,9 +60,13 @@ CREATE TABLE posts (
 );
 
 
-CREATE TABLE login( --Need to fix and add this table
-    USER
-    password
-    role
-
-)
+CREATE TABLE users( 
+    id SERIAL PRIMARY KEY,
+    name varchar(100),
+    email varchar(100),
+    username varchar(30),
+    userRole varchar(30),
+    password varchar(100),
+    register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    
+);
