@@ -7,50 +7,52 @@
     <div class="form-group">
         <h3>{{order[invid]}}</h3>
     </div>
+
     <div class="form-group">
         <label for="asinid">ASIN</label>
-        <textarea name="asinid" placeholder="Edit ASIN"
-                  class="form-control">{{ request.form['asinid'] }}</textarea>
+        <input type="text" name="asinid" value="{{values['asinid']}}"
+                  class="form-control">{{ request.form['asinid'] }}</input>
     </div>
+
     <div class="form-group">
         <label for="buyPrice">Buy Price</label>
-        <textarea name="buyPrice" placeholder="Edit Buy Price (Do not add $ sign)"
-                  class="form-control">{{ request.form['buyPrice'] }}</textarea>
+        <input type="text" name="buyPrice" value="{{values['buyprice']}}"
+                  class="form-control">{{ request.form['buyPrice'] }}</input>
     </div>
     <div class="form-group">
         <label for="sellPrice">Sell Price</label>
-        <textarea name="sellPrice" placeholder="Edit Suy Price (Do not add $ sign)"
-                  class="form-control">{{ request.form['sellPrice'] }}</textarea>
+        <input type="text" name="sellPrice" value="{{values['sellprice']}}"
+                  class="form-control">{{ request.form['sellPrice'] }}</input>
     </div>
     <div class="form-group">
         <label for="store">Store</label>
-        <textarea name="store" placeholder="Store"
-                  class="form-control">{{ request.form['store'] }}</textarea>
+        <input type="text" name="store" value="{{values['store']}}"
+                  class="form-control">{{ request.form['store'] }}</input>
     </div>
     <div class="form-group">
         <label for="supplier">Supplier</label>
-        <textarea name="supplier" placeholder="Supplier"
-                  class="form-control">{{ request.form['supplier'] }}</textarea>
+        <input type="text" name="supplier" value="{{values['supplier']}}"
+                  class="form-control">{{ request.form['supplier'] }}</input>
     </div>
     <div class="form-group">
         <label for="quantity">Quantity</label>
-        <textarea name="quantity" placeholder="Quantity"
-                  class="form-control">{{ request.form['quantity'] }}</textarea>
+        <input type="text" name="quantity" value="{{values['quantity']}}"
+                  class="form-control">{{ request.form['quantity'] }}</input>
     </div>
     <div class="form-group">
         <label for="orderNumber">Order Number</label>
-        <textarea name="orderNumber" placeholder="Order Number"
-                  class="form-control">{{ request.form['orderNumber'] }}</textarea>
+        <input type="text" name="orderNumber" value="{{values['ordernumber']}}"
+                  class="form-control">{{ request.form['orderNumber'] }}</input>
     </div>
     <div class="form-group">
         <label for="fullfillment">Fullfillment</label>
-        <textarea name="fullfillment" placeholder="Fullfillment"
-                  class="form-control">{{ request.form['fullfillment'] }}</textarea>
+        <input type="text" name="fullfillment" value="{{values['fullfillment']}}"
+                  class="form-control">{{ request.form['fullfillment'] }}</input>
     </div>
     <div class="form-group">
         <label for="buyer">Buyer</label>
-        <textarea name="buyer" placeholder="Buyer"
-                  class="form-control">{{ request.form['buyer'] }}</textarea>
+        <input type="text" name="buyer" value="{{values['buyer']}}"
+                  class="form-control">{{ request.form['buyer'] }}</input>
     </div>
 
     <div class="form-group">

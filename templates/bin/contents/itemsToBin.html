@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Bin Item(s). Listed items need to be binned {% endblock %}</h1>
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">ASIN</th>
+      <th scope="col">Description</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Tracking Number</th>
+      <th scope="col">Bin Item</th>
+      
+
+      
+    </tr>
+  </thead>
+  <tbody>
+      {% for bin in items %}
+    <tr>
+      <td>{{ bin['asinid'] }}</td>
+      <td>{{ bin['description'] }}</td>
+      <td>{{ bin['quantity'] }}</td>
+      <td>{{ bin['trackingid'] }}</td> 
+      <td>
+        
+        <form method="post">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" id="binlocation" placeholder="Bin Location" name="binlocation">
+             <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
+            <button type="submit" class="btn btn-primary mb-2">Submit Location</button>
+          </div>
+          
+          </form>
+
+          
+        
+        <!--<a href="{{url_for('view_items')}}"> <span class="badge badge-primary">Bin Item</span> <label for="inputPassword2" class="sr-only">Bin Location</label>-->
+        </td>
+      </tr>
+      
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -24,21 +24,21 @@
             <a href="{{url_for('create_order')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create An Order</a>
           </div>
           <div class="col">
-            <a href="{{url_for('bin_item')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
+            <a href="{{url_for('receiving')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
           </div>
           <div class="col">
-            <a style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create Pick List(DNF)</a>
+            <a href="{{url_for('view_items')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create Pick List</a>
           </div>
         </div>
         <div class="row align-items-center">
             <div class="col">
-                <a href="{{url_for('view_orders')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Add Tracking Number to Order</a>
+                <a href="{{url_for('view_orders')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">View Orders/Add Tracking Number to Order</a>
               </div>
               <div class="col">
-                <a href="{{url_for('bin_item')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Bin Items</a>
+                <a href="{{url_for('items_to_bin')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Bin Items</a>
               </div>
               <div class="col">
-                <a style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Pick Items(DNF)</a>
+                <a href="{{url_for('items_to_pick')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Pick List</a>
               </div>
         </div>
         <div class="row align-items-end">

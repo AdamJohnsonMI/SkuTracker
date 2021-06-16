@@ -306,7 +306,7 @@ def product(product_id):
 
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate,physicallocation.shelfid, physicallocation.rackid FROM bin JOIN physicallocation ON bin.locationid=physicallocation.locationid WHERE asinid = %s ", (product_id,))
+    cursor.execute("SELECT bin.contentid,bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate,physicallocation.shelfid, physicallocation.rackid, product.description FROM bin JOIN physicallocation ON bin.locationid=physicallocation.locationid JOIN product ON bin.asinid = product.asinid WHERE bin.asinid = %s ", (product_id,))
     locations = cursor.fetchall()                    
     conn.close()
     return render_template('product/view_product.html', product=product, locations=locations)   
@@ -405,52 +405,219 @@ def view_bin():
     conn.close()
     return render_template('bin/view_bins.html', bins=bins)    
 
-@app.route('/contents/bin_item', methods=('GET', 'POST'))
+@app.route('/contents/receiving', methods=('GET', 'POST'))
 @admin_required
-def bin_item():
+def receiving():
+    received = "Yes"
     if request.method == 'POST':
-        locationid= request.form['locationid']
         asinid = request.form['asinid']
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
         trackingid = request.form['trackingid']
+        tobebinned = 1
 
         
-        if not locationid:
-            flash('Location ID is required!')
-        elif not asinid and not trackingid:
+        if not asinid and not trackingid:
             flash('ASIN or tracking number is required!')   
         elif not trackingid and not quantity:
             flash('Quantity is required!')
         else:
-            if trackingid:
+            if trackingid:   ##If binning item(s) with a tracking number
                 conn = get_db_connection()
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
                 cursor.execute('SELECT * FROM trackingcontents WHERE trackingid = %s',  (trackingid,));
                 items = cursor.fetchall()
                 for item in items:
-                    cursor.execute('INSERT INTO bin (locationid,asinid,quantity) VALUES (%s,%s,%s)', (locationid, item[2],item[3]));
+                    cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,store,tobebinned) VALUES (%s,%s,%s,%s,%s)', ( item[2],item[3],trackingid,item['store'],tobebinned));
+                cursor.execute('UPDATE tracking SET received= %s  WHERE trackingID = %s', (received,trackingid,))    
                 conn.commit()
                 conn.close()
                 return redirect(url_for('view_items'))
-            else:
+            else:   #If binning an item without a tracking number
                 conn = get_db_connection()
                 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-                cursor.execute('INSERT INTO bin (locationid, asinid, quantity,  expirationdate) VALUES (%s, %s, %s, %s)', 
-                            (locationid, asinid, quantity, expirationdate));
+                cursor.execute('INSERT INTO bin (asinid, quantity, expirationdate,tobebinned) VALUES ( %s, %s, %s,%s)', 
+                            (asinid, quantity, expirationdate,tobebinned));
                 conn.commit()
                 conn.close()
-                return redirect(url_for('view_items'))
-    return render_template('bin/contents/bin_item.html') 
+                flash("ASIN: " + asinid + " of quantity: " + quantity + " added to binning list")
+                return redirect(url_for('receiving'))
+    return render_template('bin/contents/receiving.html') 
 
-@app.route('/contents/view_items')
-@login_required
+@app.route('/contents/itemsToBin', methods=('GET', 'POST'))
+@admin_required
+def items_to_bin():
+    tobebinned = 1
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.asinid, bin.quantity, bin.trackingid, product.description FROM bin LEFT OUTER JOIN product ON bin.asinid = product.asinid \
+        WHERE tobebinned = %s', (tobebinned,));
+    items = cursor.fetchall()
+    
+
+    if request.method == 'POST':
+        tobebinned = 2
+        binlocation = request.form['binlocation']
+        contentid = request.form['contentid']
+            
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute('SELECT locationid FROM bin WHERE locationid = %s', (binlocation,))
+        results = cursor.fetchone()
+        if results:
+            cursor.execute('UPDATE bin SET (locationid, tobebinned ) = (%s,%s) WHERE contentid = %s', (binlocation, tobebinned, contentid,))
+        else:
+            flash("That bin does not exist!")
+            return redirect(url_for('items_to_bin'))   
+
+        conn.commit()
+        conn.close()
+        flash("Item binned into location " + binlocation)
+        return redirect(url_for('items_to_bin'))
+    conn.close()
+
+    return render_template('bin/contents/itemsToBin.html', items=items) 
+
+@app.route('/bin/contents/<int:contents_id>/missing', methods=('GET', 'POST'))
+@admin_required
+def missing(contents_id):
+    if request.method == 'POST':
+        damaged = request.form['damaged']
+        missing = request.form['missing']
+
+        if damaged == '':
+            damaged=0
+        elif missing == '':
+            missing=0
+        elif damaged == '' and missing =='':
+            flash('No input was given')   
+            return redirect(url_for('items_to_pick'))   
+
+        flash("Damaged: " + str(damaged) + ' Missing: ' + str(missing))   
+
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute('UPDATE bin SET (damaged,missing) = (%s,%s) WHERE contentid=%s', (damaged,missing,contents_id,))
+        conn.commit()
+        conn.close()
+        flash("Item information has been sent to admin panel")
+
+
+
+        return redirect(url_for('items_to_pick')) 
+
+
+
+    return render_template('bin/contents/missing.html') 
+
+
+@app.route('/contents/itemsToPick', methods=('GET', 'POST'))
+@admin_required
+def items_to_pick():
+    tobepicked = 1
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.asinid, bin.quantity, bin.trackingid, bin.locationid, bin.pickquantity, product.description FROM bin LEFT OUTER JOIN product ON bin.asinid = product.asinid \
+        WHERE tobepicked = %s', (tobepicked,));
+    items = cursor.fetchall()
+
+    if request.method == 'POST':
+        tobepicked= 0
+        pick_quantity = request.form['quantity']
+        contentid = request.form['contentid']
+        db_quantity = 0
+        for item in items:
+            
+            if int(contentid) == int(item['contentid']) :
+                db_quantity = item['quantity']
+                
+        
+        if pick_quantity == '':
+            flash("Cannot pick 0!")
+            conn.close()
+            return redirect(url_for('items_to_pick'))     
+        elif int(pick_quantity) <=0:
+            flash("Cannot pick 0 or less!")
+            conn.close()
+            return redirect(url_for('items_to_pick')) 
+        elif int(pick_quantity) > db_quantity:
+            flash("Cannot pick more than what's in the bin!")
+            
+            conn.close()
+            return redirect(url_for('items_to_pick'))
+               
+        elif int(pick_quantity) < db_quantity:
+            flash("Not all items were picked. Were there any damaged or missing items?")
+            flash("Enter")
+            
+            conn.close()
+            return redirect(url_for('missing', contents_id = item['contentid']))       
+         
+        newQuantity = (db_quantity - int(pick_quantity))
+
+        if newQuantity > 0:
+            cursor.execute('UPDATE bin SET (pickquantity, tobepicked, quantity ) = (%s,%s,%s) WHERE contentid = %s', (0, tobepicked, newQuantity, contentid,))
+            conn.commit()
+            flash("Partial Items picked from pick list: " + pick_quantity + " where contentid is: " + contentid)   
+            conn.close()
+            return redirect(url_for('items_to_pick'))
+        elif newQuantity == 0:
+            cursor.execute('DELETE FROM bin WHERE contentid = %s', (contentid,))    
+            conn.commit()
+            flash("All items from the content id were removed from bin with a pick quantity of: " + pick_quantity + " where contentid is: " + contentid)   
+            conn.close()
+            return redirect(url_for('items_to_pick'))
+        else:
+            flash("ERROR! Issue with updating quantity") 
+            conn.close()
+            return redirect(url_for('items_to_pick'))
+
+
+    return render_template('bin/contents/itemstopick.html', items=items) 
+
+
+@app.route('/contents/view_items', methods=('GET', 'POST') )
+@admin_required
 def view_items():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT * FROM bin');
+    cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.locationid, bin.asinid, bin.quantity,bin.datereceived, bin.expirationdate, bin.trackingid, bin.store, bin.tobepicked, product.description FROM bin LEFT OUTER JOIN product ON bin.asinid = product.asinid ');
     items = cursor.fetchall()
+    
+    if request.method == 'POST':
+        tobepicked = 1
+        quantity = request.form['quantity']
+        contentid = request.form['contentid']
+        
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute('SELECT quantity FROM bin WHERE contentid = %s', (contentid,))
+        results = cursor.fetchone()
+
+
+
+        if quantity == '':
+            flash("Cannot pick 0!")
+            conn.close()
+            return redirect(url_for('view_items'))     
+        elif int(quantity) <=0:
+            flash("Cannot pick 0 or less!")
+            conn.close()
+            return redirect(url_for('view_items'))  
+        elif int(quantity) > results['quantity']:
+            flash("Cannot pick more than what's in the bin!")
+            conn.close()
+            return redirect(url_for('view_items'))   
+        
+        cursor.execute('UPDATE bin SET (pickquantity, tobepicked ) = (%s,%s) WHERE contentid = %s', (quantity, tobepicked, contentid,))
+        conn.commit()
+        flash("Item added to picklist with quantity: " + quantity + " where contentid is: " + contentid)
+    
     conn.close()
+    
+    
+
+
     return render_template('bin/contents/view_items.html', items=items) 
 
 @app.route('/bin/contents/<int:contents_id>')
@@ -615,16 +782,12 @@ def order_delete(order_id):
 @admin_required
 def order_edit(order_id):
     order = get_order(order_id)
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM orders WHERE invid = %s', (order_id,));
+    values = cursor.fetchone()
 
     if request.method == 'POST':
-        conn = get_db_connection()
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        #cursor.execute('SELECT * FROM product WHERE invid = %s', (order_id));
-        #rows = cursor.fetchone()
-        
-
-        
-
         asinid = request.form['asinid']
         buyPrice = request.form['buyPrice']
         sellPrice = request.form['sellPrice']
@@ -659,7 +822,7 @@ def order_edit(order_id):
             conn.close()
             return redirect(url_for('view_orders')) 
 
-    return render_template('orders/edit.html', order=order) 
+    return render_template('orders/edit.html', order=order, values=values) 
 
 
 
@@ -675,7 +838,7 @@ def order_edit(order_id):
 def view_tracking():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT DISTINCT ON (1) tracking.id, tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOin \
+    cursor.execute('SELECT DISTINCT ON (1) tracking.id, tracking.trackingid, tracking.invid, tracking.received, tracking.ordernumber, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOIN \
     trackingcontents ON tracking.trackingid = trackingcontents.trackingid')
     trackingNums = cursor.fetchall()
     conn.close()
@@ -686,7 +849,7 @@ def view_tracking():
 def view_tracking_list(order_id):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT DISTINCT ON (1) tracking.id, tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOin \
+    cursor.execute('SELECT DISTINCT ON (1) tracking.id, tracking.trackingid, tracking.invid, tracking.received, trackingcontents.trackeditem,trackingcontents.asinid, trackingcontents.quantity FROM tracking LEFT OUTER JOIN \
     trackingcontents ON tracking.trackingid = trackingcontents.trackingid WHERE tracking.invid = %s', (order_id,))
     trackingNums = cursor.fetchall()
     conn.close()
@@ -700,7 +863,9 @@ def tracking(tracking_id):
                         #Need to add the tracking contents of each tracking number
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT * FROM trackingcontents WHERE trackingid = %s ", (tracking_id,))
+    cursor.execute("SELECT DISTINCT ON (1) trackingcontents.invid, trackingcontents.asinid, trackingcontents.quantity, tracking.ordernumber,product.description FROM trackingcontents LEFT OUTER JOIN tracking ON tracking.trackingid = trackingcontents.trackingid \
+    LEFT OUTER JOIN product ON product.asinid = trackingcontents.asinid WHERE tracking.trackingid = %s  ", (tracking_id,))
+    #cursor.execute("SELECT DISTINCT ON (1) trackingcontents.invid, trackingcontents.asinid, trackingcontents.quantity, tracking.ordernumber FROM trackingcontents LEFT OUTER JOIN tracking ON tracking.trackingid = trackingcontents.trackingid WHERE tracking.trackingid = %s ", (tracking_id,))
     locations = cursor.fetchall()                    
     conn.close()
     return render_template('tracking/view_tracking.html', locations=locations, trackingNum=trackingNum)   
@@ -719,34 +884,43 @@ def tracking_create(order_id):
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO tracking (trackingid, invid) VALUES (%s, %s)', 
-                         (trackingid, invid));
+            cursor.execute('SELECT orderNumber FROM orders WHERE invid = %s', (order_id,))
+            result = cursor.fetchone()
+            cursor.execute('INSERT INTO tracking (trackingid, invid, ordernumber) VALUES (%s, %s,%s)', 
+                         (trackingid, invid, result['ordernumber'],));
             conn.commit()
             conn.close()
-            return redirect(url_for('view_tracking'))
+            flash("Entry added! Add more or return to view orders page")
+            return redirect(url_for('tracking_create', order_id=invid)) 
     return render_template('tracking/create.html')  
-       
 
+       
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM orders WHERE invid = %s', (order_id,));
+    values = cursor.fetchone()
 
 @app.route('/tracking/<string:tracking_id>/edit', methods=('GET', 'POST'))
 @admin_required
 def tracking_edit(tracking_id):
     tracking = get_tracking(tracking_id)
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM tracking WHERE trackingid = %s', (tracking_id,));
+    values = cursor.fetchone()
 
     if request.method == 'POST':
-        
+        trackingid = request.form['trackingid']
+        ordernumber = request.form['ordernumber']
         received = request.form['received']
 
-        conn = get_db_connection()
-            
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute('UPDATE tracking SET received = %s WHERE trackingid = %s', 
-                         (received, tracking_id,));
+        cursor.execute('UPDATE tracking SET (trackingid, ordernumber, received) = (%s,%s,%s) WHERE trackingid = %s', 
+                         (trackingid, ordernumber, received, tracking_id,));
         conn.commit()
         conn.close()
         return redirect(url_for('view_tracking')) 
 
-    return render_template('tracking/edit.html', tracking=tracking)        
+    return render_template('tracking/edit.html', tracking=tracking,values=values)        
 
  
 @app.route('/tracking/<string:tracking_id>/delete', methods=('POST',))
@@ -767,7 +941,7 @@ def tracking_addto(tracking_id,order_id):
     if request.method == 'POST':
         asinid = request.form['asinid']
         quantity = request.form['quantity'] 
-        quantity
+        
         if not asinid:
             flash('ASIN is required!')
         elif not quantity:
@@ -778,8 +952,10 @@ def tracking_addto(tracking_id,order_id):
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO trackingcontents (trackingid,asinid, quantity,invid) VALUES (%s, %s, %s,%s) ', 
-                         (tracking_id, asinid, quantity,order_id));
+            cursor.execute('SELECT store FROM orders WHERE invid =%s', (order_id,))
+            result = cursor.fetchone()
+            cursor.execute('INSERT INTO trackingcontents (trackingid,asinid, quantity,invid,store) VALUES (%s, %s, %s,%s,%s) ', 
+                         (tracking_id, asinid, quantity,order_id,result['store']));
             conn.commit()
             conn.close()
             return redirect(url_for('view_tracking'))

@@ -18,7 +18,14 @@ CREATE TABLE bin (
     ASINid varchar(60)REFERENCES product(ASINid),
     quantity INTEGER,
     dateReceived TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    expirationDate varchar(60)
+    expirationDate varchar(60),
+    trackingid varchar(60),
+    store varchar(60),
+    tobebinned INTEGER,
+    tobepicked INTEGER,
+    pickquantity INTEGER,
+    damaged INTEGER,
+    missing INTEGER
 );
 
 CREATE TABLE orders (
@@ -41,7 +48,8 @@ CREATE TABLE tracking (
     id SERIAL PRIMARY KEY,
     TrackingID varchar(60), 
     invid INTEGER REFERENCES orders,
-    received varchar(60)
+    received varchar(60),
+    ordernumber varchar(60)
 );
 
 CREATE TABLE trackingContents(
@@ -49,7 +57,10 @@ CREATE TABLE trackingContents(
     TrackingID varchar(60),
     invid INTEGER,
     ASINid varchar(60) REFERENCES product(ASINid),
-    quantity INTEGER
+    quantity INTEGER,
+    store varchar(60)
+   
+
 );
 
 CREATE TABLE posts (

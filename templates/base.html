@@ -18,7 +18,7 @@
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <div class= "btn-group">
-            <a href="{{url_for('index')}}"class="navbar-brand" href="#">
+            <a href="{{url_for('dashboard')}}"class="navbar-brand" href="#">
                 <img src="/static/sku.jpg" alt="sku" width="30" height="30" class="d-inline-block align-text-top">
                 SkuTracker
             </a>
@@ -39,7 +39,7 @@
     </nav>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-        <a class="navbar-brand" href="{{url_for('index')}}">Dashboard</a>
+        <a class="navbar-brand" href="{{url_for('dashboard')}}">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -61,8 +61,8 @@
                   Inventory
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Warehouse Receiving</a>
-                  <a class="dropdown-item" href="{{url_for('bin_item')}}">Bin items</a>
+                  <a class="dropdown-item" href="{{url_for('receiving')}}">Warehouse Receiving</a>
+                  <a class="dropdown-item" href="{{url_for('items_to_bin')}}">Bin items</a>
                   <a class="dropdown-item" href="{{url_for('view_items')}}">View/Manage Items in Warehouse</a>
                   
                 </div>

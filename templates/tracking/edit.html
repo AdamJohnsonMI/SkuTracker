@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} Edit Tracking Number: "{{ tracking['trackingid'] }}" {% endblock %}</h1>
+<h1>{% block title %} Edit Tracking Serial: {{tracking['id']}} {% endblock %}</h1>
 
 <form method="post">
-    
+
+    <div class="form-group">
+        <label for="trackingid">Tracking Number?</label>
+        <input type="text" name="trackingid" value="{{values['trackingid']}}"
+                  class="form-control">{{ request.form['trackingid'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="ordernumber">Order Number?</label>
+        <input type="text" name="ordernumber" value="{{values['ordernumber']}}"
+                  class="form-control">{{ request.form['ordernumber'] }}</input>
+    </div>
     <div class="form-group">
         <label for="received">Received?</label>
-        <textarea name="received" placeholder="Received yet? Yes/No"
-                  class="form-control">{{ request.form['received'] }}</textarea>
+        <input type="text" name="received" value="{{values['received']}}"
+                  class="form-control">{{ request.form['received'] }}</input>
     </div>
     
     <div class="form-group">

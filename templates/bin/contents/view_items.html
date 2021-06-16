@@ -6,11 +6,16 @@
     <thead>
       <tr>
         <th scope="col">contentID</th>
-        <th scope="col">locationid</th>
-        <th scope="col">asinid</th>
-        <th scope="col">quantity</th>
-        <th scope="col">datereceived</th>
-        <th scope="col">expirationdate</th>
+        <th scope="col">Location</th>
+        <th scope="col">ASIN</th>
+        <th scope="col">Description</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Date Received</th>
+        <th scope="col">Expiration Date</th>
+        <th scope="col">Tracking Number</th>
+        <th scope="col">Store</th>
+        <th scope="col">On Pick List?</th>
+        <th scope="col">Add to Pick List</th>
 
         
       </tr>
@@ -22,9 +27,26 @@
             <span class="badge badge-warning">Edit/Delete</span></td>
         <td>{{ bin['locationid'] }}</td>
         <td>{{ bin['asinid'] }}</td>
+        <td>{{ bin['description'] }}</td>
         <td>{{ bin['quantity'] }}</td>
         <td>{{ bin['datereceived'] }}</td>
         <td>{{ bin['expirationdate'] }}</td>
+        <td>{{ bin['trackingid'] }}</td>
+        <td>{{ bin['store'] }}</td>
+
+        {% if bin['tobepicked'] == 1 %}
+        <td>On Pick List</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+        <td><form method="post">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" id="quantity" placeholder="Quantity to Pick" name="quantity">
+             <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
+            <button type="submit" class="btn btn-primary mb-2">Confirm Pick Request</button>
+          </div>
+          
+          </form></td>
         
         </tr>
       {% endfor %}

@@ -4,10 +4,12 @@
 <table class="table table-dark">
     <thead>
         <tr>
+          <th scope="col">Content ID</th>
             <th scope="col">Location ID</th>
             <th scope="col">Shelf ID</th>
             <th scope="col">Rack ID</th>
             <th scope="col">ASIN</th>
+            <th scope="col">Description</th>
             <th scope="col">Quantity</th>
             <th scope="col">Date Received</th>
             <th scope="col">expirationdate</th>
@@ -17,10 +19,12 @@
     <tbody>
         {% for location in locations %}
       <tr>
+        <td>{{ location['contentid'] }}</td>
         <td>{{ location['locationid'] }}</td>
         <td>{{ location['shelfid'] }} </td>
         <td>{{ location['rackid'] }}</td>
         <td>{{ location['asinid'] }}</td>
+        <td>{{ location['description'] }}</td>
         <td>{{ location['quantity'] }}</td>
         <td>{{ location['datereceived'] }}</td>
         <td>{{ location['expirationdate'] }}</td>
