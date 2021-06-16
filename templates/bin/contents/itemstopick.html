@@ -30,16 +30,18 @@
         <td>{{ bin['pickquantity'] }}</td>
         <td> 
         
-        <form method="post" name ="form1" id="myForm">
+        <form method="post">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="text" class="form-control" id="quantity" placeholder="Quantity Picked" name="quantity">
-                <input type="hidden" id="hiddenqty"  value="{{bin['quantity']}}"> 
-                <input type="hidden" id="hiddendata"  value="{{bin['contentid']}}">
-                <input type="hidden" id="damaged" name="damaged" value="{{bin['damaged']}}">  
-                <button type="submit" class="btn btn-primary mb-2" onClick="return checkform();" >Confirm Pick</button>
+                 <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
+                <button type="submit" class="btn btn-primary mb-2">Confirm Pick</button>
               </div>
           
-          </form>    
+          </form>
+
+          
+        
+        <!--<a href="{{url_for('view_items')}}"> <span class="badge badge-primary">Bin Item</span> <label for="inputPassword2" class="sr-only">Bin Location</label>-->
         </td>
       </tr>
       
@@ -47,29 +49,4 @@
   </tbody>
 </table>
 
-
-<script>
-    function checkform(){
-    var form1 = document.getElementById('myForm');
-    var userqty = parseInt(form1.quantity.value)
-    var dbqty = parseInt(form1.hiddenqty.value)
-    var damaged = 0
-    var missing = 0
-    alert(damaged)
-    if(userqty < (dbqty + damaged + missing))
-    {
-        alert("Quantity input is less than quantity in bin. Is there missing/damaged product?");
-        damaged = prompt("Enter Damaged Quantity");
-        missing = prompt("Enter Missing Quantity")
-        document.getElementById("damaged").value = damaged; 
-        
-        return false;
-    }
-    return true;
-}
-    
-    </script>
-
 {% endblock %}
-
-
