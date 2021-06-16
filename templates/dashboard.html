@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="text-center" >{% block title %} Welcome to {{session.username}} to SkuTracker {% endblock %}</h1>
+    <h1 class="text-center" >{% block title %} Welcome {{session.username}} to SkuTracker {% endblock %}</h1>
     <h3 class="text-center" style ="padding:20px 0px;"> Select which process you are doing:</h3>
     
-    <div class="container">
+    <div class="container-fluid">
         <div class="row align-items-start">
             
             <div class="col" style="font-size:28px; padding: 0px 30px;">

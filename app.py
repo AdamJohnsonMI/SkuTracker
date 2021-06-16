@@ -112,7 +112,7 @@ def admin_required(f):
             if 'admin_role' in session:
                 return f(*args, **kwargs)
             else:
-                flash('Unauthorized, Please login as an admin p2', 'danger')
+                flash('Unauthorized, Please login as an admin', 'danger')
                 return redirect(url_for('login'))        
         else:
             flash('Unauthorized, Please login as an admin', 'danger')

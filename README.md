@@ -40,8 +40,8 @@ Priority
 4. **DONE** Tracking number and store attached to products in bin until picked. Also shown in view_items page
 5. **DONE** Add order number column to /tracking and /tracking/<trackingid>. 
 6. **DONE** Add product description to /tracking/trackingid
-7. **DONE**Bin item list should just be a list of items to bin. ""Could add columns for toBeBinned and toBePicked""
-8. Ability to sort the columns
-9.  Picklist (column in orders showing if item is on picklist)
+7. **DONE** Bin item list should just be a list of items to bin. ""Could add columns for toBeBinned and toBePicked""
+8. **DONE** Ability to sort the columns
+9.  Picklist (column in orders showing if item is on picklist) **Clarify Direction On This. Still Needed?**
 10. **DONE**Picklist add items to a picklist table and picker should see list with a pick icon with quantity pulled
 11. Picklist- Picker can flag missing items under pick screen with quantity missing or add to damaged screen. 
