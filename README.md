@@ -3,14 +3,11 @@
 Testing backend server deployment
 
 
-SkuTracker, AKA InventoryManagement, is an inventory management app that allows users to track their inventory. 
+SkuTracker, AKA InventoryManagement, is an inventory management app that allows users to track their inventory from submitting their ordered products, binning items in warehouse with the tracking number from the box into bin locations, creating pick lists, and user access control.
 
 The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-end was created with Python, Flask, and PostgreSQL as the database. 
 
 ![image](https://user-images.githubusercontent.com/66417986/122397562-1365d300-cf47-11eb-95a5-fe6b26e56224.png)
-
-![InventoryV4](https://user-images.githubusercontent.com/66417986/121511796-0846fc00-c9b7-11eb-90af-26fab959c0f0.jpg)
-
 
 Next steps for the project:
 
@@ -24,8 +21,8 @@ Misc.
 1. Create a walk through video
 
 Priority
-1.  Picklist (column in orders showing if item is on picklist) **Clarify Direction On This. Still Needed?**
-2. Picklist- Picker can flag missing items under pick screen with quantity missing or add to damaged screen. 
-3. Improve Front end visual
+1. Picklist (column in orders showing if item is on picklist) **Clarify with client if still needed under current organization**
+2. Picklist- Picker can flag missing items under pick screen with quantity missing or add to damaged screen. **Feature in progress** 
+3. Improve Front end visual appeal and structure.
 4. Connect to Amazon API to automatically get ASIN info
 
