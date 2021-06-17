@@ -15,7 +15,7 @@ Back-end
 1. Update functionality for product picture, hazardous, and oversized for searching. (Low Priority)
 
 Front-end 
-2. Expiration date is missing when using tracking numbers import. Binning item by tracking number should prompt on each product.
+1. Expiration date is missing when using tracking numbers import. Binning item by tracking number should prompt on each product.
 
 Misc.
 1. Create a walk through video
