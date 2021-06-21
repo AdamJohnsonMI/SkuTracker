@@ -411,7 +411,7 @@ def receiving_tracking(trackingid):
 def start_receiving():
     if request.method == 'POST':
         trackingid = request.form['trackingid']
-        if trackingid == None:
+        if trackingid != None:
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
         else:
             return redirect(url_for('receiving'))

@@ -3,7 +3,7 @@
 {% block content %}
 
 
-
+<h1 class="text-center">List of Missing Inventory</h1>
 
 <div class="container-fluid" >  
   <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true">
@@ -14,6 +14,7 @@
         <th data-sortable="true" scope="col">Description</th>
         <th data-sortable="true" scope="col">Damaged</th>
         <th data-sortable="true" scope="col">Missing</th>
+        <th data-sortable="true" scope="col">User</th>
         
         
         
@@ -27,8 +28,9 @@
         <td>{{result['description'] }} </td>
         <td>{{result['damaged'] }} </td>
         <td>{{result['missing']}}</td>
+        <td>{{result['user']}}Currently Adding Feature</td>
         
-
+        
 
         </tr>
 

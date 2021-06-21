@@ -25,7 +25,8 @@ CREATE TABLE bin (
     tobepicked INTEGER,
     pickquantity INTEGER,
     damaged INTEGER,
-    missing INTEGER
+    missing INTEGER,
+    username varchar(60)
 );
 
 CREATE TABLE orders (
