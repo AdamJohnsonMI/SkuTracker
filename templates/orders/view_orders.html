@@ -11,8 +11,8 @@
       <tr>
         <th data-sortable="true" scope="col">Edit</th>
         <th data-sortable="true" scope="col">Order id</th>
-        <th data-sortable="true" scope="col">ASIN</th>
         <th data-sortable="true" scope="col">Description</th>
+        <th data-sortable="true" scope="col">ASIN</th>
         <th data-sortable="true" scope="col">Buy Price</th>
         <th data-sortable="true" scope="col">Sell Price</th>
         <th data-sortable="true" scope="col">Store</th>
@@ -33,8 +33,8 @@
         <td><a href="{{ url_for('order_edit', order_id=order['invid']) }}">
           <span class="badge badge-warning">Edit/Delete</span></td>
         <td>{{order['invid'] }} </td>
-        <td>{{ order['asinid'] }}</td>
         <td>{{ order['description']}}</td>
+        <td>{{ order['asinid'] }}</td>
         <td>{{ order['buyprice'] }}</td>
         <td>{{ order['sellprice'] }}</td>
         <td>{{ order['store'] }}</td>

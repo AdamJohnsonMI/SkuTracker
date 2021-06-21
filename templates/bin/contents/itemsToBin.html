@@ -6,6 +6,7 @@
 <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="false">
   <thead>
     <tr>
+      <th data-sortable="true" scope="col">Content ID</th>
       <th data-sortable="true" scope="col">ASIN</th>
       <th data-sortable="true" scope="col">Description</th>
       <th data-sortable="true" scope="col">Quantity</th>
@@ -19,6 +20,7 @@
   <tbody>
       {% for bin in items %}
     <tr>
+      <td>{{ bin['contentid'] }}</td>
       <td>{{ bin['asinid'] }}</td>
       <td>{{ bin['description'] }}</td>
       <td>{{ bin['quantity'] }}</td>

@@ -6,24 +6,19 @@
 <form method="POST">
     
     <div class="form-group">
-        <label for="trackingid">Tracking Number</label>
-        <textarea name="trackingid" placeholder="Enter Tracking Number"
-                  class="form-control">{{ request.form['trackingid'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="asinid">ASIN (Leave blank if using tracking number)</label>
+        <label for="asinid">ASIN</label>
         <textarea name="asinid" placeholder="Enter ASIN"
                   class="form-control">{{ request.form['asinid'] }}</textarea>
     </div>
     
     <div class="form-group">
-        <label for="quantity">Quantity(Leave blank if using tracking number)</label>
+        <label for="quantity">Quantity</label>
         <textarea name="quantity" placeholder="Enter Quantity"
                   class="form-control">{{ request.form['quantity'] }}</textarea>
     </div>
     
     <div class="form-group">
-        <label for="expirationdate">Expiration Date(Leave blank if using tracking number)</label>
+        <label for="expirationdate">Expiration Date</label>
         <textarea name="expirationdate" placeholder="Enter expirationdate xx/xx/xx or leave empty if not applicable"
                   class="form-control">{{ request.form['expirationdate'] }}</textarea>
     </div>
@@ -31,4 +26,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+
+
+
 {% endblock %}

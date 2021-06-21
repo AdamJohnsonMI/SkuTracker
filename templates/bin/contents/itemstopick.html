@@ -14,15 +14,16 @@
       <th scope="col">Quantity</th>
       <th scope="col">Quantity to Pick</th>
       <th scope="col">Bin Item</th>
-      
-
-      
     </tr>
   </thead>
   <tbody>
       {% for bin in items %}
     <tr>
-        <td>{{ bin['contentid'] }}</td>
+      <td>{{ bin['contentid'] }} <form action="{{ url_for('remove_pick', contents_id=bin['contentid']) }}" method="POST">
+        <input type="submit" value="Cancel Pick"
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('Are you sure you want to delete this pick?')">
+      </form></td>
         <td>{{ bin['locationid'] }}</td>
         <td>{{ bin['asinid'] }}</td>
         <td>{{ bin['description'] }}</td>
@@ -35,18 +36,13 @@
                 <input type="text" class="form-control" id="quantity" placeholder="Quantity Picked" name="quantity">
                  <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
                 <button type="submit" class="btn btn-primary mb-2">Confirm Pick</button>
-              </div>
-          
+              </div>   
           </form>
-
-          
-        
-        <!--<a href="{{url_for('view_items')}}"> <span class="badge badge-primary">Bin Item</span> <label for="inputPassword2" class="sr-only">Bin Location</label>-->
         </td>
       </tr>
-      
     {% endfor %}
   </tbody>
 </table>
 
 {% endblock %}
+
