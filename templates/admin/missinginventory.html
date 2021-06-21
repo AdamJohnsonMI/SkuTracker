@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<div class="container-fluid" >  
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true">
+    <thead>
+      <tr>
+        <th data-sortable="true" scope="col">Content ID</th>
+        <th data-sortable="true" scope="col">ASIN</th>
+        <th data-sortable="true" scope="col">Description</th>
+        <th data-sortable="true" scope="col">Damaged</th>
+        <th data-sortable="true" scope="col">Missing</th>
+        
+        
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+      <tr>
+        <td>{{result['contentid'] }} </td>
+        <td>{{result['asinid'] }} </td>
+        <td>{{result['description'] }} </td>
+        <td>{{result['damaged'] }} </td>
+        <td>{{result['missing']}}</td>
+        
+
+
+        </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}

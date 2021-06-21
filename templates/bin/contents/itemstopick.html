@@ -27,7 +27,12 @@
         <td>{{ bin['locationid'] }}</td>
         <td>{{ bin['asinid'] }}</td>
         <td>{{ bin['description'] }}</td>
-        <td>{{ bin['quantity'] }}</td>
+        <td>{{ bin['quantity'] }} 
+          <form action="{{ url_for('missing', contents_id=bin['contentid']) }}" method="GET">
+          <input type="submit" value="Missing/Damaged"
+                  class="btn btn-danger btn-sm"
+                  onclick="return confirm('Continue to missing and damaged screen?')">
+        </form></td>
         <td>{{ bin['pickquantity'] }}</td>
         <td> 
         

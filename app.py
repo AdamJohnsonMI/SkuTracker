@@ -478,17 +478,28 @@ def missing(contents_id):
     if request.method == 'POST':
         damaged = request.form['damaged']
         missing = request.form['missing']
+          
         if damaged == '':
-            damaged=0
+            damaged = 0
         elif missing == '':
-            missing=0
+            missing = 0
         elif damaged == '' and missing =='':
             flash('No input was given')   
             return redirect(url_for('items_to_pick'))   
+        elif int(damaged) < 0 or int(missing) < 0:
+            flash('Please input a valid number')  
+            return redirect(url_for('items_to_pick'))    
+         
         flash("Damaged: " + str(damaged) + ' Missing: ' + str(missing))   
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute('UPDATE bin SET (damaged,missing) = (%s,%s) WHERE contentid=%s', (damaged,missing,contents_id,))
+        cursor.execute('SELECT quantity FROM bin WHERE contentid=%s',(contents_id,))
+        result=cursor.fetchone()
+        quantity= int(result['quantity']) - (int(missing) + int(damaged))     
+        if quantity == 0:
+            cursor.execute("UPDATE bin SET tobepicked = %s WHERE contentid=%s", (0,contents_id,))  #Indicates to remove item from picklist
+
+        cursor.execute('UPDATE bin SET (damaged,missing,quantity) = (%s,%s,%s) WHERE contentid=%s', (damaged,missing,quantity,contents_id,))
         conn.commit()
         conn.close()
         flash("Item information has been sent to admin panel")
@@ -522,9 +533,6 @@ def items_to_pick():
 
     
     if request.method == 'POST' :
-        
-
-
         tobepicked= 0
         pick_quantity = request.form['quantity']
         contentid = request.form['contentid']
@@ -925,4 +933,13 @@ def tracking_addto(tracking_id,order_id):
             conn.close()
             return redirect(url_for('view_tracking'))
     return render_template('tracking/addto.html')      
-   
+
+@app.route('/admin/missinginventory')
+@admin_required
+def missing_inventory():
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT bin.contentid, bin.asinid, product.description,bin.damaged,bin.missing FROM bin LEFT OUTER JOIN product ON bin.asinid=product.asinid WHERE damaged > 0 OR missing > 0')
+    results=cursor.fetchall()
+
+    return render_template('admin/missinginventory.html', results=results)   

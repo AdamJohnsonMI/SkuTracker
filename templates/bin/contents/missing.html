@@ -1,27 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
-
-<h1>(This Page is not fully functioning. Pick exact quantity)</h1>
-  <h1>Enter Damaged Quantity or Leave Blank </h1>
+  <h1>Enter Damaged Quantity or Missing Quantity </h1>
 
   <form method="post" >
+
     <div class="form-group">
       <textarea name="damaged" placeholder="Enter Damaged Quantity"
                 class="form-control">{{ request.form['damaged'] }}</textarea>
   </div>
 
-  <h1>Enter Missing Quantity or Leave Blank</h1>
     <div class="form-group">
       <textarea name="missing" placeholder="Enter Missing Quantity"
                 class="form-control">{{ request.form['missing'] }}</textarea>
   </div>
-
-
-
-
-
+  
     <div class="form-group">
       <button type="submit" class="btn btn-primary">Submit</button>
     </div>
@@ -29,5 +22,5 @@
 
 </body>
 
-
 {% endblock %}
+
