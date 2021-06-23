@@ -378,13 +378,14 @@ def receiving_tracking(trackingid):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute('SELECT DISTINCT ON (1) orders.asinid, orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
-    results= cursor.fetchall()
+    results = cursor.fetchall()
 
     if request.method == 'POST':
         asinid = request.form['asinid']
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
         store = request.form['store']
+        contentid = request.form['contentid']
 
         if not asinid and not quantity:
             flash('ASIN and Quantity are required!')  
@@ -399,10 +400,7 @@ def receiving_tracking(trackingid):
         cursor.execute('UPDATE tracking SET received= %s  WHERE trackingID = %s', (received,trackingid,))    
         conn.commit()    
 
-
-
-        flash(str(store))
-        flash("ASIN: " + str(asinid) + "of Quanity: " + str(quantity) + " have been added to bin screen with content id: " + "?" )    
+        flash("ASIN: " + str(asinid) + "of Quanity: " + str(quantity) + " have been added to bin screen with content id: " + str(contentid) )    
         return redirect(url_for('start_receiving'))        
     return render_template('bin/contents/receiving1.html', results=results)
 
@@ -411,7 +409,9 @@ def receiving_tracking(trackingid):
 def start_receiving():
     if request.method == 'POST':
         trackingid = request.form['trackingid']
-        if trackingid != None:
+        trackingid = trackingid.strip()
+
+        if trackingid != '':
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
         else:
             return redirect(url_for('receiving'))
@@ -687,6 +687,8 @@ def bin_delete(bin_id):
 @admin_required
 def create_order():
     if request.method == 'POST':
+        hazardous = request.form['hazmat']
+        imglink = request.form['imglink']
         asinid = request.form['asinid']
         buyPrice = request.form['buyPrice']
         sellPrice = request.form['sellPrice']
@@ -715,7 +717,7 @@ def create_order():
                 quantity = None
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO product (asinid, description) VALUES (%s, %s) ON CONFLICT (asinid) DO UPDATE SET (asinid,description) = (%s,%s)', (asinid, description,asinid, description,)); #Change DO NOTHING to update when I add other product columns
+            cursor.execute('INSERT INTO product (imglink,asinid, description,hazardous) VALUES (%s,%s, %s,%s) ON CONFLICT (asinid) DO UPDATE SET (imglink,asinid,description,hazardous) = (%s,%s,%s,%s)', (imglink,asinid, description,hazardous, imglink,asinid, description, hazardous,)); #Change DO NOTHING to update when I add other product columns
             conn.commit()
             cursor.execute('INSERT INTO orders (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s)', 
                          (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer,));

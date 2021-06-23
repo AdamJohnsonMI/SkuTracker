@@ -3,7 +3,8 @@ CREATE TABLE product (
     Picture varchar(60),
     Hazardous varchar(60),
     Oversized varchar(60),
-    description varchar(200)
+    description varchar(200),
+    imglink varchar(200)
 );
 
 CREATE TABLE physicalLocation (

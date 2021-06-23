@@ -1,81 +1,115 @@
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const pasteMes = document.querySelectorAll('.paste-me');
+  pasteMes.forEach(input => {
+    input.addEventListener('paste', e => {
+      const data = e.clipboardData.items[0];
+      if(data.kind == 'string' && data.type == 'text/plain') {
+        data.getAsString(str => {
+          str.split("    ").forEach((v, ind) => {
+            pasteMes[ind] && (pasteMes[ind].value = v || '');
+          })
+        });
+      }
+    });
+  });
+});
+  
+  </script>
 {% extends 'base.html' %}
 
 {% block content %}
+
 <h1>{% block title %} Create a New Order {% endblock %}</h1>
 
 
 <form method="post">
-    <div class="form-group">
-        <label for="asinid">ASIN</label>
-        <input type="text" name="asinid"
-               placeholder="Enter ASIN" class="form-control"
-               value="{{ request.form['asinid'] }}"></input>
-    </div>
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea name="description" placeholder="Enter Description"
-                  class="form-control">{{ request.form['description'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="buyPrice">Buy Price</label>
-        <textarea name="buyPrice" placeholder="Enter Buy Price (Do not add $ sign)"
-                  class="form-control">{{ request.form['buyPrice'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="sellPrice">Sell Price</label>
-        <textarea name="sellPrice" placeholder="Enter Sell Price (Do not add $ sign)"
-                  class="form-control">{{ request.form['sellPrice'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="store">Store</label>
-        <textarea name="store" placeholder="Enter Store"
-                  class="form-control">{{ request.form['store'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="supplier">Supplier</label>
-        <textarea name="supplier" placeholder="Enter Supplier"
-                  class="form-control">{{ request.form['supplier'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="quantity">Quantity</label>
-        <textarea name="quantity" placeholder="Enter Quantity"
-                  class="form-control">{{ request.form['quantity'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="orderNumber">Order Number</label>
-        <textarea name="orderNumber" placeholder="Enter Order Number"
-                  class="form-control">{{ request.form['orderNumber'] }}</textarea>
-    </div>
 
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio1" value="FBA" >
-        <label class="form-check-label" for="fullfillment">Fulfillment #1</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio2" value="MF">
-        <label class="form-check-label" for="fullfillment">Fulfillment #2</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio3" value="Fulfillment #3" >
-        <label class="form-check-label" for="fullfillment">Fulfillment #3</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio4" value="N/A" checked>
-        <label class="form-check-label" for="fullfillment">N/A</label>
-      </div>
+  <div class="form-group ">
+    <label for="imglink">Image Link</label>
+    <input type="text" name="imglink"
+           placeholder="Enter Image Link or Leave Blank" class="form-control paste-me"
+           value="{{ request.form['asinid'] }}"></input>
+</div>
 
 
 
-    <div class="form-group">
-        <label for="buyer">Buyer</label>
-        <textarea name="buyer" placeholder="Enter Buyer"
-                  class="form-control">{{ request.form['buyer'] }}</textarea>
-    </div>
+  <div class="form-group">
+    <label for="asinid">ASIN</label>
+    <input type="text" name="asinid"
+           placeholder="Enter ASIN" class="form-control paste-me"
+           value="{{ request.form['asinid'] }}"></input>
+</div>
+<div class="form-group">
+    <label for="description">Description</label>
+    <textarea name="description" placeholder="Enter Description"
+              class="form-control  paste-me">{{ request.form['description'] }}</textarea>
+</div>
+<div class="form-group">
+    <label for="buyPrice">Buy Cost</label>
+    <textarea name="buyPrice" placeholder="Enter Buy Cost (Do not add $ sign)"
+              class="form-control paste-me">{{ request.form['buyPrice'] }}</textarea>
+</div>
+<div class="form-group">
+    <label for="sellPrice">Sell Price</label>
+    <textarea name="sellPrice" placeholder="Enter Sell Price (Do not add $ sign)"
+              class="form-control paste-me">{{ request.form['sellPrice'] }}</textarea>
+</div>
+<div class="form-group">
+  <label for="hazmat">Hazmat</label>
+  <textarea name="hazmat" placeholder="Enter Yes/No if hazamat"
+            class="form-control paste-me">{{ request.form['hazmat'] }}</textarea>
+</div>
+<div class="form-group">
+    <label for="store">Store</label>
+    <textarea name="store" placeholder="Enter Store"
+              class="form-control">{{ request.form['store'] }}</textarea>
+</div>
+<div class="form-group">
+    <label for="supplier">Supplier</label>
+    <textarea name="supplier" placeholder="Enter Supplier"
+              class="form-control">{{ request.form['supplier'] }}</textarea>
+</div>
+<div class="form-group">
+    <label for="quantity">Quantity</label>
+    <textarea name="quantity" placeholder="Enter Quantity"
+              class="form-control">{{ request.form['quantity'] }}</textarea>
+</div>
+<div class="form-group">
+    <label for="orderNumber">Order Number</label>
+    <textarea name="orderNumber" placeholder="Enter Order Number"
+              class="form-control">{{ request.form['orderNumber'] }}</textarea>
+</div>
+
+<div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio1" value="FBA" >
+    <label class="form-check-label" for="fullfillment">FBA</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio2" value="MF">
+    <label class="form-check-label" for="fullfillment">MF</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio3" value="Fulfillment #3" >
+    <label class="form-check-label" for="fullfillment">Fulfillment #3</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="fullfillment" id="inlineRadio4" value="N/A" checked>
+    <label class="form-check-label" for="fullfillment">N/A</label>
+  </div>
 
 
 
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
+<div class="form-group">
+    <label for="buyer">Buyer</label>
+    <textarea name="buyer" placeholder="Enter Buyer"
+              class="form-control">{{ request.form['buyer'] }}</textarea>
+</div>
+
+
+
+<div class="form-group">
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>
 </form>
 {% endblock %}

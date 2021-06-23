@@ -22,6 +22,8 @@
     </thead>
     <tbody>
         {% for bin in items %}
+        {% set count= 0 %}
+          
       <tr>
         <td>{{ bin['contentid'] }}</a> <a href="{{url_for('contents_edit', contents_id=bin['contentid'])}}">
             <span class="badge badge-warning">Edit/Delete</span></td>
@@ -34,11 +36,21 @@
         <td>{{ bin['trackingid'] }}</td>
         <td>{{ bin['store'] }}</td>
 
+        {% if bin['locationid'] == none %}
+        
+        <td>No bin locations</td>
+        {% else %}
+
+        
+
+        <td><a href="{{ url_for('product', product_id=bin['asinid']) }}">All Locations For ASIN</a> </td>
+        {% endif %}
         {% if bin['tobepicked'] == 1 %}
         <td>On Pick List</td>
         {% else %}
         <td></td>
         {% endif %}
+
         <td><form method="post">
           <div class="form-group mx-sm-3 mb-2">
             <input type="text" class="form-control" id="quantity" placeholder="Quantity to Pick" name="quantity">
@@ -55,4 +67,5 @@
 
 
 {% endblock %}
+
 
