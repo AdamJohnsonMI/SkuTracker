@@ -385,7 +385,7 @@ def receiving_tracking(trackingid):
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
         store = request.form['store']
-        contentid = request.form['contentid']
+        
 
         if not asinid and not quantity:
             flash('ASIN and Quantity are required!')  
@@ -396,11 +396,13 @@ def receiving_tracking(trackingid):
         elif not quantity:
             flash('Quantity is required!')  
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
-        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned) VALUES (%s,%s,%s,%s,%s,%s)', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,));
-        cursor.execute('UPDATE tracking SET received= %s  WHERE trackingID = %s', (received,trackingid,))    
+        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned) VALUES (%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,));
+        
+        result= cursor.fetchone()
+        cursor.execute('UPDATE tracking SET received= %s  WHERE trackingID = %s', (received,trackingid,));    
         conn.commit()    
 
-        flash("ASIN: " + str(asinid) + "of Quanity: " + str(quantity) + " have been added to bin screen with content id: " + str(contentid) )    
+        flash("ASIN: " +  str(asinid) + '' + " of Quanity: " + str(quantity) + ''+ " have been added to bin screen with content id: " + str(result['contentid']))    
         return redirect(url_for('start_receiving'))        
     return render_template('bin/contents/receiving1.html', results=results)
 
@@ -478,30 +480,42 @@ def missing(contents_id):
     if request.method == 'POST':
         damaged = request.form['damaged']
         missing = request.form['missing']
-          
-        if damaged == '':
-            damaged = 0
-        elif missing == '':
-            missing = 0
-        elif damaged == '' and missing =='':
-            flash('No input was given')   
-            return redirect(url_for('items_to_pick'))   
-        elif int(damaged) < 0 or int(missing) < 0:
-            flash('Please input a valid number')  
-            return redirect(url_for('items_to_pick'))    
-         
-        flash("Damaged: " + str(damaged) + ' Missing: ' + str(missing))   
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute('SELECT bin.missing, bin.damaged FROM bin WHERE contentid =%s', (contents_id,))
+        missing_or_damaged = cursor.fetchone()
+
+        if damaged == '' and missing =='':
+            flash('No input was given')   
+            return redirect(url_for('items_to_pick'))  
+
+        if damaged == '' and missing_or_damaged['damaged'] != None :
+            damaged = int(missing_or_damaged['damaged'])
+        elif damaged == '':
+            damaged = 0    
+        if missing == '' and missing_or_damaged['missing'] != None :
+            missing = int(missing_or_damaged['missing']) 
+        elif missing == '':
+            missing = 0     
+        if int(damaged) < 0 or int(missing) < 0:
+            flash('Please input a valid number')  
+            return redirect(url_for('items_to_pick'))    
+        
+        
+        
         cursor.execute('SELECT quantity FROM bin WHERE contentid=%s',(contents_id,))
         result=cursor.fetchone()
-        quantity= int(result['quantity']) - (int(missing) + int(damaged))     
+        quantity= int(result['quantity']) - (int(missing) + int(damaged))   
+        if quantity < 0:
+            flash('Please Make sure Missing/Damaged is not greater than what is in the warehouse')  
+            return redirect(url_for('items_to_pick')) 
         if quantity == 0:
             cursor.execute("UPDATE bin SET tobepicked = %s WHERE contentid=%s", (0,contents_id,))  #Indicates to remove item from picklist
 
         cursor.execute('UPDATE bin SET (damaged,missing,quantity) = (%s,%s,%s) WHERE contentid=%s', (damaged,missing,quantity,contents_id,))
         conn.commit()
         conn.close()
+        flash("Damaged: " + str(damaged) + ' Missing: ' + str(missing))   
         flash("Item information has been sent to admin panel")
         return redirect(url_for('items_to_pick')) 
     return render_template('bin/contents/missing.html') 
@@ -941,7 +955,7 @@ def tracking_addto(tracking_id,order_id):
 def missing_inventory():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT bin.contentid, bin.asinid, product.description,bin.damaged,bin.missing FROM bin LEFT OUTER JOIN product ON bin.asinid=product.asinid WHERE damaged > 0 OR missing > 0')
+    cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.asinid, product.description,bin.damaged,bin.missing, bin.trackingid, tracking.ordernumber FROM bin LEFT OUTER JOIN tracking ON bin.trackingid = tracking.trackingid LEFT OUTER JOIN product ON bin.asinid=product.asinid WHERE (damaged > 0 OR missing > 0) ')
     results=cursor.fetchall()
 
     return render_template('admin/missinginventory.html', results=results)   

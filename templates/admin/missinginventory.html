@@ -10,6 +10,8 @@
     <thead>
       <tr>
         <th data-sortable="true" scope="col">Content ID</th>
+        <th data-sortable="true" scope="col">Order Number</th>
+        <th data-sortable="true" scope="col">Tracking Number</th>
         <th data-sortable="true" scope="col">ASIN</th>
         <th data-sortable="true" scope="col">Description</th>
         <th data-sortable="true" scope="col">Damaged</th>
@@ -24,6 +26,8 @@
         {% for result in results %}
       <tr>
         <td>{{result['contentid'] }} </td>
+        <td>{{result['ordernumber'] }} </td>
+        <td>{{result['trackingid'] }} </td>
         <td>{{result['asinid'] }} </td>
         <td>{{result['description'] }} </td>
         <td>{{result['damaged'] }} </td>

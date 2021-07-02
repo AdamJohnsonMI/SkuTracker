@@ -34,7 +34,7 @@ Priority
 6/21/21
 1. 
 2. Pick list bin location column should identify # of locations
-3. Tweak receiving page for missing info and return to receiving button on screen
+3. 
 4. add order number and tracking number to admin panel missing inventory
 5. quantity to pick higher than quantity
 6. Picking all items should not delete row. Just view items should not show qty of 0 items
