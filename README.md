@@ -32,13 +32,15 @@ Priority
 
 
 6/21/21
-1. 
-2. Pick list bin location column should identify # of locations
-3. 
-4. add order number and tracking number to admin panel missing inventory
-5. quantity to pick higher than quantity
+
 6. Picking all items should not delete row. Just view items should not show qty of 0 items
 7. Receiving by tracking should have qty received.  
 8. Add date received when receiving. Sort warehouse by date received. 
+9. Receiving item should redirect to adding items. 
+10. Creating bin should be used by user defined locationid. Edit all location references
+11. Rename site to arbitrage something and research different hosting sites
+
+10. Add a date picked column
+
+2. Pick list bin location column should identify # of locations
 9. View orders header should stick with the screen while scrolling
-10. Create order page should prompt if item has already been ordered or in warehouse?
