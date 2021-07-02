@@ -5,8 +5,8 @@
     input.addEventListener('paste', e => {
       const data = e.clipboardData.items[0];
       if(data.kind == 'string' && data.type == 'text/plain') {
-        data.getAsString(str => {
-          str.split("    ").forEach((v, ind) => {
+        data.getAsString(str => { 
+          str.replace('\t','    ').split("    ").forEach((v, ind) => {
             pasteMes[ind] && (pasteMes[ind].value = v || '');
           })
         });

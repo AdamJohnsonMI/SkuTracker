@@ -37,6 +37,7 @@ Priority
 7. Receiving by tracking should have qty received.  
 8. Add date received when receiving. Sort warehouse by date received. 
 9. Receiving item should redirect to adding items. 
+10. Create order is not recognizing tabs under current code
 10. Creating bin should be used by user defined locationid. Edit all location references
 11. Rename site to arbitrage something and research different hosting sites
 
