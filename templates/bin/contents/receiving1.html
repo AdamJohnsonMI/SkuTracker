@@ -15,16 +15,10 @@
     
     {% for result in results %}
     
-
     <div class="form-check form-check-inline scale">
-        <input class="form-check-input" type="radio" name="asinid" id="inlineRadio4" value="{{result['asinid']}}" >
-        <label class="form-check-label" for="asinid">ASIN: {{result['asinid']}} &ensp;</label>
-         
+        <input class="form-check-input" type="radio" name="invid" id="inlineRadio4" value="{{result['invid']}}" >
+        <label class="form-check-label" for="invid">ASIN: {{result['asinid']}} &ensp;</label>
       </div>
-      <input type="hidden" id="store" name="store" value="{{result['store']}}"> 
-      
-      
-    
       {% endfor %}
 
       <div class="form-check form-check-inline scale">
@@ -58,6 +52,7 @@
         <th scope="col">ASIN</th>
         <th scope="col">Description</th>
         <th scope="col">Quantity</th>
+        <th scope="col">QTY Currently Received in Tracking Number </th>
       </tr>
     </thead>
     <tbody>
@@ -67,6 +62,7 @@
         <td>{{ result['asinid'] }}</td>
         <td>{{ result['description'] }}</td>
         <td>{{ result['quantity'] }}</td>
+        <td>{{ result['received'] }}</td>
         
         </tr>
       {% endfor %}

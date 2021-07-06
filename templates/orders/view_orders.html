@@ -13,8 +13,11 @@
         <th data-sortable="true" scope="col">Order id</th>
         <th data-sortable="true" scope="col">Description</th>
         <th data-sortable="true" scope="col">ASIN</th>
+        <th data-sortable="true" scope="col">Date Purchased</th>
         <th data-sortable="true" scope="col">Buy Price</th>
         <th data-sortable="true" scope="col">Sell Price</th>
+        <th data-sortable="true" scope="col">Projected Profit</th>
+        <th data-sortable="true" scope="col">Hazardous</th>
         <th data-sortable="true" scope="col">Store</th>
         <th data-sortable="true" scope="col">Quantity</th>
         <th data-sortable="true" scope="col">Order Number</th>
@@ -35,8 +38,11 @@
         <td>{{order['invid'] }} </td>
         <td>{{ order['description']}}</td>
         <td>{{ order['asinid'] }}</td>
+        <td>{{ order['datepurchased'] }}</td>
         <td>{{ order['buyprice'] }}</td>
         <td>{{ order['sellprice'] }}</td>
+        <td>{{ order['projectedProfit'] }}</td>
+        <td>{{ order['hazardous'] }}</td>
         <td>{{ order['store'] }}</td>
         <td>{{ order['quantity'] }}</td>
         <td>{{ order['ordernumber'] }}</td>    

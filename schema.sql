@@ -8,14 +8,14 @@ CREATE TABLE product (
 );
 
 CREATE TABLE physicalLocation (
-    Locationid SERIAL PRIMARY KEY,
-    RackID INTEGER NOT NULL,
-    ShelfID INTEGER NOT NULL
+    id SERIAL PRIMARY KEY,
+    Locationid INTEGER,
+    createdbin INTEGER
     );
 
 CREATE TABLE bin (
     ContentID SERIAL PRIMARY KEY, 
-    Locationid INTEGER REFERENCES physicalLocation(Locationid),
+    Locationid INTEGER,
     ASINid varchar(60)REFERENCES product(ASINid),
     quantity INTEGER,
     dateReceived TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -36,13 +36,15 @@ CREATE TABLE orders (
     datePurchased TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     buyPrice NUMERIC(7,2),
     sellPrice NUMERIC(7,2),
+    projectedProfit Numeric(10,2),
     store varchar(60),
     supplier varchar(60),
     quantity INTEGER,
     orderNumber varchar(60),
     fullfillment varchar(60),
     buyer varchar(60),
-    description varchar(200) REFERENCES product (description)
+    description varchar(200) REFERENCES product (description),
+    received INTEGER date NOT NULL DEFAULT CURRENT_DATE;
     
 );
 
@@ -61,8 +63,6 @@ CREATE TABLE trackingContents(
     ASINid varchar(60) REFERENCES product(ASINid),
     quantity INTEGER,
     store varchar(60)
-   
-
 );
 
 CREATE TABLE posts (

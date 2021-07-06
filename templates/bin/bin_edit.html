@@ -1,23 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block bin %} Edit "{{ bin['locationid'] }}" {% endblock %}</h1>
+<h1>{% block bin %} Edit "{{ bin['createdbin'] }}" {% endblock %}</h1>
 
 <form method="post">
     <div class="form-group">
-        <h3>{{bin[locationid]}}</h3>
+        <h3>{{bin[createdbin]}}</h3>
     </div>
 
-    <div class="form-group">
-        <label for="rackid">rackid</label>
-        <textarea name="rackid" placeholder="Edit rackid"
-                  class="form-control">{{ request.form['rackid'] }}</textarea>
-    </div>
-    <div class="form-group">
-        <label for="shelfid">shelfid</label>
-        <textarea name="shelfid" placeholder="Edit shelfid"
-                  class="form-control">{{ request.form['shelfid'] }}</textarea>
-    </div>
+    
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
