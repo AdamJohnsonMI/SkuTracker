@@ -155,7 +155,7 @@ def login():
         password_candidate = request.form['password']
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute("SELECT * FROM users WHERE username= %s", [username]) #Get user by username
+        cursor.execute("SELECT * FROM users WHERE username= %s", [username]) #Get user info by username
         result = cursor.fetchone()
         if result:
             password = result['password']
@@ -166,7 +166,7 @@ def login():
                 if userrole == 'admin':
                     session['admin_role'] = True
                 flash('You are now logged in', 'success')
-                return redirect(url_for('dashboard'))    ##Change to index?
+                return redirect(url_for('dashboard'))    
             else:
                 flash("Invalid login")
                 return render_template('login.html')        

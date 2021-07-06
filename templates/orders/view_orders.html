@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 
 
 
 <div class="container-fluid" >  
-  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true">
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true" data-sticky-header="true" >
     <thead>
       <tr>
         <th data-sortable="true" scope="col">Edit</th>
@@ -26,10 +25,10 @@
         <th data-sortable="true" scope="col">Supplier</th>
         <th data-sortable="true" scope="col">Bin Locations</th>
         <th data-sortable="true" scope="col">Tracking Numbers</th>
-        
-        
       </tr>
     </thead>
+
+
     <tbody>
         {% for order in orders %}
       <tr>

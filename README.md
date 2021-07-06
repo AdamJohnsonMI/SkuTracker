@@ -19,20 +19,21 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-en
 
 
 
-
 Next steps for the project:
+
+Major.
+1. Restructure code to resemble MVC Structure. 
+2. Organize web app functions to respective folders.
+3. Improve Front end visual appeal and structure.
 
 Misc.
 1. Create a walk through video
 2. Rename site to arbitrage something and research different hosting sites
 3. Have image link on receiving.
 4. Add preptype to users
+5. Create order is not recognizing tabs under current code
 
-Priority
-1. Improve Front end visual appeal and structure.
-2. Create order is not recognizing tabs under current code
-
-Possible Ideas
+Possible Ideas to Support Client
 1. Add a date picked column?
 2. Pick list bin location column should identify # of locations
 3. View orders header should stick with the screen while scrolling

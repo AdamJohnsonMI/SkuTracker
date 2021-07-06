@@ -3,8 +3,8 @@
 {% block content %}
 <h1>{% block title %} Bin Item(s). Listed items need to be binned {% endblock %}</h1>
 
-<table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="false">
-  <thead>
+<div class="container-fluid" >  
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" > <thead>
     <tr>
       <th data-sortable="true" scope="col">Content ID</th>
       <th data-sortable="true" scope="col">ASIN</th>
@@ -45,5 +45,5 @@
     {% endfor %}
   </tbody>
 </table>
-
+</div>
 {% endblock %}

@@ -6,51 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
+   
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.3.1/dt-1.10.25/b-1.7.1/datatables.min.css"/>
+    <link rel="stylesheet" href="../static/css/bootstrap-table-sticky-header.css">
+    
     <title>{% block title %} {% endblock %}</title>
   </head>
   <body>
-
-      
-
-
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid">
-            <div class= "btn-group">
-            <a href="{{url_for('dashboard')}}"class="navbar-brand" href="#">
-                <img src="/static/sku.jpg" alt="sku" width="30" height="30" class="d-inline-block align-text-top">
-                SkuTracker
-            </a>
-
-            
-            </div>
-            <div>
-            
-             {% if session.logged_in%}   
-            <a class="btn btn-outline-light text-light" href="{{url_for('logout')}}">Logout</a>
-            {% else %}
-            <a class="btn btn-outline-light text-light" href="{{url_for('register')}}">Register</a>   
-            <a class="btn btn-outline-light text-light" href="{{url_for('login')}}">Login</a>      
-            {% endif %}  
-        </div>   
-        </div>
-        
-    </nav>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+    
+    <nav class="navbar container-fluid navbar-expand-lg navbar-light bg-light ">
         <a class="navbar-brand" href="{{url_for('dashboard')}}">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            
-            
-            
-                                  
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Admin Panel
@@ -62,18 +36,19 @@
                 <a class="dropdown-item" href="{{url_for('view_bin')}}">View/Delete bins</a>
                 <a class="dropdown-item" href="{{url_for('product_create')}}">Add New ASIN</a>
                 <a class="dropdown-item" href="{{url_for('view_product')}}">View/Manage ASINs</a>
-                <a class="dropdown-item" href="#">Print Warehouse Label(Does not work yet)</a>
-                <a class="dropdown-item" href="#">Delete Warehosue Label(Does not work yet)</a>
-                <a class="dropdown-item" href="#">Print Expired food locations(Does not work yet)</a>
                 <a class="dropdown-item" href="{{url_for('missing_inventory')}}">Missing Inventory</a>
-                <a class="dropdown-item" href="#">Missing Orders(Does not work yet)</a>
-                <a class="dropdown-item" href="#">Inventory FLow(Does not work yet)</a>
-                <a class="dropdown-item" href="#">Expired Food(Does not work yet)</a>
+                
               </div>
             </li>
-
           </ul>
+            
         </div>
+        {% if session.logged_in%}   
+        <a class="navbar-brand" href="{{url_for('logout')}}">Logout</a>
+        {% else %}
+        <a class="navbar-brand" href="{{url_for('register')}}">Register</a>   
+        <a class="navbar-brand" href="{{url_for('login')}}">Login</a>  
+        {% endif %}   
       </nav>
 
 
@@ -92,6 +67,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+    <script src="../static/js/bootstrap-table-sticky-header.js"></script>
     
 
   </body>

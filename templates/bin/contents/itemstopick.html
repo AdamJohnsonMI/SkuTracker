@@ -4,8 +4,9 @@
 
 <h1>{% block title %} Pick Item(s). Listed items need to be picked {% endblock %}</h1>
 
-<table data-toggle="table" data-classes="table table-hover table-condensed" >
-  <thead>
+<div class="container-fluid" > 
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
+    <thead>
     <tr>
       <th scope="col">Content ID</th>
       <th scope="col">Location ID</th>
@@ -48,6 +49,6 @@
     {% endfor %}
   </tbody>
 </table>
-
+</div>
 {% endblock %}
 
