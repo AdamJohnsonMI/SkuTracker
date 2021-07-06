@@ -10,7 +10,9 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-en
 ![1 Creating an Order](https://user-images.githubusercontent.com/66417986/124663655-5ea14080-de78-11eb-9bfc-ae93bf630250.jpg)
 ![2 View Orders](https://user-images.githubusercontent.com/66417986/124663656-5ea14080-de78-11eb-860c-21dbd2eae501.jpg)
 ![3 Pick List](https://user-images.githubusercontent.com/66417986/124663658-5f39d700-de78-11eb-9b51-d83bbf59009a.jpg)
-![4 Creating Picks](https://user-images.githubusercontent.com/66417986/124663659-5f39d700-de78-11eb-98d0-4348b0b1bec3.jpg)
+![4  List of Missing Inventory](https://user-images.githubusercontent.com/66417986/124664018-da02f200-de78-11eb-8d69-197398d466e5.jpg)
+![5 Creating Picks](https://user-images.githubusercontent.com/66417986/124664020-da02f200-de78-11eb-892e-6a82c4cc759b.jpg)
+
 
 
 
