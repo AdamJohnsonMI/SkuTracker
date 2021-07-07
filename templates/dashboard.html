@@ -11,7 +11,7 @@
       {% if session.admin_role%}   
       <a href="{{url_for('create_order')}}" class = 'btn dash'  type="button" >Create An Order</a>
       <a href="{{url_for('view_orders')}}" class = 'btn dash' type="button" >View Orders/Add Tracking Number to Order</a>
-      <a href="{{url_for('view_items')}}" class = 'btn dash'  type="button" >View Items in Warehouse/Create Pick List</a>
+      <a href="{{url_for('view_items')}}" class = 'btn dash btn-lg'  type="button" >View Items in Warehouse/Create Pick List</a>
       
 
       <div role="group" class ="btn dash">
@@ -26,9 +26,9 @@
       </div>
 
       {% else %}
-      <a href="{{url_for('start_receiving')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
-      <a href="{{url_for('items_to_pick')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Pick List</a>
-      <a href="{{url_for('items_to_bin')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Bin Items</a>
+      <a href="{{url_for('start_receiving')}}" type="button" class="btn dash btn-secondary btn-lg">Warehouse Receiving</a>
+      <a href="{{url_for('items_to_pick')}}"  type="button" class="btn dash btn-secondary btn-lg">Pick List</a>
+      <a href="{{url_for('items_to_bin')}}" type="button" class="btn dash btn-secondary btn-lg">Bin Items</a>
       
       {% endif %}   
 
