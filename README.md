@@ -12,7 +12,7 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-en
 ![image](https://user-images.githubusercontent.com/66417986/124736204-c55c4380-dee4-11eb-8bc6-feafc2449ac1.png)
 ![image](https://user-images.githubusercontent.com/66417986/124736275-d73de680-dee4-11eb-95b9-a6e8957599a2.png)
 ![image](https://user-images.githubusercontent.com/66417986/124736364-ed4ba700-dee4-11eb-8e47-a4f96d11ffd5.png)
-![5 Creating Picks](https://user-images.githubusercontent.com/66417986/124664020-da02f200-de78-11eb-892e-6a82c4cc759b.jpg)
+![image](https://user-images.githubusercontent.com/66417986/124736603-2e43bb80-dee5-11eb-828d-ce8b1d0c9b90.png)
 
 
 
