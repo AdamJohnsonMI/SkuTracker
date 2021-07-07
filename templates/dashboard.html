@@ -3,7 +3,7 @@
 {% block content %}
 
   <div class="text-center vh-100" >
-    <h1 class="text-center" >{% block title %} Welcome {{session.username}} to SkuTracker {% endblock %}</h1>
+    <h1 class="text-center" >{% block title %} Welcome to SkuTracker {% endblock %}</h1>
     <h3 class="text-center" style ="padding:20px 0px;"> Select which process you are doing:</h3>
     
     <div class="btn-group-vertical">
@@ -14,8 +14,8 @@
       <a href="{{url_for('view_items')}}" class = 'btn dash'  >View Items in Warehouse/Create Pick List</a>
       
 
-      <div role="group" class ="btn dash">
-        <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    
+        <a role="group"  class="btn dash dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Warehouse Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
@@ -23,12 +23,12 @@
           <a class="btn dropdown-item"  href="{{url_for('items_to_bin')}}">Bin Items</a>
           <a class="btn dropdown-item"  href="{{url_for('start_receiving')}}">Warehouse Receiving</a>
         </div>
-      </div>
+      
 
       {% else %}
-      <a href="{{url_for('start_receiving')}}" type="button" class="btn dash btn-secondary btn-lg">Warehouse Receiving</a>
-      <a href="{{url_for('items_to_pick')}}"  type="button" class="btn dash btn-secondary btn-lg">Pick List</a>
-      <a href="{{url_for('items_to_bin')}}" type="button" class="btn dash btn-secondary btn-lg">Bin Items</a>
+      <a href="{{url_for('start_receiving')}}"  class="btn dash btn-secondary btn-lg">Warehouse Receiving</a>
+      <a href="{{url_for('items_to_pick')}}"   class="btn dash btn-secondary btn-lg">Pick List</a>
+      <a href="{{url_for('items_to_bin')}}"  class="btn dash btn-secondary btn-lg">Bin Items</a>
       
       {% endif %}   
 
