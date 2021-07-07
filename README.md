@@ -42,3 +42,6 @@ Priority.
 1. Editing items in warehouse should preload information to prevent erasing 
 2. Have image link on receiving.
 
+
+7/7/21
+1. 
