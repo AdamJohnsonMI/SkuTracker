@@ -6,6 +6,7 @@ Testing backend server deployment
 SkuTracker, AKA InventoryManagement, is an inventory management app that allows users to track their inventory from submitting their ordered products, binning items in warehouse with the tracking number from the box into bin locations, creating pick lists, and user access control.
 
 The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-end was created with Python, Flask, and PostgreSQL as the database. 
+![image](https://user-images.githubusercontent.com/66417986/124735784-5da5f880-dee4-11eb-9b56-137c569114e9.png)
 
 ![1 Creating an Order](https://user-images.githubusercontent.com/66417986/124663655-5ea14080-de78-11eb-9bfc-ae93bf630250.jpg)
 ![2 View Orders](https://user-images.githubusercontent.com/66417986/124663656-5ea14080-de78-11eb-860c-21dbd2eae501.jpg)
