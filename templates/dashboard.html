@@ -28,13 +28,13 @@
     <div class="btn-group-vertical">
 
       {% if session.admin_role%}   
-      <a href="{{url_for('create_order')}}" class = 'btn dash'  type="button" >Create An Order</a>
-      <a href="{{url_for('view_orders')}}" class = 'btn dash' type="button" >View Orders/Add Tracking Number to Order</a>
+      <a href="{{url_for('create_order')}}" class = 'btn dash' >Create An Order</a>
+      <a href="{{url_for('view_orders')}}" class = 'btn dash'  >View Orders/Add Tracking Number to Order</a>
       <a href="{{url_for('view_items')}}" class = 'btn dash'  >View Items in Warehouse/Create Pick List</a>
       
 
       <div role="group" class ="btn dash">
-        <a type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Warehouse Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
