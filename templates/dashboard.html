@@ -9,26 +9,26 @@
     <div class="btn-group-vertical">
 
       {% if session.admin_role%}   
-      <button href="{{url_for('create_order')}}" class = 'btn dash'  type="button" >Create An Order</button>
-      <button href="{{url_for('view_orders')}}" class = 'btn dash' type="button" >View Orders/Add Tracking Number to Order</button>
-      <button href="{{url_for('view_items')}}" class = 'btn dash'  type="button" >View Items in Warehouse/Create Pick List</button>
+      <a href="{{url_for('create_order')}}" class = 'btn dash'  type="button" >Create An Order</a>
+      <a href="{{url_for('view_orders')}}" class = 'btn dash' type="button" >View Orders/Add Tracking Number to Order</a>
+      <a href="{{url_for('view_items')}}" class = 'btn dash'  type="button" >View Items in Warehouse/Create Pick List</a>
       
 
-      <div role="group">
-        <button type="button" class="btn dropdown-toggle dash" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <div role="group" class ="btn dash">
+        <a type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Warehouse Actions
-        </button>
+        </a>
         <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-          <button class="btn dropdown-item"  href="{{url_for('items_to_pick')}}">Pick List</button>
-          <button class="btn dropdown-item"  href="{{url_for('items_to_bin')}}">Bin Items</button>
-          <button class="btn dropdown-item"  href="{{url_for('start_receiving')}}">Warehouse Receiving</button>
+          <a class="btn dropdown-item"  href="{{url_for('items_to_pick')}}">Pick List</a>
+          <a class="btn dropdown-item"  href="{{url_for('items_to_bin')}}">Bin Items</a>
+          <a class="btn dropdown-item"  href="{{url_for('start_receiving')}}">Warehouse Receiving</a>
         </div>
       </div>
 
       {% else %}
-      <button href="{{url_for('start_receiving')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</button>
-      <button href="{{url_for('items_to_pick')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Pick List</button>
-      <button href="{{url_for('items_to_bin')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Bin Items</button>
+      <a href="{{url_for('start_receiving')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
+      <a href="{{url_for('items_to_pick')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Pick List</a>
+      <a href="{{url_for('items_to_bin')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Bin Items</a>
       
       {% endif %}   
 
