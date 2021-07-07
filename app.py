@@ -843,23 +843,28 @@ def order_edit(order_id):
         orderNumber = request.form['orderNumber']
         fullfillment= request.form['fullfillment']
         buyer = request.form['buyer']
+        projectedProfit = request.form['projectedprofit']
+
         if buyPrice == '':
             buyPrice= request.form.getlist('buyPrice')[0]
         if not asinid:
             flash("Enter an ASIN!")
         else:
-            if not buyPrice:    
-                buyPrice = None
-            if not sellPrice:
-                sellPrice = None
-            if not quantity:
-                sellPrice = None
-            if not orderNumber:
-                orderNumber = None
-            if not quantity:
-                quantity = None
-            cursor.execute('UPDATE orders SET asinid = %s, buyPrice = %s, sellPrice = %s, store = %s, supplier = %s, quantity = %s, orderNumber = %s, fullfillment = %s, buyer = %s' ' WHERE invid = %s', 
-                         (asinid, buyPrice, sellPrice, store, supplier,quantity,orderNumber,fullfillment,buyer, order[0]));
+            if buyPrice =='' or buyPrice == 'None':    
+                buyPrice = 0
+            if sellPrice =='' or sellPrice == 'None':
+                sellPrice = 0
+            if quantity =='' or quantity == 'None':
+                sellPrice = 0
+            if orderNumber =='' or orderNumber == 'None':
+                orderNumber = 0
+            if quantity =='' or quantity == 'None':
+                quantity = 0
+            if projectedProfit =='' or projectedProfit == 'None':
+                projectedProfit = 0 
+
+            cursor.execute('UPDATE orders SET asinid = %s, buyPrice = %s, sellPrice = %s, projectedProfit= %s, store = %s, supplier = %s, quantity = %s, orderNumber = %s, fullfillment = %s, buyer = %s' ' WHERE invid = %s', 
+                         (asinid, buyPrice, sellPrice, projectedProfit, store, supplier,quantity,orderNumber,fullfillment,buyer, order[0]));
             conn.commit()
             conn.close()
             return redirect(url_for('view_orders')) 

@@ -25,6 +25,11 @@
                   class="form-control">{{ request.form['sellPrice'] }}</input>
     </div>
     <div class="form-group">
+        <label for="projectedprofit">Projected Profit</label>
+        <input type="text" name="projectedprofit" value="{{values['projectedprofit']}}"
+                  class="form-control">{{ request.form['projectedprofit'] }}</input>
+    </div>
+    <div class="form-group">
         <label for="store">Store</label>
         <input type="text" name="store" value="{{values['store']}}"
                   class="form-control">{{ request.form['store'] }}</input>
