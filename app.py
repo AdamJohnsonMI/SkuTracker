@@ -279,7 +279,7 @@ def product(product_id):
     product = get_product(product_id)
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT bin.contentid, bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate, product.description FROM bin JOIN product ON bin.asinid = product.asinid WHERE bin.asinid = %s ", (product_id,))
+    cursor.execute("SELECT bin.contentid, bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate, product.description FROM bin JOIN product ON bin.asinid = product.asinid WHERE bin.asinid = %s and bin.quantity > 0", (product_id,))
     locations = cursor.fetchall()                    
     conn.close()
     return render_template('product/view_product.html', product=product, locations=locations)   

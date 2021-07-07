@@ -30,9 +30,7 @@ Major.
 Misc.
 1. Create a walk through video
 2. Rename site to arbitrage something and research different hosting sites
-3. Have image link on receiving.
-4. Add preptype to users
-5. Editing items in warehouse should preload information to prevent erasing
+3. Add preptype to users
 
 
 Possible Ideas to Support Client
@@ -41,6 +39,6 @@ Possible Ideas to Support Client
 
 
 Priority.
-1. 
-2. Create order is not recognizing tabs under current code
-3. Product/id currently shows quantity 0 and less
+1. Editing items in warehouse should preload information to prevent erasing 
+2. Have image link on receiving.
+
