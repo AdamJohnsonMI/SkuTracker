@@ -8,10 +8,10 @@ SkuTracker, AKA InventoryManagement, is an inventory management app that allows 
 The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-end was created with Python, Flask, and PostgreSQL as the database. 
 ![image](https://user-images.githubusercontent.com/66417986/124735784-5da5f880-dee4-11eb-9b56-137c569114e9.png)
 
-![1 Creating an Order](https://user-images.githubusercontent.com/66417986/124663655-5ea14080-de78-11eb-9bfc-ae93bf630250.jpg)
-![2 View Orders](https://user-images.githubusercontent.com/66417986/124663656-5ea14080-de78-11eb-860c-21dbd2eae501.jpg)
-![3 Pick List](https://user-images.githubusercontent.com/66417986/124663658-5f39d700-de78-11eb-9b51-d83bbf59009a.jpg)
-![4  List of Missing Inventory](https://user-images.githubusercontent.com/66417986/124664018-da02f200-de78-11eb-8d69-197398d466e5.jpg)
+![image](https://user-images.githubusercontent.com/66417986/124736116-b4abcd80-dee4-11eb-83d2-fcbbda560407.png)
+![image](https://user-images.githubusercontent.com/66417986/124736204-c55c4380-dee4-11eb-8bc6-feafc2449ac1.png)
+![image](https://user-images.githubusercontent.com/66417986/124736275-d73de680-dee4-11eb-95b9-a6e8957599a2.png)
+![image](https://user-images.githubusercontent.com/66417986/124736364-ed4ba700-dee4-11eb-8e47-a4f96d11ffd5.png)
 ![5 Creating Picks](https://user-images.githubusercontent.com/66417986/124664020-da02f200-de78-11eb-892e-6a82c4cc759b.jpg)
 
 
