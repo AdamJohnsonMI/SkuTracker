@@ -774,9 +774,16 @@ def create_order():
             orderNumber = 0
         if quantity =='':
             quantity = 0
+        if projectedProfit =='':
+            projectedProfit = 0    
+        
+
 
         if not asinid:
             flash('asinid is required!')   
+        elif int(quantity) < 0:
+            flash('Quantity Cannot be Negative!') 
+
         else:
             
             conn = get_db_connection()
