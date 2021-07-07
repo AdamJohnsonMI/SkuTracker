@@ -41,6 +41,6 @@ Possible Ideas to Support Client
 
 
 Priority.
-1. Qty received needs to increment instead of being replaced on receiving
+1. 
 2. Create order is not recognizing tabs under current code
 3. Product/id currently shows quantity 0 and less

@@ -381,6 +381,7 @@ def view_bin():
 def receiving_tracking(trackingid):
     received = "Yes"
     tobebinned = 1
+    oldReceived = 0
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #cursor.execute('SELECT DISTINCT ON (1) orders.invid,orders.asinid, orders.received,orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
@@ -404,8 +405,16 @@ def receiving_tracking(trackingid):
             flash('Quantity is required!')  
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
 
+        
+        cursor.execute('SELECT received FROM orders WHERE invid =%s', (invid,))
+        recFetch = cursor.fetchone()
+        if recFetch['received'] == None:
+            oldReceived = 0
+        else:
+            oldReceived = int(recFetch['received'])    
 
-        cursor.execute("UPDATE orders SET received = %s WHERE invid = %s", (quantity, invid,));    
+        currentReceived = oldReceived + int(quantity)
+        cursor.execute("UPDATE orders SET received = %s WHERE invid = %s", (currentReceived, invid,));    
         cursor.execute("SELECT asinid, store FROM orders WHERE invid=%s", (invid,))
         asinFetch = cursor.fetchone()
         asinid = asinFetch['asinid']
