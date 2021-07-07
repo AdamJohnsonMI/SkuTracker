@@ -10,28 +10,30 @@
 
     <div class="form-group">
         <label for="locationid">Locationid</label>
-        <textarea name="locationid" placeholder="Edit locationid"
-                  class="form-control">{{ request.form['locationid'] }}</textarea>
+        <input type="text" name="locationid"  value="{{values['locationid']}}"
+                  class="form-control">{{ request.form['locationid'] }}</input>
+
+                  
     </div>
     <div class="form-group">
         <label for="asinid">asinid</label>
-        <textarea name="asinid" placeholder="Edit asinid"
-                  class="form-control">{{ request.form['asinid'] }}</textarea>
+        <input type="text" name="asinid" value="{{values['asinid']}}"
+                  class="form-control">{{ request.form['asinid'] }}</input>
     </div>
     <div class="form-group">
         <label for="quantity">quantity</label>
-        <textarea name="quantity" placeholder="Edit quantity"
-                  class="form-control">{{ request.form['quantity'] }}</textarea>
+        <input type="text" name="quantity"  value="{{values['quantity']}}"
+                  class="form-control">{{ request.form['quantity'] }}</input>
     </div>
     <div class="form-group">
         <label for="datereceived">Date Received</label>
-        <textarea name="datereceived" placeholder="Date Received"
-                  class="form-control">{{ request.form['datereceived'] }}</textarea>
+        <input type="text" name="datereceived"  value="{{values['datereceived']}}"
+                  class="form-control">{{ request.form['datereceived'] }}</input>
     </div>
     <div class="form-group">
         <label for="expirationdate">Expiration Date</label>
-        <textarea name="expirationdate" placeholder="Date Received"
-                  class="form-control">{{ request.form['expirationdate'] }}</textarea>
+        <input type="text" name="expirationdate"  value="{{values['expirationdate']}}"
+                  class="form-control">{{ request.form['expirationdate'] }}</input>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>

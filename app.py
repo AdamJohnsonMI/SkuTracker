@@ -691,12 +691,20 @@ def contents_delete(contents_id):
 @admin_required
 def contents_edit(contents_id):
     contents = get_contents(contents_id)
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('SELECT * FROM bin WHERE contentid = %s', (contents_id,));
+    values = cursor.fetchone()
     if request.method == 'POST':
         locationid = request.form['locationid']
         asinid = request.form['asinid']
         quantity= request.form['quantity']
         datereceived = request.form['datereceived']
         expirationdate = request.form['expirationdate']
+
+        if locationid == 'None' or locationid == None:
+            locationid == 0
+
         if not asinid:
             flash('asinid is required!')
         else:
@@ -707,7 +715,7 @@ def contents_edit(contents_id):
             conn.commit()
             conn.close()
             return redirect(url_for('view_items')) 
-    return render_template('bin/contents/contents_edit.html', contents=contents)     
+    return render_template('bin/contents/contents_edit.html', contents=contents, values=values)     
 
 @app.route('/bin/<int:bin_id>')
 @login_required

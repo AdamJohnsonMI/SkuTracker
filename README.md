@@ -44,5 +44,6 @@ Priority.
 
 
 7/7/21
-1. Tracking/product/trackinglist needs the updated table look
+1. Tracking/product id/trackinglist needs the updated table look
+2. product/product id needs the updated table look
 2. Can I shrink the view orders table container
