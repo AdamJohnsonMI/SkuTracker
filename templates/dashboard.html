@@ -1,7 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+  .container-fluid{
+    background-color: rgb(252, 252, 252);
+  }
+  .dash{
+    margin:10px !important; 
+    padding: 40px 40px !important; 
+    font-weight:bold !important;
+    color:white !important; 
+    background-color: rgb(25, 51, 83);
+}
+   
 
+@include media-breakpoint-between(xs,sm){
+.btn {
+  @include button-size($input-btn-padding-y-sm, $input-btn-padding-x-sm, $font-size-sm, $line-height-sm, $btn-border-radius-sm);
+}
+}
+
+  </style>
   <div class="text-center vh-100" >
     <h1 class="text-center" >{% block title %} Welcome {{session.username}} to SkuTracker {% endblock %}</h1>
     <h3 class="text-center" style ="padding:20px 0px;"> Select which process you are doing:</h3>
@@ -11,7 +30,7 @@
       {% if session.admin_role%}   
       <a href="{{url_for('create_order')}}" class = 'btn dash'  type="button" >Create An Order</a>
       <a href="{{url_for('view_orders')}}" class = 'btn dash' type="button" >View Orders/Add Tracking Number to Order</a>
-      <a href="{{url_for('view_items')}}" class = 'btn dash btn-lg'  type="button" >View Items in Warehouse/Create Pick List</a>
+      <a href="{{url_for('view_items')}}" class = 'btn dash'  >View Items in Warehouse/Create Pick List</a>
       
 
       <div role="group" class ="btn dash">
