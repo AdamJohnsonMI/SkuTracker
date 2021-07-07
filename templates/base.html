@@ -12,13 +12,30 @@
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/jq-3.3.1/dt-1.10.25/b-1.7.1/datatables.min.css"/>
     <link rel="stylesheet" href="../static/css/bootstrap-table-sticky-header.css">
+    <style>
+      .container-fluid{
+        background-color: rgb(252, 252, 252);
+      }
+      #dash{
+        margin:10px; 
+        padding: 40px 40px; 
+        font-weight:bold; color:white; 
+        background-color: rgb(25, 51, 83);
+  }
+       #dashdrop{
+        margin:10px; 
+        padding: 40px 40px; 
+        font-weight:bold; color:white; 
+  }
+
+      </style>
     
     <title>{% block title %} {% endblock %}</title>
   </head>
   <body>
     
-    <nav class="navbar container-fluid navbar-expand-lg navbar-light bg-light ">
-        <a class="navbar-brand" href="{{url_for('dashboard')}}">Dashboard</a>
+    <nav class="navbar container-fluid navbar-expand-lg navbar-light" style="background-color: #416896;">
+        <a class="navbar-brand" style='color:white;' href="{{url_for('dashboard')}}">Dashboard</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,7 +43,7 @@
           <ul class="navbar-nav">
 
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="" style='color:white;' id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Admin Panel
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -44,10 +61,10 @@
             
         </div>
         {% if session.logged_in%}   
-        <a class="navbar-brand" href="{{url_for('logout')}}">Logout</a>
+        <a class="navbar-brand" style='color:white;' href="{{url_for('logout')}}">Logout</a>
         {% else %}
-        <a class="navbar-brand" href="{{url_for('register')}}">Register</a>   
-        <a class="navbar-brand" href="{{url_for('login')}}">Login</a>  
+        <a class="navbar-brand" style='color:white;' href="{{url_for('register')}}">Register</a>   
+        <a class="navbar-brand" style='color:white;' href="{{url_for('login')}}">Login</a>  
         {% endif %}   
       </nav>
 

@@ -387,7 +387,7 @@ def receiving_tracking(trackingid):
     cursor.execute('SELECT DISTINCT ON (1) orders.invid,orders.asinid, orders.received,orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
 
     results = cursor.fetchall()
-
+    
     if request.method == 'POST':
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
@@ -403,6 +403,7 @@ def receiving_tracking(trackingid):
         elif not quantity:
             flash('Quantity is required!')  
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
+
 
         cursor.execute("UPDATE orders SET received = %s WHERE invid = %s", (quantity, invid,));    
         cursor.execute("SELECT asinid, store FROM orders WHERE invid=%s", (invid,))
@@ -473,19 +474,48 @@ def items_to_bin():
         tobebinned = 0
         binlocation = request.form['binlocation']
         contentid = request.form['contentid'] 
+        qtysplit = request.form['qtysplit']
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        cursor.execute('SELECT createdbin FROM physicallocation WHERE createdbin = %s', (binlocation,))
-        results = cursor.fetchone()
-        if results:
-            cursor.execute('UPDATE bin SET (locationid, tobebinned ) = (%s,%s) WHERE contentid = %s', (binlocation, tobebinned, contentid,))
+        if int(qtysplit) <= 0:
+            flash('Cannot split 0 or less!')
+            return redirect(url_for('items_to_bin'))
+
+        if qtysplit != '':
+            
+            cursor.execute('SELECT createdbin FROM physicallocation WHERE createdbin = %s', (binlocation,))
+            results = cursor.fetchone()
+            if results:
+        
+                cursor.execute('SELECT * FROM bin WHERE contentid = %s', (contentid,));
+                splitData = cursor.fetchone()
+                newQty = int(splitData['quantity']) - int(qtysplit) 
+                if newQty <=0:
+                    flash('Only split partial values')
+                    return redirect(url_for('items_to_bin'))
+                cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,locationid,tobebinned) VALUES (%s,%s,%s,%s,%s,%s,%s)', ( splitData['asinid'],qtysplit,splitData['trackingid'],splitData['expirationdate'],splitData['store'],binlocation,tobebinned,));
+                cursor.execute('UPDATE bin SET quantity=%s WHERE contentid = %s', (newQty,contentid,))
+                conn.commit()
+                cursor.close()
+                flash('Split!')
+                return redirect(url_for('items_to_bin'))
+            else:    
+                flash("That bin does not exist!")
+                return redirect(url_for('items_to_bin')) 
+
         else:
-            flash("That bin does not exist!")
-            return redirect(url_for('items_to_bin'))   
-        conn.commit()
-        conn.close()
-        flash("Item binned into location " + binlocation)
-        return redirect(url_for('items_to_bin'))
+            cursor.execute('SELECT createdbin FROM physicallocation WHERE createdbin = %s', (binlocation,))
+            results = cursor.fetchone()
+            if results:
+                cursor.execute('UPDATE bin SET (locationid, tobebinned ) = (%s,%s) WHERE contentid = %s', (binlocation, tobebinned, contentid,))
+            else:
+                flash("That bin does not exist!")
+                return redirect(url_for('items_to_bin'))   
+            conn.commit()
+            conn.close()
+            flash("Item binned into location " + binlocation)
+            return redirect(url_for('items_to_bin'))
+
     conn.close()
     return render_template('bin/contents/itemsToBin.html', items=items) 
 

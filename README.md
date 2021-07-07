@@ -31,9 +31,15 @@ Misc.
 2. Rename site to arbitrage something and research different hosting sites
 3. Have image link on receiving.
 4. Add preptype to users
-5. Create order is not recognizing tabs under current code
+5. Editing items in warehouse should preload information to prevent erasing
+
 
 Possible Ideas to Support Client
 1. Add a date picked column?
 2. Pick list bin location column should identify # of locations
-3. View orders header should stick with the screen while scrolling
+
+
+Priority.
+1. Qty received needs to increment instead of being replaced on receiving
+2. Create order is not recognizing tabs under current code
+3. Product/id currently shows quantity 0 and less

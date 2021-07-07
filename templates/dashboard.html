@@ -1,58 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+  <div class="text-center vh-100" >
     <h1 class="text-center" >{% block title %} Welcome {{session.username}} to SkuTracker {% endblock %}</h1>
     <h3 class="text-center" style ="padding:20px 0px;"> Select which process you are doing:</h3>
     
-    <div class="container-fluid">
-        <div class="row align-items-start">
-            
-            <div class="col" style="font-size:28px; padding: 0px 30px;">
-              Order Process
-            </div>
-            <div class="col" style="font-size:28px;  ">
-              Warehouse Binning
-            </div>
-            <div class="col" style="font-size:28px; ">
-              Picking
-            </div>
-          </div>
-          <hr style="border-top: 3px double #8c8b8b;">
-        <div class="row align-items-start">
-            
-          <div class="col">
-            <a href="{{url_for('create_order')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create An Order</a>
-          </div>
-          <div class="col">
-            <a href="{{url_for('start_receiving')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
-          </div>
-          <div class="col">
-            <a href="{{url_for('view_items')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Create Pick List</a>
-          </div>
-        </div>
-        <div class="row align-items-center">
-            <div class="col">
-                <a href="{{url_for('view_orders')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">View Orders/Add Tracking Number to Order</a>
-              </div>
-              <div class="col">
-                <a href="{{url_for('items_to_bin')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Bin Items</a>
-              </div>
-              <div class="col">
-                <a href="{{url_for('items_to_pick')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">Pick List</a>
-              </div>
-        </div>
-        <div class="row align-items-end">
-            <div class="col">
-                <a href="{{url_for('start_receiving')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg"></a>
-              </div>
-              <div class="col">
-                <a href="{{url_for('view_items')}}" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg">View Items in Warehouse</a>
-              </div>
-              <div class="col">
-                <a href="" style="margin:10px; padding: 40px 40px;" type="button" class="btn btn-secondary btn-lg"></a>
-              </div>
+    <div class="btn-group-vertical">
+
+      {% if session.admin_role%}   
+      <a href="{{url_for('create_order')}}" id='dash' type="button" >Create An Order</a>
+      <a href="{{url_for('view_orders')}}" id='dash' type="button" >View Orders/Add Tracking Number to Order</a>
+      <a href="{{url_for('view_items')}}" id='dash' type="button" >View Items in Warehouse/Create Pick List</a>
+      
+
+      <div role="group">
+        <button id="btnGroupDrop1" type="button" style="margin:10px; padding: 40px 40px; font-weight:bold; color:white; background-color: rgb(25, 51, 83);" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Warehouse Actions
+        </button>
+        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+          <a class="dropdown-item"  href="{{url_for('items_to_pick')}}">Pick List</a>
+          <a class="dropdown-item"  href="{{url_for('items_to_bin')}}">Bin Items</a>
+          <a class="dropdown-item"  href="{{url_for('start_receiving')}}">Warehouse Receiving</a>
         </div>
       </div>
+
+      {% else %}
+      <a href="{{url_for('start_receiving')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Warehouse Receiving</a>
+      <a href="{{url_for('items_to_pick')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Pick List</a>
+      <a href="{{url_for('items_to_bin')}}" id='dash' type="button" class="btn btn-secondary btn-lg">Bin Items</a>
+      
+      {% endif %}   
+
+     
+      </div>
+
+      
+    </div>
     
 {% endblock %}
 

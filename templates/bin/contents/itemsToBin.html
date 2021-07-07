@@ -10,6 +10,7 @@
       <th data-sortable="true" scope="col">ASIN</th>
       <th data-sortable="true" scope="col">Description</th>
       <th data-sortable="true" scope="col">Quantity</th>
+      
       <th data-sortable="true" scope="col">Tracking Number</th>
       <th scope="col">Bin Item</th>
       
@@ -24,12 +25,15 @@
       <td>{{ bin['asinid'] }}</td>
       <td>{{ bin['description'] }}</td>
       <td>{{ bin['quantity'] }}</td>
+      
       <td>{{ bin['trackingid'] }}</td> 
       <td>
         
         <form method="post">
           <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" id="qtysplit" placeholder="Qty to Split or Leave Empty" name="qtysplit">
             <input type="text" class="form-control" id="binlocation" placeholder="Bin Location" name="binlocation">
+
              <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
             <button type="submit" class="btn btn-primary mb-2">Submit Location</button>
           </div>

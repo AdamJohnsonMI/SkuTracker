@@ -56,7 +56,7 @@ CREATE TABLE tracking (
     ordernumber varchar(60)
 );
 
-CREATE TABLE trackingContents(
+CREATE TABLE trackingContents(  
     trackeditem SERIAL PRIMARY KEY,
     TrackingID varchar(60),
     invid INTEGER,

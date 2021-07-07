@@ -4,7 +4,7 @@
 
 
 
-<div class="container-fluid" >  
+<div class="container-fluid"   >  
   <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true" data-sticky-header="true" >
     <thead>
       <tr>
@@ -29,7 +29,7 @@
     </thead>
 
 
-    <tbody>
+    <tbody >
         {% for order in orders %}
       <tr>
         <td><a href="{{ url_for('order_edit', order_id=order['invid']) }}">
