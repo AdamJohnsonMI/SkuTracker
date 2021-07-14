@@ -393,7 +393,7 @@ def receiving_tracking(trackingid):
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
         invid = request.form['invid']
-        flash("Invid id is: " + str(invid))
+        
 
         if not invid and not quantity:
             flash('ASIN and Quantity are required!')  
@@ -486,9 +486,10 @@ def items_to_bin():
         qtysplit = request.form['qtysplit']
         conn = get_db_connection()
         cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-        if int(qtysplit) <= 0:
-            flash('Cannot split 0 or less!')
-            return redirect(url_for('items_to_bin'))
+        #if int(qtysplit) <= 0:
+            #flash('Cannot split 0 or less!')
+            #return redirect(url_for('items_to_bin'))
+            
 
         if qtysplit != '':
             
@@ -620,6 +621,8 @@ def items_to_pick():
             flash("Cannot pick more than what's in the bin!")
             conn.close()
             return redirect(url_for('items_to_pick'))
+
+          
              
         newQuantity = (db_quantity - int(pick_quantity))
         if newQuantity >= 0:

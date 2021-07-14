@@ -19,7 +19,6 @@ The front-end was created with HTML, CSS, JavaScript, and Bootstrap. The back-en
 
 
 
-
 Next steps for the project:
 
 Major.
@@ -46,4 +45,13 @@ Priority.
 7/7/21
 1. Tracking/product id/trackinglist needs the updated table look
 2. product/product id needs the updated table look
+3. receiving by tracking number needs updated table look
 2. Can I shrink the view orders table container
+4. Contents edit cannot edit None location
+5. Picking less than quantity to pick should not remove the pick from system. 
+6. Receiving tracking number should error out if tracking number doesn't exist
+7. Should not be able to receive 0 quantity or negative
+8. Receiving by tracking needs a table below to show remaining tracking numbers not received
+9. Missing orders page: orderid, ordernumber, asinid, description, qty missing
+10. Add a note to orders that's visibile on receiving
+11. Duplicate order under orderid that autopopulates current info but not the tracking numbers
