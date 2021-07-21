@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Edit Tracking Serial: {{tracking['id']}} {% endblock %}</h1>
+
+<form method="post">
+
+    <div class="form-group">
+        <label for="trackingid">Tracking Number?</label>
+        <input type="text" name="trackingid" value="{{values['trackingid']}}"
+                  class="form-control">{{ request.form['trackingid'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="ordernumber">Order Number?</label>
+        <input type="text" name="ordernumber" value="{{values['ordernumber']}}"
+                  class="form-control">{{ request.form['ordernumber'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="received">Received?</label>
+        <input type="text" name="received" value="{{values['received']}}"
+                  class="form-control">{{ request.form['received'] }}</input>
+    </div>
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<hr>
+<form action="{{ url_for('tracking_delete', tracking_id=tracking['trackingid']) }}" method="POST">
+    <input type="submit" value="Delete tracking"
+            class="btn btn-danger btn-sm"
+            onclick="return confirm('Are you sure you want to delete this tracking number?')">
+</form>
+{% endblock %}

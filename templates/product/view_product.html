@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-dark">
+    <thead>
+        <tr>
+          <th scope="col">Content ID</th>
+            <th scope="col">Location ID</th>
+            <th scope="col">ASIN</th>
+            <th scope="col">Description</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Date Received</th>
+            <th scope="col">expirationdate</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for location in locations %}
+      <tr>
+        <td>{{ location['contentid'] }}</td>
+        <td>{{ location['locationid'] }}</td>
+        <td>{{ location['asinid'] }}</td>
+        <td>{{ location['description'] }}</td>
+        <td>{{ location['quantity'] }}</td>
+        <td>{{ location['datereceived'] }}</td>
+        <td>{{ location['expirationdate'] }}</td>
+                
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+    
+
+{% endblock %}
+
+
+
+

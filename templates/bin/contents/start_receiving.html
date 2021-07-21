@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Receiving Item(s) {% endblock %}</h1>
+
+<form method="POST">
+    <div class="form-group">
+        <label for="trackingid">Tracking Number</label>
+        <textarea name="trackingid" placeholder="Enter Tracking Number"
+                  class="form-control">{{ request.form['trackingid'] }}</textarea>
+    </div>
+
+    <div class="form-check form-check-inline scale">
+        <input class="form-check-input" type="checkbox" name="asinid" id="checkbox" value="" >
+        <label class="form-check-label" for="asinid"> Check this box if there is no tracking number</label>
+         
+      </div>
+
+      
+    
+
+    <div class="form-group">
+        <button style="margin:10px;" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Enter a Tracking Number for Order Number: {{result['ordernumber']}} {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="trackingid">Tracking Number</label>
+        <input type="text" name="trackingid"
+               placeholder="Enter Tracking Number" class="form-control"
+               value="{{ request.form['trackingid'] }}"></input>
+    </div>   
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+
+    <a class="btn btn-primary" href="{{url_for('view_orders')}}">Return to View Orders Page</a>
+</form>
+{% endblock %}

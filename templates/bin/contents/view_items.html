@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid" > 
+<table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-search="true" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
+  <thead>
+      <tr>
+        <th data-sortable="true" scope="col">contentID</th>
+        <th data-sortable="true" scope="col">Location</th>
+        <th data-sortable="true" scope="col">ASIN</th>
+        <th data-sortable="true" scope="col">Description</th>
+        <th data-sortable="true" scope="col">Quantity</th>
+        <th data-sortable="true" scope="col">Date Received</th>
+        <th data-sortable="true" scope="col">Expiration Date</th>
+        <th data-sortable="true" scope="col">Tracking Number</th>
+        <th data-sortable="true" scope="col">Store</th>
+        <th data-sortable="true" scope="col">Bin Locations</th>
+        <th data-sortable="true" scope="col">On Pick List?</th>
+        <th scope="col">Add to Pick List</th>
+
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for bin in items %}
+        {% set count= 0 %}
+          
+      <tr>
+        <td>{{ bin['contentid'] }}</a> <a href="{{url_for('contents_edit', contents_id=bin['contentid'])}}">
+            <span class="badge badge-warning">Edit/Delete</span></td>
+        <td>{{ bin['locationid'] }}</td>
+        <td>{{ bin['asinid'] }}</td>
+        <td>{{ bin['description'] }}</td>
+        <td>{{ bin['quantity'] }}</td>
+        <td>{{ bin['datereceived'] }}</td>
+        <td>{{ bin['expirationdate'] }}</td>
+        <td>{{ bin['trackingid'] }}</td>
+        <td>{{ bin['store'] }}</td>
+
+        {% if bin['locationid'] == none %}
+        
+        <td>No bin locations</td>
+        {% else %}
+
+        
+
+        <td><a href="{{ url_for('product', product_id=bin['asinid']) }}">All Locations For ASIN</a> </td>
+        {% endif %}
+        {% if bin['tobepicked'] == 1 %}
+        <td>On Pick List</td>
+        {% else %}
+        <td></td>
+        {% endif %}
+
+        <td><form method="post">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" id="quantity" placeholder="Quantity to Pick" name="quantity">
+             <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
+            <button type="submit" class="btn btn-primary mb-2">Confirm Pick Request</button>
+          </div>
+          
+          </form></td>
+        
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
+
+

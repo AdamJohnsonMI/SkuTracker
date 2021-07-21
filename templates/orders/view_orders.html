@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+
+<div class="container-fluid"   >  
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true" data-sticky-header="true" >
+    <thead>
+      <tr>
+        <th data-sortable="true" scope="col">Edit</th>
+        <th data-sortable="true" scope="col">Order id</th>
+        <th data-sortable="true" scope="col">Description</th>
+        <th data-sortable="true" scope="col">ASIN</th>
+        <th data-sortable="true" scope="col">Date Purchased</th>
+        <th data-sortable="true" scope="col">Buy Price</th>
+        <th data-sortable="true" scope="col">Sell Price</th>
+        <th data-sortable="true" scope="col">Projected Profit</th>
+        <th data-sortable="true" scope="col">Hazardous</th>
+        <th data-sortable="true" scope="col">Store</th>
+        <th data-sortable="true" scope="col">Quantity</th>
+        <th data-sortable="true" scope="col">Order Number</th>
+        <th data-sortable="true" scope="col">Fullfillment</th>
+        <th data-sortable="true" scope="col">Buyer</th>
+        <th data-sortable="true" scope="col">Supplier</th>
+        <th data-sortable="true" scope="col">Bin Locations</th>
+        <th data-sortable="true" scope="col">Tracking Numbers</th>
+      </tr>
+    </thead>
+
+
+    <tbody >
+        {% for order in orders %}
+      <tr>
+        <td><a href="{{ url_for('order_edit', order_id=order['invid']) }}">
+          <span class="badge badge-warning">Edit/Delete</span></td>
+        <td>{{order['invid'] }} </td>
+        <td>{{ order['description']}}</td>
+        <td>{{ order['asinid'] }}</td>
+        <td>{{ order['datepurchased'] }}</td>
+        <td>{{ order['buyprice'] }}</td>
+        <td>{{ order['sellprice'] }}</td>
+        <td>{{ order['projectedprofit'] }}</td>
+        <td>{{ order['hazardous'] }}</td>
+        <td>{{ order['store'] }}</td>
+        <td>{{ order['quantity'] }}</td>
+        <td>{{ order['ordernumber'] }}</td>    
+        <td>{{ order['fullfillment'] }}</td>
+        <td>{{ order['buyer'] }}</td>
+        <td>{{ order['supplier'] }}</td>
+
+        {% if order['locationid'] == none %}
+        <td>No bin locations</td>
+        {% else  %}
+        <td><a href="{{ url_for('product', product_id=order['asinid']) }}">Bin locations</a> </td>
+        {% endif %}
+        
+        
+        {% if order['trackingid'] == none %}
+          <td>No tracking number <a href="{{ url_for('tracking_create', order_id=order['invid']) }}">
+            <span class="badge badge-warning">Add Tracking Number</span></td>
+
+        {% else  %}
+          <td><a href="{{ url_for('view_tracking_list', order_id=order['invid']) }}">Tracking numbers</a> <a href="{{ url_for('tracking_create', order_id=order['invid']) }}">
+            <span class="badge badge-warning">Add Tracking Number</span></td>
+        {% endif %}
+
+
+        </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+{% endblock %}
+

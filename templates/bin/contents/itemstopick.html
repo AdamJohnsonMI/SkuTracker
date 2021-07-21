@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>{% block title %} Pick Item(s). Listed items need to be picked {% endblock %}</h1>
+
+<div class="container-fluid" > 
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
+    <thead>
+    <tr>
+      <th scope="col">Content ID</th>
+      <th scope="col">Location ID</th>
+      <th scope="col">ASIN</th>
+      <th scope="col">Description</th>
+      <th scope="col">Quantity in WH</th>
+      <th scope="col">Quantity to Pick</th>
+      <th scope="col">Pick Item</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for bin in items %}
+    <tr>
+      <td>{{ bin['contentid'] }} <form action="{{ url_for('remove_pick', contents_id=bin['contentid']) }}" method="POST">
+        <input type="submit" value="Cancel Pick"
+                class="btn btn-danger btn-sm"
+                onclick="return confirm('Are you sure you want to delete this pick?')">
+      </form></td>
+        <td>{{ bin['locationid'] }}</td>
+        <td>{{ bin['asinid'] }}</td>
+        <td>{{ bin['description'] }}</td>
+        <td>{{ bin['quantity'] }} 
+          <form action="{{ url_for('missing', contents_id=bin['contentid']) }}" method="GET">
+          <input type="submit" value="Missing/Damaged"
+                  class="btn btn-danger btn-sm"
+                  onclick="return confirm('Continue to missing and damaged screen?')">
+        </form></td>
+        <td>{{ bin['pickquantity'] }}</td>
+        <td> 
+        
+        <form method="post">
+            <div class="form-group mx-sm-3 mb-2">
+                <input type="text" class="form-control" id="quantity" placeholder="Quantity Picked" name="quantity">
+                 <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
+                <button type="submit" class="btn btn-primary mb-2">Confirm Pick</button>
+              </div>   
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Edit item binned: "{{ contents['contentid'] }}" {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <h3>{{contents[contentid]}}</h3>
+    </div>
+
+    <div class="form-group">
+        <label for="locationid">Locationid</label>
+        <input type="text" name="locationid"  value="{{values['locationid']}}"
+                  class="form-control">{{ request.form['locationid'] }}</input>
+
+                  
+    </div>
+    <div class="form-group">
+        <label for="asinid">asinid</label>
+        <input type="text" name="asinid" value="{{values['asinid']}}"
+                  class="form-control">{{ request.form['asinid'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="quantity">quantity</label>
+        <input type="text" name="quantity"  value="{{values['quantity']}}"
+                  class="form-control">{{ request.form['quantity'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="datereceived">Date Received</label>
+        <input type="text" name="datereceived"  value="{{values['datereceived']}}"
+                  class="form-control">{{ request.form['datereceived'] }}</input>
+    </div>
+    <div class="form-group">
+        <label for="expirationdate">Expiration Date</label>
+        <input type="text" name="expirationdate"  value="{{values['expirationdate']}}"
+                  class="form-control">{{ request.form['expirationdate'] }}</input>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+<hr>
+<form action="{{ url_for('contents_delete', contents_id=contents['contentid']) }}" method="POST">
+    <input type="submit" value="Delete Content"
+            class="btn btn-danger btn-sm"
+            onclick="return confirm('Are you sure you want to delete this content?')">
+</form>
+{% endblock %}

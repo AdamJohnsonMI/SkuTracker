@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc" data-search="true">
+        <thead>
+          <tr>
+            <th data-sortable="true" scope="col">Tracking Serial</th> 
+            <th data-sortable="true" scope="col">Tracking Number</th>
+            <th data-sortable="true" scope="col">Order ID</th>
+            <th data-sortable="true" scope="col">Order Number</th>
+            <th data-sortable="true" scope="col">Received</th>
+            <th data-sortable="true" scope="col">List of items in tracking number</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for trackingNum in trackingNums %}
+          <tr>
+            <td>{{trackingNum['id']}}<a href="{{url_for('tracking_edit', tracking_id=trackingNum['trackingid'])}}"> <span class="badge badge-warning">Edit</span></td>
+            <td>{{trackingNum['trackingid']}}</td>
+            <td>{{trackingNum['invid']}}</td>  
+            <td>{{trackingNum['ordernumber']}}</td> 
+            <td>{{trackingNum['received']}}</td>
+              
+              
+              {% if trackingNum['trackeditem'] == None %}
+              <td>No items attached to tracking number<a href="{{url_for('tracking_addto', tracking_id=trackingNum['trackingid'], order_id = trackingNum['invid'])}}">
+                <span class="badge badge-warning">Add items to tracking number</span></td>
+            {% else  %}
+              <td><a href="{{ url_for('tracking', tracking_id=trackingNum['trackingid']) }}">Click for items</a><a href="{{url_for('tracking_addto', tracking_id=trackingNum['trackingid'], order_id = trackingNum['invid'])}}">
+                <span class="badge badge-warning">Add items to tracking number</span></td>
+            {% endif %}
+            
+
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      
+      
+{% endblock %}
+

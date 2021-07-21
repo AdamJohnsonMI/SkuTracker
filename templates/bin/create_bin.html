@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Create a New Bin {% endblock %}</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="createdbin">Create a Bin Location</label>
+        <input type="text" name="createdbin"
+               placeholder="Enter desired Bin Location" class="form-control"
+               value="{{ request.form['createdbin'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+{% endblock %}

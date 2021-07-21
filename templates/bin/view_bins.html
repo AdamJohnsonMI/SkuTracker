@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Bin ID</th>
+        <th scope="col">Location ID</th>
+        
+        
+      </tr>
+    </thead>
+    <tbody>
+        {% for physicallocation in bins %}
+      <tr>
+        <td>{{ physicallocation['id'] }}</a> <a href="{{url_for('bin_edit', bin_id=physicallocation['id'])}}">
+            <span class="badge badge-warning">Edit/Delete</span></td>
+        <td>{{ physicallocation['createdbin'] }}</td>
+        
+        
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+{% endblock %}
+
+
+
+
