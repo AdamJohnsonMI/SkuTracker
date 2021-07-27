@@ -16,7 +16,7 @@ CREATE TABLE physicalLocation (
 CREATE TABLE bin (
     ContentID SERIAL PRIMARY KEY, 
     Locationid INTEGER,
-    ASINid varchar(60)REFERENCES product(ASINid),
+    ASINid varchar(60), 
     quantity INTEGER,
     dateReceived TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expirationDate varchar(60),
@@ -32,7 +32,7 @@ CREATE TABLE bin (
 
 CREATE TABLE orders (
     Invid SERIAL PRIMARY KEY ,
-    ASINid varchar(60) REFERENCES product(ASINid),
+    ASINid varchar(60) , 
     datePurchased TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     buyPrice NUMERIC(7,2),
     sellPrice NUMERIC(7,2),
@@ -43,15 +43,16 @@ CREATE TABLE orders (
     orderNumber varchar(60),
     fullfillment varchar(60),
     buyer varchar(60),
-    description varchar(200) REFERENCES product (description),
-    received INTEGER date NOT NULL DEFAULT CURRENT_DATE;
+    description varchar(200) ,
+    received INTEGER, 
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE
     
 );
 
 CREATE TABLE tracking (
     id SERIAL PRIMARY KEY,
     TrackingID varchar(60), 
-    invid INTEGER REFERENCES orders,
+    invid INTEGER,
     received varchar(60),
     ordernumber varchar(60)
 );
@@ -60,7 +61,7 @@ CREATE TABLE trackingContents(
     trackeditem SERIAL PRIMARY KEY,
     TrackingID varchar(60),
     invid INTEGER,
-    ASINid varchar(60) REFERENCES product(ASINid),
+    ASINid varchar(60),
     quantity INTEGER,
     store varchar(60)
 );

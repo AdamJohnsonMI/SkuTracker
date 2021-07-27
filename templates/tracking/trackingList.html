@@ -2,10 +2,10 @@
 
 {% block content %}
 
-    <table class="table table-dark">
-        <thead>
+<div class="container-fluid" > 
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
+    <thead>
           <tr>
-            
             <th scope="col">Tracking Number</th>
             <th scope="col">Order ID</th>
             <th scope="col">Received</th>
@@ -19,10 +19,7 @@
             <td>{{trackingNum['trackingid']}} </td>
             <td>{{trackingNum['invid']}}</td>  
             <td>{{trackingNum['received']}}<a href="{{url_for('tracking_edit', tracking_id=trackingNum['trackingid'])}}"> </td>
-              
-              
-              
-            
+        
 
             </tr>
           {% endfor %}

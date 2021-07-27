@@ -382,6 +382,7 @@ def receiving_tracking(trackingid):
     received = "Yes"
     tobebinned = 1
     oldReceived = 0
+    stagingArea=0 #Represent the locationid of 0 to indicate item is in staging area
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #cursor.execute('SELECT DISTINCT ON (1) orders.invid,orders.asinid, orders.received,orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
@@ -390,6 +391,8 @@ def receiving_tracking(trackingid):
     results = cursor.fetchall()
     
     if request.method == 'POST':
+        
+
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
         invid = request.form['invid']
@@ -420,7 +423,7 @@ def receiving_tracking(trackingid):
         asinid = asinFetch['asinid']
         store = asinFetch['store']
 
-        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned) VALUES (%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,));
+        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid) VALUES (%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,));
         
         result= cursor.fetchone()
 
@@ -438,7 +441,17 @@ def start_receiving():
         trackingid = request.form['trackingid']
         trackingid = trackingid.strip()
 
-        if trackingid != '':
+        conn = get_db_connection()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cursor.execute('SELECT * FROM tracking where trackingid=%s', (trackingid,));
+        result=cursor.fetchone()
+
+
+         
+        if result == None:
+            flash("Tracking number does not exist")
+            return redirect(url_for('start_receiving'))
+        if trackingid != '':   
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
         else:
             return redirect(url_for('receiving'))
@@ -450,6 +463,7 @@ def start_receiving():
 @admin_required
 def receiving():
     received = "Yes"
+    stagingArea=0
     if request.method == 'POST':
         asinid = request.form['asinid']
         quantity = request.form['quantity']
@@ -462,8 +476,8 @@ def receiving():
         else:
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO bin (asinid, quantity, expirationdate,tobebinned) VALUES ( %s, %s, %s,%s)', 
-                            (asinid, quantity, expirationdate,tobebinned));
+            cursor.execute('INSERT INTO bin (asinid, quantity, expirationdate,tobebinned,locationid) VALUES ( %s, %s, %s,%s,%s)', 
+                            (asinid, quantity, expirationdate,tobebinned,stagingArea,));
             conn.commit()
             conn.close()
             flash("ASIN: " + asinid + " of quantity: " + quantity + " added to binning list")
@@ -830,6 +844,7 @@ def order_delete(order_id):
     order = get_order(order_id)
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute('DELETE FROM tracking WHERE invid = %s', (order_id,))
     cursor.execute('DELETE FROM orders WHERE invid = %s', (order_id,))
     conn.commit()
     conn.close()
@@ -948,8 +963,7 @@ def tracking_create(order_id):
             cursor.execute('select * from orders where ordernumber = %s',  (result['ordernumber'],));
             orders = cursor.fetchall()
             for order in orders:
-                cursor.execute('INSERT INTO tracking (trackingid, invid, ordernumber) VALUES (%s, %s,%s)', 
-                         (trackingid, order['invid'], order['ordernumber'],));
+                cursor.execute('INSERT INTO tracking (trackingid, invid, ordernumber) VALUES (%s, %s,%s)', (trackingid, order['invid'], order['ordernumber'],));
             conn.commit()      
             conn.close()
             flash("Entry added! Add more or return to view orders page")

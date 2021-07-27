@@ -38,18 +38,11 @@ Possible Ideas to Support Client
 
 
 Priority.
-1. Editing items in warehouse should preload information to prevent erasing 
-2. Have image link on receiving.
+1. Have image link on receiving.
 
 
 7/7/21
-1. Tracking/product id/trackinglist needs the updated table look
-2. product/product id needs the updated table look
-3. receiving by tracking number needs updated table look
-2. Can I shrink the view orders table container
-4. Contents edit cannot edit None location
 5. Picking less than quantity to pick should not remove the pick from system. 
-6. Receiving tracking number should error out if tracking number doesn't exist
 7. Should not be able to receive 0 quantity or negative
 8. Receiving by tracking needs a table below to show remaining tracking numbers not received
 9. Missing orders page: orderid, ordernumber, asinid, description, qty missing
