@@ -1057,7 +1057,7 @@ def export():
     cw = csv.writer(si)
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT DISTINCT ON (1) bin.contentid,bin.asinid,orders.datepurchased,bin.pickquantity,orders.buyprice,orders.sellprice,bin.expirationdate,orders.supplier,bin.locationid from bin LEFT OUTER JOIN tracking ON bin.trackingid=tracking.trackingid LEFT OUTER JOIN orders ON orders.ordernumber=tracking.ordernumber where bin.tobepicked='1'")
+    cursor.execute("SELECT DISTINCT ON (1) bin.contentid,bin.asinid AS ASIN,orders.datepurchased as PurchasedDate,bin.pickquantity AS Quantity,orders.buyprice AS Cost,orders.sellprice AS ListPrice,bin.expirationdate AS ExpirationDate,orders.supplier AS Supplier,bin.locationid from bin LEFT OUTER JOIN tracking ON bin.trackingid=tracking.trackingid LEFT OUTER JOIN orders ON orders.ordernumber=tracking.ordernumber where bin.tobepicked='1'")
     rows = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(rows)
