@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<h1>{% block title %} Pick Item(s). Listed items need to be picked {% endblock %}</h1>
+<h1>{% block title %} Pick List{% endblock %}</h1>
+<h3>Enter Missing/Damaged before picking</h3>
 
 <div class="container-fluid" > 
   <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
@@ -49,6 +50,7 @@
     {% endfor %}
   </tbody>
 </table>
+
 </div>
 {% endblock %}
 

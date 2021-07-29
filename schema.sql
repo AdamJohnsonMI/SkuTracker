@@ -84,3 +84,15 @@ CREATE TABLE users(
     register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     
 );
+
+
+
+####Testing this Table######
+
+CREATE TABLE picks(
+    id SERIAL PRIMARY KEY,
+    contentid INTEGER,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE,
+    quantity INTEGER
+
+);

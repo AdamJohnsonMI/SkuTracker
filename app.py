@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, flash, redirect, session, logging
+from flask import Flask, render_template, request, url_for, flash, redirect, session, logging, make_response
 from functools import wraps  #Used for login and admin control
 from wtforms import Form, BooleanField, StringField, PasswordField, validators #Used for registering with a password
 from passlib.hash import sha256_crypt
@@ -6,6 +6,8 @@ from werkzeug.exceptions import abort
 import psycopg2
 import psycopg2.extras #Allows dictionary cursor to be used
 import os
+import csv
+import io
 
 
 app = Flask(__name__)
@@ -642,6 +644,8 @@ def items_to_pick():
         if newQuantity >= 0:
             cursor.execute('UPDATE bin SET (pickquantity, tobepicked, quantity ) = (%s,%s,%s) WHERE contentid = %s', (0, tobepicked, newQuantity, contentid,))
             conn.commit()
+            cursor.execute('INSERT INTO picks (contentid,quantity) VALUES (%s,%s)', (contentid,pick_quantity,));
+            conn.commit()
             flash(" Items picked from pick list with quantity: " + pick_quantity + " where contentid is: " + contentid)   
             conn.close()
             return redirect(url_for('items_to_pick'))
@@ -1044,5 +1048,20 @@ def missing_inventory():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.asinid, product.description,bin.damaged,bin.missing, bin.trackingid, tracking.ordernumber FROM bin LEFT OUTER JOIN tracking ON bin.trackingid = tracking.trackingid LEFT OUTER JOIN product ON bin.asinid=product.asinid WHERE (damaged > 0 OR missing > 0) ')
     results=cursor.fetchall()
-
+    conn.close()
     return render_template('admin/missinginventory.html', results=results)   
+
+@app.route('/getPlotCSV', methods=['GET'])
+def export():
+    si = io.StringIO()
+    cw = csv.writer(si)
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute("SELECT DISTINCT ON (1) bin.contentid,bin.asinid,orders.datepurchased,bin.pickquantity,orders.buyprice,orders.sellprice,bin.expirationdate,orders.supplier,bin.locationid from bin LEFT OUTER JOIN tracking ON bin.trackingid=tracking.trackingid LEFT OUTER JOIN orders ON orders.ordernumber=tracking.ordernumber where bin.tobepicked='1'")
+    rows = cursor.fetchall()
+    cw.writerow([i[0] for i in cursor.description])
+    cw.writerows(rows)
+    response = make_response(si.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
+    response.headers["Content-type"] = "text/csv"
+    return response
