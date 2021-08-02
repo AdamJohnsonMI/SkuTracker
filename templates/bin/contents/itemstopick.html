@@ -2,19 +2,20 @@
 
 {% block content %}
 
+
 <h1>{% block title %} Pick List{% endblock %}</h1>
 <h3>Enter Missing/Damaged before picking</h3>
 
 <div class="container-fluid" > 
-  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
+  <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-search="true" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
     <thead>
     <tr>
-      <th scope="col">Content ID</th>
-      <th scope="col">Location ID</th>
-      <th scope="col">ASIN</th>
+      <th data-sortable="true" scope="col">Content ID</th>
+      <th data-sortable="true" scope="col">Location ID</th>
+      <th data-sortable="true"scope="col">ASIN</th>
       <th scope="col">Description</th>
-      <th scope="col">Quantity in WH</th>
-      <th scope="col">Quantity to Pick</th>
+      <th data-sortable="true" scope="col">Quantity in WH</th>
+      <th data-sortable="true" scope="col">Quantity to Pick</th>
       <th scope="col">Pick Item</th>
     </tr>
   </thead>
