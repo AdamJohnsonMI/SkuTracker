@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<style>
+iframe{
+  display: none;
+}
+</style>
 <div class="container-fluid" > 
 <a href="/getPlotCSV">Export CSV for Current Pick List</a>
 <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-search="true" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
@@ -53,11 +58,12 @@
         <td></td>
         {% endif %}
 
-        <td><form method="post">
+        <td><form method="post" target="frame">
+          
           <div class="form-group mx-sm-3 mb-2">
             <input type="text" class="form-control" id="quantity" placeholder="Quantity to Pick" name="quantity">
              <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
-            <button type="submit" class="btn btn-primary mb-2">Confirm Pick Request</button>
+            <button onclick="pickAlert()" type="submit" class="btn btn-primary mb-2">Confirm Pick Request</button>
           </div>
           
           </form></td>
@@ -67,5 +73,10 @@
     </tbody>
   </table>
 </div>
-
+<script>
+  function pickAlert() {
+    alert("Pick Created!");
+  }
+  </script>
+<iframe name="frame"></iframe>
 {% endblock %}
