@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{% block title %} contentid: {{ rows['contentid'] }} {% endblock %}</h2>
+    <p>asinid: {{ rows['asin'] }}</p>
+    <p>cost: {{ rows['cost'] }}</p>
+    <p>listprice: {{ rows['listprice'] }}</p>
+    <p>expirationdate: {{ rows['expirationdate'] }}</p>
+    <p>supplier: {{ rows['supplier'] }}</p>
+{% endblock %}
