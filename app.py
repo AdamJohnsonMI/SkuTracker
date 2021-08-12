@@ -412,9 +412,12 @@ def receiving_tracking(trackingid):
             missing = 0
         if damaged == '':
             damaged = 0
-        if binlocation != None:
+        if binlocation != '':
             stagingArea = binlocation    
             tobebinned = 0
+            
+        
+
         
         cursor.execute('SELECT received FROM orders WHERE invid =%s', (invid,))
         recFetch = cursor.fetchone()
@@ -943,6 +946,8 @@ def view_tracking_list(order_id):
     trackingNums = cursor.fetchall()
     conn.close()
     return render_template('tracking/trackingList.html', trackingNums=trackingNums)
+
+
 
 @app.route('/tracking/<string:tracking_id>')  #Being used by viewing tracking number page but could be removed if tweaked
 @login_required
