@@ -7,7 +7,8 @@ iframe{
 }
 </style>
 <div class="container-fluid" > 
-<a href="/getPlotCSV">Export CSV for Current Pick List</a>
+<a href="/getSumCSV">Export CSV for Current Pick List with Quantities Summed</a> <br>
+<a href="/getPickCSV">Export CSV for Current Pick List</a>
 <table data-toggle="table" data-classes="table table-hover table-condensed"  data-striped="false" data-search="true" data-pagination="false" data-sort-order="asc"  data-sticky-header="true" >
   <thead>
       <tr>
@@ -18,7 +19,9 @@ iframe{
         <th data-sortable="true" scope="col">Quantity</th>
         <th data-sortable="true" scope="col">Date Received</th>
         <th data-sortable="true" scope="col">Expiration Date</th>
-        <th data-sortable="true" scope="col">Tracking Number</th>
+        <th data-sortable="true" scope="col">Fulfillment</th>
+        <th data-sortable="true" scope="col">Hazardous</th>
+        <th data-sortable="true" scope="col">Oversized</th>
         <th data-sortable="true" scope="col">Store</th>
         <th data-sortable="true" scope="col">Bin Locations</th>
         <th data-sortable="true" scope="col">On Pick List?</th>
@@ -40,7 +43,9 @@ iframe{
         <td>{{ bin['quantity'] }}</td>
         <td>{{ bin['datereceived'] }}</td>
         <td>{{ bin['expirationdate'] }}</td>
-        <td>{{ bin['trackingid'] }}</td>
+        <td>Add fullfillment here*developer note</td>
+        <td>Add hazardous here*developer note</td>
+        <td>Add oversized here*developer note</td>
         <td>{{ bin['store'] }}</td>
 
         {% if bin['locationid'] == none %}

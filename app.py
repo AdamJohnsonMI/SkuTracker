@@ -1055,7 +1055,7 @@ def missing_inventory():
     conn.close()
     return render_template('admin/missinginventory.html', results=results)   
 
-@app.route('/getPlotCSV', methods=['GET'])
+@app.route('/getSumCSV', methods=['GET'])
 def export():
     si = io.StringIO()
     cw = csv.writer(si)
@@ -1070,4 +1070,18 @@ def export():
     response.headers["Content-type"] = "text/csv"
     return response
 
+@app.route('/getPickCSV', methods=['GET'])
+def exportPick():
+    si = io.StringIO()
+    cw = csv.writer(si)
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    cursor.execute("SELECT contentid, asinid, quantity ,buyprice as Cost,sellprice as ListPrice,datepurchased as purchasedate,bin.expirationdate AS expirationdate,supplier,locationid as location FROM bin WHERE tobepicked='1' order by asinid desc ")
+    rows = cursor.fetchall()
+    cw.writerow([i[0] for i in cursor.description])
+    cw.writerows(rows)
+    response = make_response(si.getvalue())
+    response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
+    response.headers["Content-type"] = "text/csv"
+    return response
 
