@@ -388,7 +388,7 @@ def receiving_tracking(trackingid):
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     #cursor.execute('SELECT DISTINCT ON (1) orders.invid,orders.asinid, orders.received,orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
-    cursor.execute('SELECT DISTINCT ON (1) orders.invid,orders.asinid, orders.received,orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
+    cursor.execute('SELECT DISTINCT ON (1) orders.invid, orders.asinid, orders.received,orders.store,orders.quantity,orders.ordernumber,tracking.ordernumber,tracking.trackingid,product.description FROM orders LEFT OUTER JOIN product ON orders.asinid = product.asinid LEFT OUTER JOIN tracking ON orders.ordernumber = tracking.ordernumber WHERE trackingid = %s', (trackingid,))
 
     results = cursor.fetchall()
     
@@ -420,12 +420,16 @@ def receiving_tracking(trackingid):
 
         currentReceived = oldReceived + int(quantity)
         cursor.execute("UPDATE orders SET received = %s WHERE invid = %s", (currentReceived, invid,));    
-        cursor.execute("SELECT asinid, store FROM orders WHERE invid=%s", (invid,))
+        cursor.execute("SELECT asinid, store,supplier, datepurchased, buyprice,sellprice FROM orders WHERE invid=%s", (invid,))
         asinFetch = cursor.fetchone()
         asinid = asinFetch['asinid']
         store = asinFetch['store']
+        supplier = asinFetch['supplier']
+        datepurchased = asinFetch['datepurchased']
+        buyprice = asinFetch['buyprice']
+        sellprice = asinFetch['sellprice']
 
-        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid) VALUES (%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,));
+        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid,supplier, datepurchased, buyprice,sellprice) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,supplier, datepurchased, buyprice,sellprice,));
         
         result= cursor.fetchone()
 

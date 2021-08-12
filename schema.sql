@@ -27,7 +27,12 @@ CREATE TABLE bin (
     pickquantity INTEGER,
     damaged INTEGER,
     missing INTEGER,
-    username varchar(60)
+    username varchar(60),
+    datePurchased varchar(30),
+    buyPrice NUMERIC(7,2),
+    sellPrice NUMERIC(7,2),
+    supplier varchar(60)
+
 );
 
 CREATE TABLE orders (
