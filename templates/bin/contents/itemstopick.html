@@ -39,11 +39,11 @@
         <td>{{ bin['pickquantity'] }}</td>
         <td> 
         
-        <form method="post">
+        <form method="post" target="frame">
             <div class="form-group mx-sm-3 mb-2">
                 <input type="text" class="form-control" id="quantity" placeholder="Quantity Picked" name="quantity">
                  <input type="hidden" id="hiddendata" name="contentid" value="{{bin['contentid']}}"> 
-                <button type="submit" class="btn btn-primary mb-2">Confirm Pick</button>
+                <button onclick="pickAlert()" type="submit" class="btn btn-primary mb-2">Confirm Pick</button>
               </div>   
           </form>
         </td>
@@ -53,5 +53,11 @@
 </table>
 
 </div>
+<script>
+  function pickAlert() {
+    alert("Item Picked! Refresh page to view changes");
+  }
+  </script>
+<iframe name="frame"></iframe>
 {% endblock %}
 
