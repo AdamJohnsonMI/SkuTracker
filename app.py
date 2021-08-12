@@ -1061,7 +1061,7 @@ def export():
     cw = csv.writer(si)
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT asinid, SUM (quantity) AS total,max(buyprice),sellprice,datepurchased,min(bin.expirationdate) AS expirationdate,supplier,min(locationid) as location FROM bin WHERE tobepicked='1' GROUP BY asinid, sellprice,datepurchased,supplier ORDER BY total desc")
+    cursor.execute("SELECT asinid, SUM (quantity) AS Quantity ,max(buyprice) as Cost,sellprice as ListPrice,datepurchased as purchasedate,min(bin.expirationdate) AS expirationdate,supplier,min(locationid) as location FROM bin WHERE tobepicked='1' GROUP BY asinid, sellprice,datepurchased,supplier ORDER BY quantity desc")
     rows = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(rows)
@@ -1070,16 +1070,4 @@ def export():
     response.headers["Content-type"] = "text/csv"
     return response
 
-@app.route('/testdb', methods=['GET'])
-def exportdb():
-    conn = get_db_connection()
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute(" SELECT DISTINCT ON (1) bin.contentid,orders.datepurchased,orders.buyprice,orders.sellprice,orders.supplier from bin LEFT OUTER JOIN tracking ON bin.trackingid=tracking.trackingid LEFT OUTER JOIN orders ON orders.ordernumber=tracking.ordernumber and bin.asinid = orders.asinid")
-    rows = cursor.fetchall()
 
-    for row in rows:
-        cursor.execute('UPDATE bin SET supplier= %s, datepurchased = %s, buyprice = %s, sellprice= %s WHERE contentid =%s', (row['supplier'],row['datepurchased'] ,row['buyprice'] ,row['sellprice'],row['contentid']))
-
-    conn.commit()
-    conn.close()
-    return render_template('testdb.html', rows=rows)   
