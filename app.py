@@ -393,23 +393,28 @@ def receiving_tracking(trackingid):
     results = cursor.fetchall()
     
     if request.method == 'POST':
-        
-
         quantity = request.form['quantity']
         expirationdate = request.form['expirationdate']
         invid = request.form['invid']
-        
+        missing = request.form['missing']
+        damaged = request.form['damaged']
+        binlocation = request.form['bin']
 
-        if not invid and not quantity:
-            flash('ASIN and Quantity are required!')  
-            return redirect(url_for('receiving_tracking', trackingid=trackingid))
-        elif not invid:
+        
+        if invid == '':
             flash('ASIN is required!')  
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
         elif not quantity:
             flash('Quantity is required!')  
             return redirect(url_for('receiving_tracking', trackingid=trackingid))
 
+        if missing == '':
+            missing = 0
+        if damaged == '':
+            damaged = 0
+        if binlocation != None:
+            stagingArea = binlocation    
+            tobebinned = 0
         
         cursor.execute('SELECT received FROM orders WHERE invid =%s', (invid,))
         recFetch = cursor.fetchone()
@@ -430,7 +435,7 @@ def receiving_tracking(trackingid):
         sellprice = asinFetch['sellprice']
         fullfillment = asinFetch['fullfillment']
 
-        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid,supplier, datepurchased, buyprice,sellprice,fullfillment) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,supplier, datepurchased, buyprice,sellprice,fullfillment,));
+        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid,supplier, datepurchased, buyprice,sellprice,fullfillment,missing,damaged) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,supplier, datepurchased, buyprice,sellprice,fullfillment,missing,damaged,));
         
         result= cursor.fetchone()
 
