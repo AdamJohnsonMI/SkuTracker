@@ -4,7 +4,8 @@ CREATE TABLE product (
     Hazardous varchar(60),
     Oversized varchar(60),
     description varchar(200),
-    imglink varchar(200)
+    imglink varchar(200),
+    product_category varchar(60)
 );
 
 CREATE TABLE physicalLocation (
@@ -51,6 +52,7 @@ CREATE TABLE orders (
     description varchar(200) ,
     received INTEGER, 
     date TIMESTAMP NOT NULL DEFAULT CURRENT_DATE
+    
     
 );
 

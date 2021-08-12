@@ -420,7 +420,7 @@ def receiving_tracking(trackingid):
 
         currentReceived = oldReceived + int(quantity)
         cursor.execute("UPDATE orders SET received = %s WHERE invid = %s", (currentReceived, invid,));    
-        cursor.execute("SELECT asinid, store,supplier, datepurchased, buyprice,sellprice FROM orders WHERE invid=%s", (invid,))
+        cursor.execute("SELECT asinid, store,supplier, datepurchased, buyprice,sellprice,fullfillment FROM orders WHERE invid=%s", (invid,))
         asinFetch = cursor.fetchone()
         asinid = asinFetch['asinid']
         store = asinFetch['store']
@@ -428,8 +428,9 @@ def receiving_tracking(trackingid):
         datepurchased = asinFetch['datepurchased']
         buyprice = asinFetch['buyprice']
         sellprice = asinFetch['sellprice']
+        fullfillment = asinFetch['fullfillment']
 
-        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid,supplier, datepurchased, buyprice,sellprice) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,supplier, datepurchased, buyprice,sellprice,));
+        cursor.execute('INSERT INTO bin (asinid,quantity,trackingid,expirationdate,store,tobebinned,locationid,supplier, datepurchased, buyprice,sellprice,fullfillment) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING contentid', ( asinid,quantity,trackingid,expirationdate,store,tobebinned,stagingArea,supplier, datepurchased, buyprice,sellprice,fullfillment,));
         
         result= cursor.fetchone()
 
@@ -666,7 +667,7 @@ def items_to_pick():
 def view_items():
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate, bin.trackingid, bin.store, bin.tobepicked, product.description FROM bin LEFT OUTER JOIN product ON bin.asinid = product.asinid WHERE bin.quantity > 0');
+    cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.locationid, bin.asinid, bin.quantity, bin.datereceived, bin.expirationdate, bin.trackingid, bin.store, bin.tobepicked, product.description,product.oversized,product.product_category,product.hazardous,bin.fullfillment FROM bin LEFT OUTER JOIN product ON bin.asinid = product.asinid WHERE bin.quantity > 0');
     items = cursor.fetchall()
     if request.method == 'POST':
         tobepicked = 1
@@ -796,6 +797,8 @@ def create_order():
         fullfillment= request.form['fullfillment']
         buyer = request.form['buyer']
         description = request.form['description']
+        oversized = request.form['oversized']
+        product_category = request.form['product_category']
 
         if buyPrice =='':    
             buyPrice = 0
@@ -821,7 +824,7 @@ def create_order():
             
             conn = get_db_connection()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-            cursor.execute('INSERT INTO product (imglink,asinid, description,hazardous) VALUES (%s,%s, %s,%s) ON CONFLICT (asinid) DO UPDATE SET (imglink,asinid,description,hazardous) = (%s,%s,%s,%s)', (imglink,asinid, description,hazardous, imglink,asinid, description, hazardous,)); #Change DO NOTHING to update when I add other product columns
+            cursor.execute('INSERT INTO product (imglink,asinid, description,hazardous,oversized,product_category) VALUES (%s,%s, %s,%s, %s,%s) ON CONFLICT (asinid) DO UPDATE SET (imglink,asinid,description,hazardous,oversized,product_category) = (%s,%s,%s,%s,%s,%s)', (imglink,asinid, description,hazardous,oversized,product_category, imglink, asinid, description, hazardous,oversized,product_category,)); #Change DO NOTHING to update when I add other product columns
             conn.commit()
             cursor.execute('INSERT INTO orders (asinid, buyPrice, sellPrice, projectedProfit,store, supplier,quantity,orderNumber,fullfillment,buyer) VALUES ( %s,%s, %s, %s, %s, %s, %s, %s, %s, %s)', 
                          (asinid, buyPrice, sellPrice, projectedProfit, store, supplier,quantity,orderNumber,fullfillment,buyer,));

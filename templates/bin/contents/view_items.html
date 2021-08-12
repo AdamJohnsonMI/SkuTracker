@@ -43,9 +43,9 @@ iframe{
         <td>{{ bin['quantity'] }}</td>
         <td>{{ bin['datereceived'] }}</td>
         <td>{{ bin['expirationdate'] }}</td>
-        <td>Add fullfillment here*developer note</td>
-        <td>Add hazardous here*developer note</td>
-        <td>Add oversized here*developer note</td>
+        <td>{{ bin['fullfillment'] }}</td>
+        <td>{{ bin['hazardous'] }}</td>
+        <td>{{ bin['oversized'] }}</td>
         <td>{{ bin['store'] }}</td>
 
         {% if bin['locationid'] == none %}

@@ -66,6 +66,17 @@
             class="form-control paste-me">{{ request.form['projectedProfit'] }}</textarea>
 </div>
 <div class="form-group">
+  <label for="product_category">Product Category</label>
+  <textarea name="product_category" placeholder="Enter Product Category"
+            class="form-control paste-me">{{ request.form['product_category'] }}</textarea>
+</div>
+<div class="form-group">
+  <label for="oversized">Oversized</label>
+  <textarea name="oversized" placeholder="Enter Yes/No"
+            class="form-control paste-me">{{ request.form['oversized'] }}</textarea>
+</div>
+
+<div class="form-group">
     <label for="store">Store</label>
     <textarea name="store" placeholder="Enter Store"
               class="form-control">{{ request.form['store'] }}</textarea>
