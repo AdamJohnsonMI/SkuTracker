@@ -1074,7 +1074,7 @@ def export():
     cw = csv.writer(si)
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT asinid, SUM (quantity) AS Quantity ,max(buyprice) as Cost,sellprice as ListPrice,datepurchased as purchasedate,min(bin.expirationdate) AS expirationdate,supplier,min(locationid) as location FROM bin WHERE tobepicked='1' GROUP BY asinid, sellprice,datepurchased,supplier ORDER BY quantity desc")
+    cursor.execute("SELECT bin.asinid, product.description,SUM (bin.quantity) AS Quantity ,max(bin.buyprice) as Cost,bin.sellprice as ListPrice,bin.datepurchased as purchasedate,min(bin.expirationdate) AS expirationdate,bin.supplier,min(bin.locationid) as location FROM bin left outer join product ON bin.asinid = product.asinid WHERE tobepicked='1' GROUP BY bin.asinid, product.description, bin.sellprice,bin.datepurchased,bin.supplier ORDER BY quantity desc")
     rows = cursor.fetchall()
     cw.writerow([i[0] for i in cursor.description])
     cw.writerows(rows)
