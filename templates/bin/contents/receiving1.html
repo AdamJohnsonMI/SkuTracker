@@ -69,6 +69,9 @@
         <th scope="col">Description</th>
         <th scope="col">Quantity Expected</th>
         <th scope="col">QTY Received </th>
+        <th scope="col">Fulfillment</th>
+        <th scope="col">Hazardous</th>
+        <th scope="col">Oversized</th>
         
       </tr>
     </thead>
@@ -80,6 +83,9 @@
         <td>{{ result['description'] }}</td>
         <td>{{ result['quantity'] }}</td>
         <td>{{ result['received'] }}</td>
+        <td>{{ result['fullfillment'] }}</td>
+        <td>{{ result['hazardous'] }}</td>
+        <td>{{ result['oversized'] }}</td>
         
         </tr>
       {% endfor %}

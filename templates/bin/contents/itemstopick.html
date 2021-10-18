@@ -3,8 +3,9 @@
 {% block content %}
 
 
-<h1>{% block title %} Pick List{% endblock %}</h1>
-<h3>Enter Missing/Damaged before picking</h3>
+<h1>{% block title %} Pick List{% endblock %}  </h1> 
+<h2>Remaining Picks: {{ totalQtyPicks }}</h2>
+<h3>Enter Missing/Damaged before picking</h3> 
 <a href="/getPickCSV">Export CSV for Current Pick List</a>
 
 
