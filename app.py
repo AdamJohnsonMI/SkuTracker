@@ -623,11 +623,15 @@ def remove_pick(contents_id):
 @admin_required
 def items_to_pick():
     tobepicked = 1
+    totalQtyPicks=0
     conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute('SELECT DISTINCT ON (1) bin.contentid, bin.asinid, bin.quantity, bin.trackingid, bin.locationid, bin.pickquantity, product.description FROM bin LEFT OUTER JOIN product ON bin.asinid = product.asinid \
         WHERE tobepicked = %s', (tobepicked,));
     items = cursor.fetchall()
+
+    for item in items:
+        totalQtyPicks= totalQtyPicks+ int(item['quantity'])
 
     
     if request.method == 'POST' :
@@ -667,7 +671,7 @@ def items_to_pick():
             flash("ERROR! Issue with updating quantity") 
             conn.close()
             return redirect(url_for('items_to_pick'))
-    return render_template('bin/contents/itemstopick.html', items=items) 
+    return render_template('bin/contents/itemstopick.html', items=items,totalQtyPicks=totalQtyPicks) 
 
 
 @app.route('/contents/view_items', methods=('GET', 'POST') )
