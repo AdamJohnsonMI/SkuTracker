@@ -3,6 +3,7 @@ from functools import wraps  #Used for login and admin control
 from wtforms import Form, BooleanField, StringField, PasswordField, validators #Used for registering with a password
 from passlib.hash import sha256_crypt
 from werkzeug.exceptions import abort
+from markupsafe import Markup
 import psycopg2
 import psycopg2.extras #Allows dictionary cursor to be used
 import os
