@@ -1,10 +1,10 @@
 
 # InventoryManagement
 June 2022 Update-What I would do different for next project:
--Implement MVC model to separate functionality and improve readability.
--Separate routes to different respective folders.
--Improve function names to be the respective actions it performs. 
--Utilize classes to reduce limit duplication of the same code. 
+- Implement MVC model to separate functionality and improve readability.
+- Separate routes to different respective folders.
+- Improve function names to be the respective actions it performs. 
+- Utilize classes to reduce limit duplication of the same code. 
 
 
 SkuTracker is an inventory management app that allows users to track their inventory from submitting their ordered products, binning items in warehouse with the tracking number from the box into bin locations, creating pick lists, and user access control.
