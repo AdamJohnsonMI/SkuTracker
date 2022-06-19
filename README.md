@@ -1,5 +1,6 @@
 
 # InventoryManagement
+Test Site available at https://skutrack.herokuapp.com/login. Ask for login details.
 June 2022 Update-What I would do different for next project:
 - Implement MVC model to separate functionality and improve readability.
 - Separate routes to different respective folders.
